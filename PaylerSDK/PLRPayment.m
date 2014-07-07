@@ -9,7 +9,7 @@
 #import "PLRPayment.h"
 
 @interface PLRPayment ()
-@property (nonatomic, readwrite, assign) NSInteger paymentId;
+@property (nonatomic, readwrite, copy) NSString *paymentId;
 @property (nonatomic, readwrite, assign) NSInteger amount;
 @property (nonatomic, readwrite, copy) NSString *product;
 @property (nonatomic, readwrite, assign) CGFloat total;
@@ -17,17 +17,19 @@
 
 @implementation PLRPayment
 
-- (instancetype)initWithId:(NSInteger)paymentId amount:(NSInteger)amount {
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount {
     return [self initWithId:paymentId amount:amount product:nil total:0.0];
 }
 
-- (instancetype)initWithId:(NSInteger)paymentId amount:(NSInteger)amount product:(NSString *)product {
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount product:(NSString *)product {
     return [self initWithId:paymentId amount:amount product:product total:0.0];
 }
 
-- (instancetype)initWithId:(NSInteger)paymentId amount:(NSInteger)amount product:(NSString *)product total:(CGFloat)total {
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount product:(NSString *)product total:(CGFloat)total {
     self = [super init];
     if (self) {
+        if (!paymentId) [NSException raise:@"Required parameter" format:@"'paymentId' is required."];
+
         _paymentId = paymentId;
         _amount = amount;
         _product = [product copy];

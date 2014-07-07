@@ -28,6 +28,8 @@
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo sessionType:(PLRSessionType)sessionType template:(NSString *)templateName language:(NSString *)language {
     self = [super init];
     if (self) {
+        if (!paymentInfo) [NSException raise:@"RequiredParameter" format:@"'paymentInfo' is required."];
+        
         _paymentInfo = paymentInfo;
         _sessionType = sessionType;
         _templateName = templateName;

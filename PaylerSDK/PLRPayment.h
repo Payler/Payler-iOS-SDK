@@ -14,7 +14,7 @@
 /**
  *  Идентификатор оплачиваемого заказа в системе Продавца. Должен быть уникальным для каждого платежа(сессии).
  */
-@property (nonatomic, readonly, assign) NSInteger paymentId;
+@property (nonatomic, readonly, copy) NSString *paymentId;
 
 /**
  *  Сумма платежа в копейках.
@@ -31,8 +31,8 @@
  */
 @property (nonatomic, readonly, assign) CGFloat total;
 
-- (instancetype)initWithId:(NSInteger)paymentId amount:(NSInteger)amount;
-- (instancetype)initWithId:(NSInteger)paymentId amount:(NSInteger)amount product:(NSString *)product;
-- (instancetype)initWithId:(NSInteger)paymentId amount:(NSInteger)amount product:(NSString *)product total:(CGFloat)total;
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount;
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount product:(NSString *)product;
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount product:(NSString *)product total:(CGFloat)total;
 
 @end
