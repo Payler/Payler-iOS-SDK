@@ -12,35 +12,15 @@
 
 static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
 
-@interface PLRWebView ()
-
-@property (nonatomic, strong) PLRSessionInfo *sessionInfo;
-@property (nonatomic, copy) NSString *merchantKey;
+@interface PLRWebView ()<UIWebViewDelegate>
 
 @end
 
 @implementation PLRWebView
 
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self commonInit];
-    }
-    return self;
-}
-
-- (void)awakeFromNib {
-    [super awakeFromNib];
-
-    [self commonInit];
-}
-
 - (instancetype)initWithFrame:(CGRect)frame sessionInfo:(PLRSessionInfo *)sessionInfo merchantKey:(NSString *)merchantKey {
     self = [self initWithFrame:frame];
     if (self) {
-        if (!sessionInfo) [NSException raise:@"RequiredParameter" format:@"'sessionInfo' is required."];
-        if (!merchantKey) [NSException raise:@"RequiredParameter" format:@"'merchantKey' is required."];
-
         _sessionInfo = sessionInfo;
         _merchantKey = merchantKey;
     }
@@ -52,10 +32,21 @@ static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
     [self stopLoading];
 }
 
-#pragma mark - Private methods
+- (void)startSessionWithCompletion:(PLRCompletionBlock)completion {
+    if (!self.sessionInfo) [NSException raise:@"RequiredParameter" format:@"'sessionInfo' is required."];
+    if (!self.merchantKey) [NSException raise:@"RequiredParameter" format:@"'merchantKey' is required."];
 
-- (void)commonInit {
     
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    return YES;
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+
 }
 
 @end

@@ -10,8 +10,15 @@
 
 @class PLRSessionInfo;
 
+typedef void(^PLRCompletionBlock)(id object, NSError *error);
+
 @interface PLRWebView : UIWebView
 
+@property (nonatomic, strong) PLRSessionInfo *sessionInfo;
+@property (nonatomic, copy) NSString *merchantKey;
+
 - (instancetype)initWithFrame:(CGRect)frame sessionInfo:(PLRSessionInfo *)sessionInfo merchantKey:(NSString *)merchantKey;
+
+- (void)startSessionWithCompletion:(PLRCompletionBlock)completion;
 
 @end

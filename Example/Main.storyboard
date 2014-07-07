@@ -8,12 +8,12 @@
         <!--View Controller-->
         <scene sceneID="h75-cv-i6c">
             <objects>
-                <viewController id="2eS-rt-vqt" sceneMemberID="viewController">
+                <viewController id="2eS-rt-vqt" customClass="PLRViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SWA-AA-Q4U">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" id="Trf-Cw-x2Y">
+                            <webView contentMode="scaleToFill" id="Trf-Cw-x2Y" customClass="PLRWebView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -21,6 +21,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="webView" destination="Trf-Cw-x2Y" id="Fcc-PR-GLh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NsY-7C-erG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

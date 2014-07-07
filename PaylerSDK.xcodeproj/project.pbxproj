@@ -25,6 +25,11 @@
 		0220D42B196ACABA00FC5AF3 /* PLRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D42A196ACABA00FC5AF3 /* PLRAppDelegate.m */; };
 		0220D42D196ACABA00FC5AF3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0220D42C196ACABA00FC5AF3 /* Images.xcassets */; };
 		0220D447196ACB2100FC5AF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0220D446196ACB2100FC5AF3 /* Main.storyboard */; };
+		0220D44A196ACC1600FC5AF3 /* PLRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D449196ACC1600FC5AF3 /* PLRViewController.m */; };
+		0220D44B196ACEEB00FC5AF3 /* libPaylerSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0220D3E1196A96E300FC5AF3 /* libPaylerSDK.a */; };
+		0220D44C196ACFA200FC5AF3 /* PLRSessionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D40B196AA8D000FC5AF3 /* PLRSessionInfo.m */; };
+		0220D44D196ACFA400FC5AF3 /* PLRPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D40F196AAC4D00FC5AF3 /* PLRPayment.m */; };
+		0220D44E196ACFA700FC5AF3 /* PLRWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D415196AC6BA00FC5AF3 /* PLRWebView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +80,8 @@
 		0220D42A196ACABA00FC5AF3 /* PLRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PLRAppDelegate.m; sourceTree = "<group>"; };
 		0220D42C196ACABA00FC5AF3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		0220D446196ACB2100FC5AF3 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		0220D448196ACC1600FC5AF3 /* PLRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLRViewController.h; sourceTree = "<group>"; };
+		0220D449196ACC1600FC5AF3 /* PLRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0220D44B196ACEEB00FC5AF3 /* libPaylerSDK.a in Frameworks */,
 				0220D41E196ACABA00FC5AF3 /* CoreGraphics.framework in Frameworks */,
 				0220D41F196ACABA00FC5AF3 /* UIKit.framework in Frameworks */,
 				0220D41C196ACABA00FC5AF3 /* Foundation.framework in Frameworks */,
@@ -187,6 +195,8 @@
 			children = (
 				0220D429196ACABA00FC5AF3 /* PLRAppDelegate.h */,
 				0220D42A196ACABA00FC5AF3 /* PLRAppDelegate.m */,
+				0220D448196ACC1600FC5AF3 /* PLRViewController.h */,
+				0220D449196ACC1600FC5AF3 /* PLRViewController.m */,
 				0220D42C196ACABA00FC5AF3 /* Images.xcassets */,
 				0220D421196ACABA00FC5AF3 /* Supporting Files */,
 			);
@@ -342,7 +352,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0220D427196ACABA00FC5AF3 /* main.m in Sources */,
+				0220D44C196ACFA200FC5AF3 /* PLRSessionInfo.m in Sources */,
+				0220D44E196ACFA700FC5AF3 /* PLRWebView.m in Sources */,
 				0220D42B196ACABA00FC5AF3 /* PLRAppDelegate.m in Sources */,
+				0220D44A196ACC1600FC5AF3 /* PLRViewController.m in Sources */,
+				0220D44D196ACFA400FC5AF3 /* PLRPayment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
