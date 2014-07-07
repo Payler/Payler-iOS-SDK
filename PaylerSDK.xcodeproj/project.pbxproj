@@ -1,0 +1,421 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0220D3E5196A96E300FC5AF3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0220D3E4196A96E300FC5AF3 /* Foundation.framework */; };
+		0220D3EA196A96E300FC5AF3 /* PaylerSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0220D3E9196A96E300FC5AF3 /* PaylerSDK.h */; };
+		0220D3EC196A96E300FC5AF3 /* PaylerSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D3EB196A96E300FC5AF3 /* PaylerSDK.m */; };
+		0220D3F3196A96E300FC5AF3 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0220D3F2196A96E300FC5AF3 /* XCTest.framework */; };
+		0220D3F4196A96E300FC5AF3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0220D3E4196A96E300FC5AF3 /* Foundation.framework */; };
+		0220D3F6196A96E300FC5AF3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0220D3F5196A96E300FC5AF3 /* UIKit.framework */; };
+		0220D3F9196A96E300FC5AF3 /* libPaylerSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0220D3E1196A96E300FC5AF3 /* libPaylerSDK.a */; };
+		0220D3FF196A96E300FC5AF3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0220D3FD196A96E300FC5AF3 /* InfoPlist.strings */; };
+		0220D401196A96E300FC5AF3 /* PaylerSDKTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D400196A96E300FC5AF3 /* PaylerSDKTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0220D3F7196A96E300FC5AF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0220D3D9196A96E300FC5AF3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0220D3E0196A96E300FC5AF3;
+			remoteInfo = PaylerSDK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0220D3DF196A96E300FC5AF3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				0220D3EA196A96E300FC5AF3 /* PaylerSDK.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0220D3E1196A96E300FC5AF3 /* libPaylerSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPaylerSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0220D3E4196A96E300FC5AF3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0220D3E8196A96E300FC5AF3 /* PaylerSDK-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PaylerSDK-Prefix.pch"; sourceTree = "<group>"; };
+		0220D3E9196A96E300FC5AF3 /* PaylerSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaylerSDK.h; sourceTree = "<group>"; };
+		0220D3EB196A96E300FC5AF3 /* PaylerSDK.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaylerSDK.m; sourceTree = "<group>"; };
+		0220D3F1196A96E300FC5AF3 /* PaylerSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PaylerSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0220D3F2196A96E300FC5AF3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		0220D3F5196A96E300FC5AF3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		0220D3FC196A96E300FC5AF3 /* PaylerSDKTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PaylerSDKTests-Info.plist"; sourceTree = "<group>"; };
+		0220D3FE196A96E300FC5AF3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0220D400196A96E300FC5AF3 /* PaylerSDKTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaylerSDKTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0220D3DE196A96E300FC5AF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0220D3E5196A96E300FC5AF3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0220D3EE196A96E300FC5AF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0220D3F3196A96E300FC5AF3 /* XCTest.framework in Frameworks */,
+				0220D3F6196A96E300FC5AF3 /* UIKit.framework in Frameworks */,
+				0220D3F4196A96E300FC5AF3 /* Foundation.framework in Frameworks */,
+				0220D3F9196A96E300FC5AF3 /* libPaylerSDK.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0220D3D8196A96E300FC5AF3 = {
+			isa = PBXGroup;
+			children = (
+				0220D3E6196A96E300FC5AF3 /* PaylerSDK */,
+				0220D3FA196A96E300FC5AF3 /* PaylerSDKTests */,
+				0220D3E3196A96E300FC5AF3 /* Frameworks */,
+				0220D3E2196A96E300FC5AF3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0220D3E2196A96E300FC5AF3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0220D3E1196A96E300FC5AF3 /* libPaylerSDK.a */,
+				0220D3F1196A96E300FC5AF3 /* PaylerSDKTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0220D3E3196A96E300FC5AF3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0220D3E4196A96E300FC5AF3 /* Foundation.framework */,
+				0220D3F2196A96E300FC5AF3 /* XCTest.framework */,
+				0220D3F5196A96E300FC5AF3 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0220D3E6196A96E300FC5AF3 /* PaylerSDK */ = {
+			isa = PBXGroup;
+			children = (
+				0220D3E9196A96E300FC5AF3 /* PaylerSDK.h */,
+				0220D3EB196A96E300FC5AF3 /* PaylerSDK.m */,
+				0220D3E7196A96E300FC5AF3 /* Supporting Files */,
+			);
+			path = PaylerSDK;
+			sourceTree = "<group>";
+		};
+		0220D3E7196A96E300FC5AF3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0220D3E8196A96E300FC5AF3 /* PaylerSDK-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0220D3FA196A96E300FC5AF3 /* PaylerSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				0220D400196A96E300FC5AF3 /* PaylerSDKTests.m */,
+				0220D3FB196A96E300FC5AF3 /* Supporting Files */,
+			);
+			path = PaylerSDKTests;
+			sourceTree = "<group>";
+		};
+		0220D3FB196A96E300FC5AF3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0220D3FC196A96E300FC5AF3 /* PaylerSDKTests-Info.plist */,
+				0220D3FD196A96E300FC5AF3 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0220D3E0196A96E300FC5AF3 /* PaylerSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0220D404196A96E300FC5AF3 /* Build configuration list for PBXNativeTarget "PaylerSDK" */;
+			buildPhases = (
+				0220D3DD196A96E300FC5AF3 /* Sources */,
+				0220D3DE196A96E300FC5AF3 /* Frameworks */,
+				0220D3DF196A96E300FC5AF3 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PaylerSDK;
+			productName = PaylerSDK;
+			productReference = 0220D3E1196A96E300FC5AF3 /* libPaylerSDK.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		0220D3F0196A96E300FC5AF3 /* PaylerSDKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0220D407196A96E300FC5AF3 /* Build configuration list for PBXNativeTarget "PaylerSDKTests" */;
+			buildPhases = (
+				0220D3ED196A96E300FC5AF3 /* Sources */,
+				0220D3EE196A96E300FC5AF3 /* Frameworks */,
+				0220D3EF196A96E300FC5AF3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0220D3F8196A96E300FC5AF3 /* PBXTargetDependency */,
+			);
+			name = PaylerSDKTests;
+			productName = PaylerSDKTests;
+			productReference = 0220D3F1196A96E300FC5AF3 /* PaylerSDKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0220D3D9196A96E300FC5AF3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = PLR;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Polonium Arts";
+			};
+			buildConfigurationList = 0220D3DC196A96E300FC5AF3 /* Build configuration list for PBXProject "PaylerSDK" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0220D3D8196A96E300FC5AF3;
+			productRefGroup = 0220D3E2196A96E300FC5AF3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0220D3E0196A96E300FC5AF3 /* PaylerSDK */,
+				0220D3F0196A96E300FC5AF3 /* PaylerSDKTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0220D3EF196A96E300FC5AF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0220D3FF196A96E300FC5AF3 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0220D3DD196A96E300FC5AF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0220D3EC196A96E300FC5AF3 /* PaylerSDK.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0220D3ED196A96E300FC5AF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0220D401196A96E300FC5AF3 /* PaylerSDKTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0220D3F8196A96E300FC5AF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0220D3E0196A96E300FC5AF3 /* PaylerSDK */;
+			targetProxy = 0220D3F7196A96E300FC5AF3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0220D3FD196A96E300FC5AF3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0220D3FE196A96E300FC5AF3 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0220D402196A96E300FC5AF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		0220D403196A96E300FC5AF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0220D405196A96E300FC5AF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/PaylerSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PaylerSDK/PaylerSDK-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		0220D406196A96E300FC5AF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/PaylerSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PaylerSDK/PaylerSDK-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		0220D408196A96E300FC5AF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PaylerSDK/PaylerSDK-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "PaylerSDKTests/PaylerSDKTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		0220D409196A96E300FC5AF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PaylerSDK/PaylerSDK-Prefix.pch";
+				INFOPLIST_FILE = "PaylerSDKTests/PaylerSDKTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0220D3DC196A96E300FC5AF3 /* Build configuration list for PBXProject "PaylerSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0220D402196A96E300FC5AF3 /* Debug */,
+				0220D403196A96E300FC5AF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0220D404196A96E300FC5AF3 /* Build configuration list for PBXNativeTarget "PaylerSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0220D405196A96E300FC5AF3 /* Debug */,
+				0220D406196A96E300FC5AF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		0220D407196A96E300FC5AF3 /* Build configuration list for PBXNativeTarget "PaylerSDKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0220D408196A96E300FC5AF3 /* Debug */,
+				0220D409196A96E300FC5AF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0220D3D9196A96E300FC5AF3 /* Project object */;
+}
