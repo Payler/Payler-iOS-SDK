@@ -28,8 +28,10 @@
     PLRSessionInfo *sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment];
     self.webView.sessionInfo = sessionInfo;
     self.webView.merchantKey = @"TestMerchantBM";
-    [self.webView startSessionWithCompletion:^(id object, NSError *error) {
-
+    [self.webView startSessionWithCompletion:^(NSURLRequest *request, NSError *error) {
+        if (!error) {
+            NSLog(@"%@", request);
+        }
     }];
 }
 

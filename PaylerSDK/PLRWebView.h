@@ -10,7 +10,7 @@
 
 @class PLRSessionInfo;
 
-typedef void(^PLRCompletionBlock)(id object, NSError *error);
+typedef void(^PLRCompletionBlock)(NSURLRequest *request, NSError *error);
 
 @interface PLRWebView : UIWebView
 

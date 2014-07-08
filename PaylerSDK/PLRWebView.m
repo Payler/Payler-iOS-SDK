@@ -36,6 +36,7 @@ static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
 }
 
 - (void)commonInit {
+    self.delegate = self;
     self.scalesPageToFit = YES;
 }
 
@@ -74,7 +75,7 @@ static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (completion) {
-            completion(operation.responseObject, error);
+            completion(operation.request, error);
         }
     }];
 }
@@ -82,10 +83,27 @@ static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    NSLog(@"Request: %@", request);
+    if ([[[request URL] lastPathComponent] hasPrefix:@"Complete-order_id"]) {
+        if (self.completionBlock) {
+            self.completionBlock(request, nil);
+            self.completionBlock = nil;
+        }
+    }
     return YES;
 }
 
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    NSLog(@"Error: %@", error);
     if (self.completionBlock) {
         self.completionBlock(nil, error);
     }
