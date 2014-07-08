@@ -31,3 +31,5 @@ typedef void(^PLRFetchStatusCompletionBlock)(PLRPayment *payment, NSString *stat
 - (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRFetchStatusCompletionBlock)completion;
 
 @end
+
+extern NSString *const PaylerErrorDomain;
