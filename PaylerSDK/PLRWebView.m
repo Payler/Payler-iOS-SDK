@@ -15,7 +15,7 @@ static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
 
 @interface PLRWebView ()<UIWebViewDelegate>
 
-@property (nonatomic, copy) PLRCompletionBlock completionBlock;
+@property (nonatomic, copy) PLRPayBlock completionBlock;
 
 @end
 
@@ -54,7 +54,7 @@ static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
     [self stopLoading];
 }
 
-- (void)startSessionWithCompletion:(PLRCompletionBlock)completion {
+- (void)startSessionWithCompletion:(PLRPayBlock)completion {
     if (!self.sessionInfo) [NSException raise:@"RequiredParameter" format:@"'sessionInfo' is required."];
     if (!self.merchantKey) [NSException raise:@"RequiredParameter" format:@"'merchantKey' is required."];
 

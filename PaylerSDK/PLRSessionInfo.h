@@ -40,6 +40,9 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
  */
 @property (nonatomic, readonly, copy) NSString *language;
 
+/**
+ *  Используется в качестве параметров в запросах к API.
+ */
 - (NSDictionary *)dictionaryRepresentation;
 
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo;

@@ -10,7 +10,7 @@
 
 @class PLRSessionInfo;
 
-typedef void(^PLRCompletionBlock)(NSURLRequest *request, NSError *error);
+typedef void(^PLRPayBlock)(NSURLRequest *request, NSError *error);
 
 @interface PLRWebView : UIWebView
 
@@ -19,6 +19,6 @@ typedef void(^PLRCompletionBlock)(NSURLRequest *request, NSError *error);
 
 - (instancetype)initWithFrame:(CGRect)frame sessionInfo:(PLRSessionInfo *)sessionInfo merchantKey:(NSString *)merchantKey;
 
-- (void)startSessionWithCompletion:(PLRCompletionBlock)completion;
+- (void)startSessionWithCompletion:(PLRPayBlock)completion;
 
 @end

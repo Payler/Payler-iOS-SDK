@@ -31,6 +31,9 @@
  */
 @property (nonatomic, readonly, assign) CGFloat total;
 
+/**
+ *  Используется в качестве параметров в запросах к API.
+ */
 - (NSDictionary *)dictionaryRepresentation;
 
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount;
