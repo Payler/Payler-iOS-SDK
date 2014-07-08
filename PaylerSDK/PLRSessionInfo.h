@@ -40,8 +40,14 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
  */
 @property (nonatomic, readonly, copy) NSString *language;
 
+- (NSDictionary *)dictionaryRepresentation;
+
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo;
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo sessionType:(PLRSessionType)sessionType;
+
+// Designated initializer
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo sessionType:(PLRSessionType)sessionType template:(NSString *)templateName language:(NSString *)language;
+
+- (id)init __attribute__((unavailable("Must use initWithPaymentInfo: instead.")));
 
 @end

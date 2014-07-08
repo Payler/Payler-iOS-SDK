@@ -31,8 +31,13 @@
  */
 @property (nonatomic, readonly, assign) CGFloat total;
 
+- (NSDictionary *)dictionaryRepresentation;
+
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount;
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount product:(NSString *)product;
+// Designated initializer
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount product:(NSString *)product total:(CGFloat)total;
+
+- (id)init __attribute__((unavailable("Must use initWithId:amount: instead.")));
 
 @end

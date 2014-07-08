@@ -38,4 +38,13 @@
     return self;
 }
 
+- (NSDictionary *)dictionaryRepresentation {
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    parameters[@"order_id"] = self.paymentId;
+    parameters[@"amount"] = @(self.amount);
+    if (self.product.length) parameters[@"product"] = self.product;
+    if (self.total) parameters[@"total"] = @(self.total);
+    return [parameters copy];
+}
+
 @end

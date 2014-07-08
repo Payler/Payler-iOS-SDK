@@ -7,6 +7,12 @@
 //
 
 #import "PLRSessionInfo.h"
+#import "PLRPayment.h"
+
+NSString *const PLRSessionEnumToString[] = {
+    [PLRSessionTypeOneStep] = @"Pay",
+    [PLRSessionTypeTwoStep] = @"Block"
+};
 
 @interface PLRSessionInfo ()
 @property (nonatomic, readwrite, strong) PLRPayment *paymentInfo;
@@ -36,6 +42,15 @@
         _language = language;
     }
     return self;
+}
+
+- (NSDictionary *)dictionaryRepresentation {
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    parameters[@"type"] = PLRSessionEnumToString[self.sessionType];
+    if (self.templateName.length) parameters[@"template"] = self.templateName;
+    if (self.language.length) parameters[@"language"] = self.language;
+    [parameters addEntriesFromDictionary:[self.paymentInfo dictionaryRepresentation]];
+    return [parameters copy];
 }
 
 @end
