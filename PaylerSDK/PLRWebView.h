@@ -9,16 +9,28 @@
 #import <UIKit/UIKit.h>
 
 @class PLRSessionInfo;
+@class PaylerAPIClient;
 
-typedef void(^PLRPayBlock)(NSURLRequest *request, NSError *error);
+typedef void(^PLRPayBlock)(BOOL success, NSError *error);
 
+/**
+ *  Наследник класса UIWebView, в котором инкапсулирована логика оплаты через страницу шлюза Payler.
+ */
 @interface PLRWebView : UIWebView
 
 @property (nonatomic, strong) PLRSessionInfo *sessionInfo;
-@property (nonatomic, copy) NSString *merchantKey;
+@property (nonatomic, strong) PaylerAPIClient *client;
 
-- (instancetype)initWithFrame:(CGRect)frame sessionInfo:(PLRSessionInfo *)sessionInfo merchantKey:(NSString *)merchantKey;
+/**
+ *  Запрос списания средств с перенаправлением пользователя на страницу шлюза. Результатом обработки запроса является списание денежных средств при одностадийной схеме проведения платежа, либо блокировка средств на карте Пользователя при двухстадийной схеме проведения платежа.
+ *
+ *  @param completion Блок вызывается после завершения оплаты.
+ */
+- (void)payWithCompletion:(PLRPayBlock)completion;
 
-- (void)startSessionWithCompletion:(PLRPayBlock)completion;
+/**
+ *  Инициализирует и возвращает объект класса PLRWebView.
+ */
+- (instancetype)initWithFrame:(CGRect)frame client:(PaylerAPIClient *)client sessionInfo:(PLRSessionInfo *)sessionInfo;
 
 @end

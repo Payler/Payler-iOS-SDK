@@ -10,8 +10,7 @@
 #import "PLRSessionInfo.h"
 #import "PLRPayment.h"
 #import <AFHTTPRequestOperationManager.h>
-
-static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
+#import "PaylerAPIClient.h"
 
 @interface PLRWebView ()<UIWebViewDelegate>
 
@@ -40,11 +39,11 @@ static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
     self.scalesPageToFit = YES;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame sessionInfo:(PLRSessionInfo *)sessionInfo merchantKey:(NSString *)merchantKey {
+- (instancetype)initWithFrame:(CGRect)frame client:(PaylerAPIClient *)client sessionInfo:(PLRSessionInfo *)sessionInfo {
     self = [self initWithFrame:frame];
     if (self) {
         _sessionInfo = sessionInfo;
-        _merchantKey = merchantKey;
+        _client = client;
     }
     return self;
 }
@@ -54,28 +53,22 @@ static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
     [self stopLoading];
 }
 
-- (void)startSessionWithCompletion:(PLRPayBlock)completion {
+- (void)payWithCompletion:(PLRPayBlock)completion {
     if (!self.sessionInfo) [NSException raise:@"RequiredParameter" format:@"'sessionInfo' is required."];
-    if (!self.merchantKey) [NSException raise:@"RequiredParameter" format:@"'merchantKey' is required."];
+    if (!self.client) [NSException raise:@"RequiredParameter" format:@"'client' is required."];
 
     self.completionBlock = completion;
 
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:APIBaseURL]];
-    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"key": self.merchantKey}];
-    [parameters addEntriesFromDictionary:[self.sessionInfo dictionaryRepresentation]];
-
-    [manager POST:@"StartSession" parameters:[parameters copy] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"#network <%@: %@> \nResponse: %@", operation.request.HTTPMethod, [operation.request.URL absoluteString], responseObject);
-        NSString *sessionId = responseObject[@"session_id"];
-        if (sessionId.length) {
-            NSString *path = [[NSURL URLWithString:@"Pay" relativeToURL:manager.baseURL] absoluteString];
+    [self.client startSessionWithInfo:self.sessionInfo completion:^(PLRPayment *payment, NSString *sessionId, NSDictionary *info, NSError *error) {
+        if (!error) {
+            NSString *path = [[NSURL URLWithString:@"Pay" relativeToURL:self.client.baseURL] absoluteString];
             NSDictionary *parameters = @{@"session_id": sessionId};
-            NSMutableURLRequest *request = [manager.requestSerializer requestWithMethod:@"POST" URLString:path parameters:parameters error:nil];
+            NSMutableURLRequest *request = [self.client.requestSerializer requestWithMethod:@"POST" URLString:path parameters:parameters error:nil];
             [self loadRequest:request];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (completion) {
-            completion(operation.request, error);
+        } else {
+            if (completion) {
+                completion(NO, error);
+            }
         }
     }];
 }
@@ -83,11 +76,9 @@ static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    NSLog(@"Request: %@", request);
     if ([[[request URL] lastPathComponent] hasPrefix:@"Complete-order_id"]) {
         if (self.completionBlock) {
-            self.completionBlock(request, nil);
-            self.completionBlock = nil;
+            self.completionBlock(YES, nil);
         }
     }
     return YES;
@@ -103,9 +94,8 @@ static NSString *const APIBaseURL = @"https://sandbox.payler.com/gapi";
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    NSLog(@"Error: %@", error);
     if (self.completionBlock) {
-        self.completionBlock(nil, error);
+        self.completionBlock(NO, error);
     }
 }
 

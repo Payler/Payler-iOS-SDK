@@ -10,6 +10,7 @@
 #import "PLRWebView.h"
 #import "PLRSessionInfo.h"
 #import "PLRPayment.h"
+#import "PaylerAPIClient.h"
 
 @interface PLRViewController ()
 
@@ -27,10 +28,10 @@
     PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:1];
     PLRSessionInfo *sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment];
     self.webView.sessionInfo = sessionInfo;
-    self.webView.merchantKey = @"TestMerchantBM";
-    [self.webView startSessionWithCompletion:^(NSURLRequest *request, NSError *error) {
+    self.webView.client = [[PaylerAPIClient alloc] init];
+    [self.webView payWithCompletion:^(BOOL success, NSError *error) {
         if (!error) {
-            NSLog(@"%@", request);
+            NSLog(@"%@", @(success));
         }
     }];
 }
