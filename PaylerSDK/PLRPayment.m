@@ -47,4 +47,8 @@
     return [parameters copy];
 }
 
+- (NSString *)description {
+    return [[self dictionaryRepresentation] description];
+}
+
 @end

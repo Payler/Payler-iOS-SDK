@@ -8,6 +8,7 @@
 
 #import "PaylerAPIClient.h"
 #import "PLRPayment.h"
+#import "PLRSessionInfo.h"
 
 NSString *const PaylerErrorDomain = @"com.poloniumarts.PaylerSDK.error";
 
@@ -111,43 +112,77 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
 
 @implementation PaylerAPIClient (Requests)
 
-- (void)chargePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
+- (void)startSessionWithInfo:(PLRSessionInfo *)sessionInfo completion:(PLRStartSessionCompletionBlock)completion {
+    NSParameterAssert(sessionInfo);
+
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"key": self.merchantKey}];
+    [parameters addEntriesFromDictionary:[sessionInfo dictionaryRepresentation]];
+
+    [self POST:@"StartSession" parameters:[parameters copy] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (completion) {
+            if ([self isStartSessionInfoValid:responseObject]) {
+                completion([self.class paymentFromJSON:responseObject], responseObject[@"session_id"], responseObject[@"info"], nil);
+            } else {
+                completion(nil, nil, nil, [self.class invalidParametersError]);
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (completion) {
+            completion(nil, nil, nil, [self.class errorFromRequestOperation:operation]);
+        }
+    }];
+}
+
+- (void)chargePayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
     [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Charge" payment:payment] completion:completion];
 }
 
-- (void)retrievePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
+- (void)retrievePayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
     [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Retrieve" payment:payment] completion:completion];
 }
 
-- (void)refundPayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
+- (void)refundPayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
     [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Refund" payment:payment] completion:completion];
 }
 
+- (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRFetchPaymentStatusCompletionBlock)completion {
+    NSParameterAssert(paymentId);
+
+    NSDictionary *parameters = @{@"key": self.merchantKey, @"order_id": paymentId};
+    [self POST:@"GetStatus" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (completion) {
+            if ([self isPaymentStatusInfoValid:responseObject]) {
+                completion([self.class paymentFromJSON:responseObject], responseObject[@"status"], responseObject[@"info"], nil);
+            } else {
+                completion(nil, nil, nil, [self.class invalidParametersError]);
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (completion) {
+            completion(nil, nil, nil, [self.class errorFromRequestOperation:operation]);
+        }
+    }];
+}
+
+#pragma mark - Private methods
+
 - (void)enqueuePaymentRequest:(NSURLRequest *)request
-                   completion:(PLRCompletionBlock)completion {
+                   completion:(PLRPaymentCompletionBlock)completion {
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (completion) {
             if ([self isPaymentInfoValid:responseObject]) {
-                PLRPayment *payment = [[PLRPayment alloc] initWithId:responseObject[@"order_id"] amount:[responseObject[@"amount"] integerValue]];
-                completion(payment, responseObject[@"info"], nil);
+                completion([self.class paymentFromJSON:responseObject], responseObject[@"info"], nil);
             } else {
                 completion(nil, nil, [self.class invalidParametersError]);
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSError *operationError = [self.class errorFromRequestOperation:operation];
         if (completion) {
-            completion(nil, nil, operationError);
+            completion(nil, nil, [self.class errorFromRequestOperation:operation]);
         }
     }];
 
     [self.operationQueue addOperation:operation];
-}
-
-- (BOOL)isPaymentInfoValid:(NSDictionary *)paymentInfo {
-    NSAssert([paymentInfo isKindOfClass:[NSDictionary class]], @"Invalid argument type");
-
-    return [paymentInfo[@"order_id"] length] && paymentInfo[@"amount"];
 }
 
 - (NSMutableURLRequest *)paymentRequestWithPath:(NSString *)path payment:(PLRPayment *)payment {
@@ -164,30 +199,22 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     return @{@"key": self.merchantKey, @"password": self.merchantPassword, @"order_id": payment.paymentId, @"amount": @(payment.amount)};
 }
 
-- (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRFetchStatusCompletionBlock)completion {
-    NSParameterAssert(paymentId);
+- (BOOL)isPaymentInfoValid:(NSDictionary *)paymentInfo {
+    NSAssert([paymentInfo isKindOfClass:[NSDictionary class]], @"Invalid argument type");
 
-    NSDictionary *parameters = @{@"key": self.merchantKey, @"order_id": paymentId};
-    [self POST:@"GetStatus" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (completion) {
-            if ([self isPaymentStatusInfoValid:responseObject]) {
-                PLRPayment *payment = [[PLRPayment alloc] initWithId:responseObject[@"order_id"] amount:[responseObject[@"amount"] integerValue]];
-                completion(payment, responseObject[@"status"], responseObject[@"info"], nil);
-            } else {
-                completion(nil, nil, nil, [self.class invalidParametersError]);
-            }
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSError *operationError = [self.class errorFromRequestOperation:operation];
-        if (completion) {
-            completion(nil, nil, nil, operationError);
-        }
-    }];
-    
+    return [paymentInfo[@"order_id"] length] && paymentInfo[@"amount"];
+}
+
+- (BOOL)isStartSessionInfoValid:(NSDictionary *)startSessionInfo {
+    return [self isPaymentInfoValid:startSessionInfo] && [startSessionInfo[@"session_id"] length];
 }
 
 - (BOOL)isPaymentStatusInfoValid:(NSDictionary *)paymentStatusInfo {
     return [self isPaymentInfoValid:paymentStatusInfo] && [paymentStatusInfo[@"status"] length];
+}
+
++ (PLRPayment *)paymentFromJSON:(NSDictionary *)JSONPayment {
+    return [[PLRPayment alloc] initWithId:JSONPayment[@"order_id"] amount:[JSONPayment[@"amount"] integerValue]];
 }
 
 @end
