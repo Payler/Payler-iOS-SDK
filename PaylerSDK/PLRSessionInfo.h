@@ -16,12 +16,12 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
 };
 
 /**
- *  Содержит информацию, необходимую для отправки запроса инициализации сессии.
+ *  В классе инкапсулирована информация, необходимая для отправки запроса инициализации сессии платежа.
  */
 @interface PLRSessionInfo : NSObject
 
 /**
- *  Содержит параметры платежа, необходимые для инициализации сессии.
+ *  Содержит данные о платеже, необходимые для инициализации сессии платежа.
  */
 @property (nonatomic, readonly, strong) PLRPayment *paymentInfo;
 
@@ -41,16 +41,18 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
 @property (nonatomic, readonly, copy) NSString *language;
 
 /**
- *  Используется в качестве параметров в запросах к API.
+ *  Словарь, содержащий параметры запроса инициализации сессии платежа.
  */
 - (NSDictionary *)dictionaryRepresentation;
 
+/**
+ *  Следующие методы инициализируют и возвращают объект класса PLRSessionInfo. Параметр paymentInfo не должен быть nil.
+ */
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo;
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo sessionType:(PLRSessionType)sessionType;
-
-// Designated initializer
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo sessionType:(PLRSessionType)sessionType template:(NSString *)templateName language:(NSString *)language;
 
 - (id)init __attribute__((unavailable("Must use initWithPaymentInfo: instead.")));
++ (id)new __attribute__((unavailable("Must use initWithPaymentInfo: instead.")));
 
 @end

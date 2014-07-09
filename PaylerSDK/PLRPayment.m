@@ -43,7 +43,7 @@
     parameters[@"order_id"] = self.paymentId;
     parameters[@"amount"] = @(self.amount);
     if (self.product.length) parameters[@"product"] = self.product;
-    if (self.total) parameters[@"total"] = @(self.total);
+    if (self.total > 0.001) parameters[@"total"] = @(self.total);
     return [parameters copy];
 }
 
