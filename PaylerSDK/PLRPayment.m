@@ -18,11 +18,11 @@
 @implementation PLRPayment
 
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount {
-    return [self initWithId:paymentId amount:amount product:nil total:0.0];
+    return [self initWithId:paymentId amount:amount product:nil total:CGFLOAT_MIN];
 }
 
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount product:(NSString *)product {
-    return [self initWithId:paymentId amount:amount product:product total:0.0];
+    return [self initWithId:paymentId amount:amount product:product total:CGFLOAT_MIN];
 }
 
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount product:(NSString *)product total:(CGFloat)total {
@@ -43,7 +43,7 @@
     parameters[@"order_id"] = self.paymentId;
     parameters[@"amount"] = @(self.amount);
     if (self.product.length) parameters[@"product"] = self.product;
-    if (self.total > 0.001) parameters[@"total"] = @(self.total);
+    if (self.total > CGFLOAT_MIN) parameters[@"total"] = @(self.total);
     return [parameters copy];
 }
 

@@ -26,6 +26,11 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
 @property (nonatomic, readonly, strong) PLRPayment *paymentInfo;
 
 /**
+ *  Адрес возврата Пользователя после успешного выполнения платежа.
+ */
+@property (nonatomic, readonly, copy) NSURL *callbackURL;
+
+/**
  *  Тип сессии. Определяет количество стадий платежа. По умолчанию одностадийный.
  */
 @property (nonatomic, readonly, assign) PLRSessionType sessionType;
@@ -46,11 +51,11 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
 - (NSDictionary *)dictionaryRepresentation;
 
 /**
- *  Следующие методы инициализируют и возвращают объект класса PLRSessionInfo. Параметр paymentInfo не должен быть nil.
+ *  Следующие методы инициализируют и возвращают объект класса PLRSessionInfo. Параметры paymentInfo и URL не должен быть nil.
  */
-- (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo;
-- (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo sessionType:(PLRSessionType)sessionType;
-- (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo sessionType:(PLRSessionType)sessionType template:(NSString *)templateName language:(NSString *)language;
+- (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL;
+- (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType;
+- (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType template:(NSString *)templateName language:(NSString *)language;
 
 - (id)init __attribute__((unavailable("Must use initWithPaymentInfo: instead.")));
 + (id)new __attribute__((unavailable("Must use initWithPaymentInfo: instead.")));

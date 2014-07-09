@@ -39,15 +39,6 @@
     self.scalesPageToFit = YES;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame client:(PaylerAPIClient *)client sessionInfo:(PLRSessionInfo *)sessionInfo {
-    self = [self initWithFrame:frame];
-    if (self) {
-        _sessionInfo = sessionInfo;
-        _client = client;
-    }
-    return self;
-}
-
 - (void)dealloc {
     self.delegate = nil;
     [self stopLoading];
@@ -76,7 +67,7 @@
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if ([[[request URL] lastPathComponent] hasPrefix:@"Complete-order_id"]) {
+    if ([[[request URL] absoluteString] isEqualToString:[self.sessionInfo.callbackURL absoluteString]]) {
         if (self.completionBlock) {
             self.completionBlock(YES, nil);
         }

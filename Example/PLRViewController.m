@@ -25,11 +25,10 @@
     [super viewDidLoad];
 
     NSString *paymentId = [NSString stringWithFormat:@"SDK_iOS_%@", [[NSDate date] description]];
-    PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:1];
-    PaylerAPIClient *client = [[PaylerAPIClient alloc] init];
-    PLRSessionInfo *sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment];
-    self.webView.sessionInfo = sessionInfo;
-    self.webView.client = client;
+    PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:100];
+    self.webView.sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment
+                                                               callbackURL:[NSURL URLWithString:@"http://do-terema.ru/paylerbronok.php"]];
+    self.webView.client = [[PaylerAPIClient alloc] init];
     [self.webView payWithCompletion:^(BOOL success, NSError *error) {
         if (!error) {
             NSLog(@"%@", @(success));
