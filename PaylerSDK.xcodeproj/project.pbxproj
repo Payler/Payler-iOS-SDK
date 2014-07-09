@@ -20,6 +20,9 @@
 		0220D44D196ACFA400FC5AF3 /* PLRPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D40F196AAC4D00FC5AF3 /* PLRPayment.m */; };
 		0220D44E196ACFA700FC5AF3 /* PLRWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D415196AC6BA00FC5AF3 /* PLRWebView.m */; };
 		0240D1D2196BD442005A8070 /* PaylerAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0240D1D1196BD442005A8070 /* PaylerAPIClient.m */; };
+		02CCAF76196D5CF2002CFD3D /* PaylerCert.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CCAF73196D5CF2002CFD3D /* PaylerCert.cer */; };
+		02CCAF77196D5CF2002CFD3D /* RootCert.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CCAF74196D5CF2002CFD3D /* RootCert.cer */; };
+		02CCAF7A196D5DA0002CFD3D /* ThawteCert.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CCAF79196D5DA0002CFD3D /* ThawteCert.cer */; };
 		B1252296972647008FD2E67B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE962A8EFC9A43B98C44B368 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +50,9 @@
 		0220D449196ACC1600FC5AF3 /* PLRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRViewController.m; sourceTree = "<group>"; };
 		0240D1D0196BD442005A8070 /* PaylerAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaylerAPIClient.h; sourceTree = "<group>"; };
 		0240D1D1196BD442005A8070 /* PaylerAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaylerAPIClient.m; sourceTree = "<group>"; };
+		02CCAF73196D5CF2002CFD3D /* PaylerCert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = PaylerCert.cer; sourceTree = "<group>"; };
+		02CCAF74196D5CF2002CFD3D /* RootCert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = RootCert.cer; sourceTree = "<group>"; };
+		02CCAF79196D5DA0002CFD3D /* ThawteCert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThawteCert.cer; sourceTree = "<group>"; };
 		87CACA086616486AB318DB73 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		BE962A8EFC9A43B98C44B368 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -100,6 +106,9 @@
 		0220D3E6196A96E300FC5AF3 /* PaylerSDK */ = {
 			isa = PBXGroup;
 			children = (
+				02CCAF79196D5DA0002CFD3D /* ThawteCert.cer */,
+				02CCAF73196D5CF2002CFD3D /* PaylerCert.cer */,
+				02CCAF74196D5CF2002CFD3D /* RootCert.cer */,
 				0220D40A196AA8D000FC5AF3 /* PLRSessionInfo.h */,
 				0220D40B196AA8D000FC5AF3 /* PLRSessionInfo.m */,
 				0220D40E196AAC4D00FC5AF3 /* PLRPayment.h */,
@@ -197,7 +206,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0220D447196ACB2100FC5AF3 /* Main.storyboard in Resources */,
+				02CCAF7A196D5DA0002CFD3D /* ThawteCert.cer in Resources */,
+				02CCAF76196D5CF2002CFD3D /* PaylerCert.cer in Resources */,
 				0220D425196ACABA00FC5AF3 /* InfoPlist.strings in Resources */,
+				02CCAF77196D5CF2002CFD3D /* RootCert.cer in Resources */,
 				0220D42D196ACABA00FC5AF3 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

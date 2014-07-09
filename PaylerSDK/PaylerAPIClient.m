@@ -86,6 +86,7 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     if (self) {
         _merchantKey = merchantIdentifiersValid ? [merchantKey copy] : @"TestMerchantBM";
         _merchantPassword = merchantIdentifiersValid ? [merchantPassword copy] : @"123";
+        self.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     }
     return self;
 }
