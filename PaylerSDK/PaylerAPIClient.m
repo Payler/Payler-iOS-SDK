@@ -89,37 +89,6 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     return self;
 }
 
-- (void)enqueuePaymentRequest:(NSURLRequest *)request
-                   completion:(PLRCompletionBlock)completion {
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (completion) {
-            PLRPayment *payment = [[PLRPayment alloc] initWithId:responseObject[@"order_id"] amount:[responseObject[@"amount"] integerValue]];
-            completion(payment, responseObject[@"info"], nil);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSError *operationError = [self.class errorFromRequestOperation:operation];
-        if (completion) {
-            completion(nil, nil, operationError);
-        }
-    }];
-    
-    [self.operationQueue addOperation:operation];
-}
-
-- (NSMutableURLRequest *)paymentRequestWithPath:(NSString *)path payment:(PLRPayment *)payment {
-    NSParameterAssert(payment);
-
-    return [self.requestSerializer requestWithMethod:@"POST"
-                                           URLString:[[NSURL URLWithString:path relativeToURL:self.baseURL] absoluteString]
-                                          parameters:[self paymentParametersWithPayment:payment] error:nil];
-}
-
-- (NSDictionary *)paymentParametersWithPayment:(PLRPayment *)payment {
-    NSParameterAssert(payment);
-
-    return @{@"key": self.merchantKey, @"password": self.merchantPassword, @"order_id": payment.paymentId, @"amount": @(payment.amount)};
-}
-
 #pragma mark - Error handling
 
 + (NSError *)errorFromRequestOperation:(AFHTTPRequestOperation *)operation {
@@ -130,6 +99,12 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     userInfo[NSLocalizedDescriptionKey] = PaylerErrorDescriptionFromCode[errorCode];
 	if (operation.error) userInfo[NSUnderlyingErrorKey] = operation.error;
 	return [NSError errorWithDomain:PaylerErrorDomain code:errorCode userInfo:userInfo];
+}
+
++ (NSError *)invalidParametersError {
+    return [NSError errorWithDomain:PaylerErrorDomain
+                               code:PaylerErrorInvalidParams
+                           userInfo:@{NSLocalizedDescriptionKey: PaylerErrorDescriptionFromCode[PaylerErrorInvalidParams]}];
 }
 
 @end
@@ -148,16 +123,59 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Refund" payment:payment] completion:completion];
 }
 
+- (void)enqueuePaymentRequest:(NSURLRequest *)request
+                   completion:(PLRCompletionBlock)completion {
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (completion) {
+            if ([self isPaymentInfoValid:responseObject]) {
+                PLRPayment *payment = [[PLRPayment alloc] initWithId:responseObject[@"order_id"] amount:[responseObject[@"amount"] integerValue]];
+                completion(payment, responseObject[@"info"], nil);
+            } else {
+                completion(nil, nil, [self.class invalidParametersError]);
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSError *operationError = [self.class errorFromRequestOperation:operation];
+        if (completion) {
+            completion(nil, nil, operationError);
+        }
+    }];
+
+    [self.operationQueue addOperation:operation];
+}
+
+- (BOOL)isPaymentInfoValid:(NSDictionary *)paymentInfo {
+    NSAssert([paymentInfo isKindOfClass:[NSDictionary class]], @"Invalid argument type");
+
+    return [paymentInfo[@"order_id"] length] && paymentInfo[@"amount"];
+}
+
+- (NSMutableURLRequest *)paymentRequestWithPath:(NSString *)path payment:(PLRPayment *)payment {
+    NSParameterAssert(payment);
+
+    return [self.requestSerializer requestWithMethod:@"POST"
+                                           URLString:[[NSURL URLWithString:path relativeToURL:self.baseURL] absoluteString]
+                                          parameters:[self paymentParametersWithPayment:payment] error:nil];
+}
+
+- (NSDictionary *)paymentParametersWithPayment:(PLRPayment *)payment {
+    NSParameterAssert(payment);
+
+    return @{@"key": self.merchantKey, @"password": self.merchantPassword, @"order_id": payment.paymentId, @"amount": @(payment.amount)};
+}
+
 - (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRFetchStatusCompletionBlock)completion {
     NSParameterAssert(paymentId);
 
     NSDictionary *parameters = @{@"key": self.merchantKey, @"order_id": paymentId};
     [self POST:@"GetStatus" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (completion) {
-            PLRPayment *payment = [[PLRPayment alloc] initWithId:responseObject[@"order_id"]
-                                                          amount:[responseObject[@"amount"] integerValue]];
-
-            completion(payment, responseObject[@"status"], responseObject[@"info"], nil);
+            if ([self isPaymentStatusInfoValid:responseObject]) {
+                PLRPayment *payment = [[PLRPayment alloc] initWithId:responseObject[@"order_id"] amount:[responseObject[@"amount"] integerValue]];
+                completion(payment, responseObject[@"status"], responseObject[@"info"], nil);
+            } else {
+                completion(nil, nil, nil, [self.class invalidParametersError]);
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSError *operationError = [self.class errorFromRequestOperation:operation];
@@ -166,6 +184,10 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
         }
     }];
     
+}
+
+- (BOOL)isPaymentStatusInfoValid:(NSDictionary *)paymentStatusInfo {
+    return [self isPaymentInfoValid:paymentStatusInfo] && [paymentStatusInfo[@"status"] length];
 }
 
 @end
