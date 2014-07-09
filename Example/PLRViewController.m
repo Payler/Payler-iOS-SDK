@@ -26,9 +26,10 @@
 
     NSString *paymentId = [NSString stringWithFormat:@"SDK_iOS_%@", [[NSDate date] description]];
     PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:1];
+    PaylerAPIClient *client = [[PaylerAPIClient alloc] init];
     PLRSessionInfo *sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment];
     self.webView.sessionInfo = sessionInfo;
-    self.webView.client = [[PaylerAPIClient alloc] init];
+    self.webView.client = client;
     [self.webView payWithCompletion:^(BOOL success, NSError *error) {
         if (!error) {
             NSLog(@"%@", @(success));

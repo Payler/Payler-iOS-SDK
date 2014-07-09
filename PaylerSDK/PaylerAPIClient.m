@@ -199,22 +199,23 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     return @{@"key": self.merchantKey, @"password": self.merchantPassword, @"order_id": payment.paymentId, @"amount": @(payment.amount)};
 }
 
-- (BOOL)isPaymentInfoValid:(NSDictionary *)paymentInfo {
-    NSAssert([paymentInfo isKindOfClass:[NSDictionary class]], @"Invalid argument type");
-
-    return [paymentInfo[@"order_id"] length] && paymentInfo[@"amount"];
-}
-
 - (BOOL)isStartSessionInfoValid:(NSDictionary *)startSessionInfo {
     return [self isPaymentInfoValid:startSessionInfo] && [startSessionInfo[@"session_id"] length];
 }
 
-- (BOOL)isPaymentStatusInfoValid:(NSDictionary *)paymentStatusInfo {
-    return [self isPaymentInfoValid:paymentStatusInfo] && [paymentStatusInfo[@"status"] length];
+- (BOOL)isPaymentInfoValid:(NSDictionary *)paymentInfo {
+    NSAssert([paymentInfo isKindOfClass:[NSDictionary class]], @"Invalid argument type");
+
+    return [paymentInfo[@"order_id"] length] && (paymentInfo[@"amount"] || paymentInfo[@"new_amount"]);
 }
 
 + (PLRPayment *)paymentFromJSON:(NSDictionary *)JSONPayment {
-    return [[PLRPayment alloc] initWithId:JSONPayment[@"order_id"] amount:[JSONPayment[@"amount"] integerValue]];
+    NSInteger amount = [(JSONPayment[@"amount"] ?: JSONPayment[@"new_amount"]) integerValue];
+    return [[PLRPayment alloc] initWithId:JSONPayment[@"order_id"] amount:amount];
+}
+
+- (BOOL)isPaymentStatusInfoValid:(NSDictionary *)paymentStatusInfo {
+    return [self isPaymentInfoValid:paymentStatusInfo] && [paymentStatusInfo[@"status"] length];
 }
 
 @end

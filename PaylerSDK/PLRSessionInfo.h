@@ -31,7 +31,7 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
 @property (nonatomic, readonly, assign) PLRSessionType sessionType;
 
 /**
- *  Название шаблона страницы оплаты, используемого продавцом. При отсутствии используется шаблон по умолчанию.
+ *  Название шаблона страницы оплаты, используемого продавцом. При отсутствии используется шаблон mobile.
  */
 @property (nonatomic, readonly, copy) NSString *templateName;
 

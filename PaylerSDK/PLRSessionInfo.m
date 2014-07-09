@@ -47,7 +47,7 @@ NSString *const PLRSessionEnumToString[] = {
 - (NSDictionary *)dictionaryRepresentation {
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     parameters[@"type"] = PLRSessionEnumToString[self.sessionType];
-    if (self.templateName.length) parameters[@"template"] = self.templateName;
+    parameters[@"template"] = self.templateName.length ? self.templateName : @"mobile";
     if (self.language.length) parameters[@"language"] = self.language;
     [parameters addEntriesFromDictionary:[self.paymentInfo dictionaryRepresentation]];
     return [parameters copy];

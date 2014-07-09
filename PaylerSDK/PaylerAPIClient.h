@@ -40,7 +40,7 @@ typedef void(^PLRFetchPaymentStatusCompletionBlock)(PLRPayment *payment, NSStrin
  *  Запрос инициализации платежа. Выполняется перед перенаправлением Пользователя на страницу платежного шлюза Payler.
  *
  *  @param sessionInfo Объект класса PLRSessionInfo. Не должен быть nil.
- *  @param completion  Блок выполняется после завершения запроса. Если запрос выполнился успешно, то параметры payment, sessionId и info в блоке содержат информацию о платеже, а error равен nil. Если запрос выполнился неудачно, то payment, sessionId и info равны nil, а error содержит информацию об ошибке.
+ *  @param completion  Блок выполняется после завершения запроса. Если запрос выполнился успешно, то параметры payment, sessionId и info в блоке содержат информацию о сессии, а error равен nil. Если запрос выполнился неудачно, то payment, sessionId и info равны nil, а error содержит информацию об ошибке.
  */
 - (void)startSessionWithInfo:(PLRSessionInfo *)sessionInfo completion:(PLRStartSessionCompletionBlock)completion;
 
