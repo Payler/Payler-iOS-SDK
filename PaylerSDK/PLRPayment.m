@@ -28,7 +28,7 @@
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount product:(NSString *)product total:(CGFloat)total {
     self = [super init];
     if (self) {
-        if (!paymentId) [NSException raise:@"Required parameter" format:@"'paymentId' is required."];
+        if (!paymentId) [NSException raise:@"RequiredParameter" format:@"'paymentId' is required."];
 
         _paymentId = paymentId;
         _amount = amount;
