@@ -6,13 +6,22 @@ PODS:
   - AFNetworking/Reachability (2.3.1)
   - AFNetworking/Security (2.3.1)
   - AFNetworking/Serialization (2.3.1)
+  - Expecta (0.3.1)
+  - OCMock (3.0.2)
+  - OHHTTPStubs (3.1.2)
 
 DEPENDENCIES:
   - AFNetworking/NSURLConnection (~> 2.3)
   - AFNetworking/Security (~> 2.3)
   - AFNetworking/Serialization (~> 2.3)
+  - Expecta (~> 0.3)
+  - OCMock (~> 3.0)
+  - OHHTTPStubs (~> 3.0)
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
+  Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
+  OCMock: b9836ab89d8d5e66cbe6333f93857037c310ee62
+  OHHTTPStubs: c1c2007839687eaf9b80f061ce84440515080ebb
 
 COCOAPODS: 0.33.1
