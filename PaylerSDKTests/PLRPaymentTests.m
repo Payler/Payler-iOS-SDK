@@ -54,7 +54,7 @@
     expect(self.payment.total).to.equal(25.5);
 }
 
-- (void)testDictionaryRepresentationWithDefaultParameters {
+- (void)testDictionaryRepresentationForPaymentWithDefaultParameters {
     PLRPayment *payment = [[PLRPayment alloc] initWithId:@"uniqueId" amount:100];
     NSDictionary *parameters = @{@"order_id": @"uniqueId", @"amount": @(100)};
 
