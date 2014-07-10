@@ -1,0 +1,6 @@
+{
+    "error": {
+        "code": 7,
+        "message": "Failed to get result."
+    }
+}

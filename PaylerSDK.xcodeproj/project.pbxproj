@@ -13,6 +13,13 @@
 		021DA1BE196E7B6D00B6EC2F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 021DA1BC196E7B6D00B6EC2F /* InfoPlist.strings */; };
 		021DA1CE196E85AA00B6EC2F /* PLRPaymentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021DA1CD196E85AA00B6EC2F /* PLRPaymentTests.m */; };
 		021DA1D0196E860200B6EC2F /* PLRSessionInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021DA1CF196E860200B6EC2F /* PLRSessionInfoTests.m */; };
+		021DA1D2196EA39A00B6EC2F /* PaylerAPIClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 021DA1D1196EA39A00B6EC2F /* PaylerAPIClientTests.m */; };
+		021DA1E4196EB48C00B6EC2F /* Charge.txt in Resources */ = {isa = PBXBuildFile; fileRef = 021DA1DF196EB48C00B6EC2F /* Charge.txt */; };
+		021DA1E5196EB48C00B6EC2F /* Refund.txt in Resources */ = {isa = PBXBuildFile; fileRef = 021DA1E0196EB48C00B6EC2F /* Refund.txt */; };
+		021DA1E6196EB48C00B6EC2F /* Retrieve.txt in Resources */ = {isa = PBXBuildFile; fileRef = 021DA1E1196EB48C00B6EC2F /* Retrieve.txt */; };
+		021DA1E7196EB48C00B6EC2F /* StartSession.txt in Resources */ = {isa = PBXBuildFile; fileRef = 021DA1E2196EB48C00B6EC2F /* StartSession.txt */; };
+		021DA1E8196EB48C00B6EC2F /* Status.txt in Resources */ = {isa = PBXBuildFile; fileRef = 021DA1E3196EB48C00B6EC2F /* Status.txt */; };
+		021DA1EA196EB4A400B6EC2F /* Error.txt in Resources */ = {isa = PBXBuildFile; fileRef = 021DA1E9196EB4A400B6EC2F /* Error.txt */; };
 		0220D41C196ACABA00FC5AF3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0220D3E4196A96E300FC5AF3 /* Foundation.framework */; };
 		0220D41E196ACABA00FC5AF3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0220D41D196ACABA00FC5AF3 /* CoreGraphics.framework */; };
 		0220D41F196ACABA00FC5AF3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0220D3F5196A96E300FC5AF3 /* UIKit.framework */; };
@@ -50,6 +57,13 @@
 		021DA1C1196E7B6D00B6EC2F /* PaylerSDKTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PaylerSDKTests-Prefix.pch"; sourceTree = "<group>"; };
 		021DA1CD196E85AA00B6EC2F /* PLRPaymentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRPaymentTests.m; sourceTree = "<group>"; };
 		021DA1CF196E860200B6EC2F /* PLRSessionInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRSessionInfoTests.m; sourceTree = "<group>"; };
+		021DA1D1196EA39A00B6EC2F /* PaylerAPIClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaylerAPIClientTests.m; sourceTree = "<group>"; };
+		021DA1DF196EB48C00B6EC2F /* Charge.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Charge.txt; sourceTree = "<group>"; };
+		021DA1E0196EB48C00B6EC2F /* Refund.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Refund.txt; sourceTree = "<group>"; };
+		021DA1E1196EB48C00B6EC2F /* Retrieve.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Retrieve.txt; sourceTree = "<group>"; };
+		021DA1E2196EB48C00B6EC2F /* StartSession.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = StartSession.txt; sourceTree = "<group>"; };
+		021DA1E3196EB48C00B6EC2F /* Status.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Status.txt; sourceTree = "<group>"; };
+		021DA1E9196EB4A400B6EC2F /* Error.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Error.txt; sourceTree = "<group>"; };
 		0220D3E4196A96E300FC5AF3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0220D3F2196A96E300FC5AF3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		0220D3F5196A96E300FC5AF3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -113,6 +127,8 @@
 			children = (
 				021DA1CD196E85AA00B6EC2F /* PLRPaymentTests.m */,
 				021DA1CF196E860200B6EC2F /* PLRSessionInfoTests.m */,
+				021DA1D1196EA39A00B6EC2F /* PaylerAPIClientTests.m */,
+				021DA1DE196EB48C00B6EC2F /* Fixtures */,
 				021DA1BA196E7B6D00B6EC2F /* Supporting Files */,
 			);
 			path = PaylerSDKTests;
@@ -126,6 +142,19 @@
 				021DA1C1196E7B6D00B6EC2F /* PaylerSDKTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		021DA1DE196EB48C00B6EC2F /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				021DA1DF196EB48C00B6EC2F /* Charge.txt */,
+				021DA1E0196EB48C00B6EC2F /* Refund.txt */,
+				021DA1E1196EB48C00B6EC2F /* Retrieve.txt */,
+				021DA1E2196EB48C00B6EC2F /* StartSession.txt */,
+				021DA1E3196EB48C00B6EC2F /* Status.txt */,
+				021DA1E9196EB4A400B6EC2F /* Error.txt */,
+			);
+			path = Fixtures;
 			sourceTree = "<group>";
 		};
 		0220D3D8196A96E300FC5AF3 = {
@@ -289,7 +318,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				021DA1E6196EB48C00B6EC2F /* Retrieve.txt in Resources */,
+				021DA1EA196EB4A400B6EC2F /* Error.txt in Resources */,
+				021DA1E4196EB48C00B6EC2F /* Charge.txt in Resources */,
+				021DA1E8196EB48C00B6EC2F /* Status.txt in Resources */,
+				021DA1E7196EB48C00B6EC2F /* StartSession.txt in Resources */,
 				021DA1BE196E7B6D00B6EC2F /* InfoPlist.strings in Resources */,
+				021DA1E5196EB48C00B6EC2F /* Refund.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,6 +413,7 @@
 			files = (
 				021DA1CE196E85AA00B6EC2F /* PLRPaymentTests.m in Sources */,
 				021DA1D0196E860200B6EC2F /* PLRSessionInfoTests.m in Sources */,
+				021DA1D2196EA39A00B6EC2F /* PaylerAPIClientTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
