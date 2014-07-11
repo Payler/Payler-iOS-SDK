@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class PLRSessionInfo, PaylerAPIClient, PLRPayment;
+@class PLRSessionInfo, PaylerAPIClient, PLRPayment, PLRWebView;
+
+@protocol PLRWebViewDataSource <NSObject>
+
+// Используются для выполнения запроса старта сессии, необходимого для проведения платежа.
+- (PLRSessionInfo *)webViewSessionInfo:(PLRWebView *)sender;
+- (PaylerAPIClient *)webViewClient:(PLRWebView *)sender;
+
+@end
 
 typedef void(^PLRPayBlock)(PLRPayment *payment, NSError *error);
 
@@ -17,16 +25,21 @@ typedef void(^PLRPayBlock)(PLRPayment *payment, NSError *error);
  */
 @interface PLRWebView : UIWebView
 
-// Свойства, используемые для выполнения запроса старта сессии, необходимого для проведения платежа.
-@property (nonatomic, strong) PLRSessionInfo *sessionInfo;
-@property (nonatomic, strong) PaylerAPIClient *client;
+@property (nonatomic, weak) id<PLRWebViewDataSource> dataSource;
 
 /**
- *  Запрос с перенаправлением Пользователя на страницу шлюза для выполнения одностадийного платежа или блокировки средств на карте Пользователя при двухстадийном платеже. При вызове этого метода свойства класса sessionInfo и client не должны быть nil.
+ *  Запрос с перенаправлением Пользователя на страницу шлюза для выполнения одностадийного платежа или блокировки средств на карте Пользователя при двухстадийном платеже.
  *
  *  @param completion Блок вызывается либо после получения результатов оплаты(в этом случае параметр payment содержит paymentId, amount и status, а error равен nil), либо при возникновении ошибки при оплате(в этом случае параметр payment равен nil, а error содержит информацию об ошибке).
  *
  */
 - (void)payWithCompletion:(PLRPayBlock)completion;
+
+/**
+ *  Инициализирует и возвращает объект класса PLRWebView с объектом dataSource, реализующим протокол PLRWebViewDataSource.
+ *  
+ *  @warning dataSource не должен быть nil.
+ */
+- (instancetype)initWithFrame:(CGRect)frame dataSource:(id<PLRWebViewDataSource>)dataSource;
 
 @end

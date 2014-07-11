@@ -36,16 +36,54 @@
     [super tearDown];
 }
 
-- (void)testPayWithoutSessionInfoOrClientShouldRaiseException {
+- (void)testPayWithoutDataSourceShouldRaiseException {
     NSString *exceptionName = @"RequiredParameter";
     expect(^{
         [self.webView payWithCompletion:nil];
     }).to.raise(exceptionName);
+}
 
+- (void)testSettingInvalidDataSourceShouldRaiseException {
     expect(^{
-        self.webView.sessionInfo = OCMClassMock([PLRSessionInfo class]);
+        self.webView.dataSource = OCMClassMock([NSObject class]);
+    }).to.raise(NSInvalidArgumentException);
+}
+
+- (void)testSettingValidDataSource {
+    expect(^{
+        self.webView.dataSource = OCMProtocolMock(@protocol(PLRWebViewDataSource));
+    }).notTo.raiseAny();
+}
+
+- (void)testPayWithoutSessionInfoShouldRaiseException {
+    expect(^{
+        id<PLRWebViewDataSource> dataSource = OCMProtocolMock(@protocol(PLRWebViewDataSource));
+        OCMStub([dataSource webViewClient:OCMOCK_ANY]).andReturn(OCMClassMock([PaylerAPIClient class]));
+        self.webView.dataSource = dataSource;
         [self.webView payWithCompletion:nil];
-    }).to.raise(exceptionName);
+    }).to.raise(@"RequiredParameter");
+}
+
+- (void)testPayWithoutClientShouldRaiseException {
+    expect(^{
+        id<PLRWebViewDataSource> dataSource = OCMProtocolMock(@protocol(PLRWebViewDataSource));
+        OCMStub([dataSource webViewSessionInfo:OCMOCK_ANY]).andReturn(OCMClassMock([PLRSessionInfo class]));
+        self.webView.dataSource = dataSource;
+        [self.webView payWithCompletion:nil];
+    }).to.raise(@"RequiredParameter");
+}
+
+- (void)testPayWithSessionInfoAndClient {
+    expect(^{
+        id<PLRWebViewDataSource> dataSource = OCMProtocolMock(@protocol(PLRWebViewDataSource));
+        PaylerAPIClient *client = OCMClassMock([PaylerAPIClient class]);
+        OCMStub([client startSessionWithInfo:[OCMArg isNotNil] completion:[OCMArg isNotNil]]).andDo(nil);
+        OCMStub([dataSource webViewClient:OCMOCK_ANY]).andReturn(client);
+        OCMStub([dataSource webViewSessionInfo:OCMOCK_ANY]).andReturn(OCMClassMock([PLRSessionInfo class]));
+
+        self.webView.dataSource = dataSource;
+        [self.webView payWithCompletion:nil];
+    }).notTo.raiseAny();
 }
 
 @end

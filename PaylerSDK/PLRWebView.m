@@ -16,6 +16,8 @@
 
 @property (nonatomic, weak) UIActivityIndicatorView *activityView;
 @property (nonatomic, copy) PLRPayBlock completionBlock;
+@property (nonatomic, weak) PLRSessionInfo *sessionInfo;
+@property (nonatomic, weak) PaylerAPIClient *client;
 
 @end
 
@@ -35,6 +37,14 @@
     [self commonInit];
 }
 
+- (instancetype)initWithFrame:(CGRect)frame dataSource:(id<PLRWebViewDataSource>)dataSource {
+    self = [self initWithFrame:frame];
+    if (self) {
+        self.dataSource = dataSource;
+    }
+    return self;
+}
+
 - (void)commonInit {
     self.delegate = self;
     self.scalesPageToFit = YES;
@@ -48,6 +58,16 @@
 - (void)dealloc {
     self.delegate = nil;
     [self stopLoading];
+}
+
+- (void)setDataSource:(id<PLRWebViewDataSource>)dataSource {
+    if (![dataSource conformsToProtocol:@protocol(PLRWebViewDataSource)]) {
+        [NSException raise:NSInvalidArgumentException format:@"dataSource doesn't conform to protocol."];
+    }
+
+    _dataSource = dataSource;
+    _sessionInfo = [_dataSource webViewSessionInfo:self];
+    _client = [_dataSource webViewClient:self];
 }
 
 - (void)payWithCompletion:(PLRPayBlock)completion {
