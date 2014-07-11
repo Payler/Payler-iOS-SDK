@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
 @property (nonatomic, readonly, strong) PLRPayment *paymentInfo;
 
 /**
- *  Адрес возврата Пользователя после успешного выполнения платежа.
+ *  Адрес возврата Пользователя после успешного выполнения платежа. Указывается Продавцом заранее при подписании договора.
  */
 @property (nonatomic, readonly, copy) NSURL *callbackURL;
 

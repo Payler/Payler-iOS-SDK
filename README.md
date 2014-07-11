@@ -1,26 +1,25 @@
-# SDK
+# PaylerSDK
 
-[![CI Status](http://img.shields.io/travis/Maxim Pavlov/SDK.svg?style=flat)](https://travis-ci.org/Maxim Pavlov/SDK)
-[![Version](https://img.shields.io/cocoapods/v/SDK.svg?style=flat)](http://cocoadocs.org/docsets/SDK)
-[![License](https://img.shields.io/cocoapods/l/SDK.svg?style=flat)](http://cocoadocs.org/docsets/SDK)
-[![Platform](https://img.shields.io/cocoapods/p/SDK.svg?style=flat)](http://cocoadocs.org/docsets/SDK)
+A simple wrapper to work with Payler Gate API. 
+
 
 ## Usage
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+Download example project to see examples of SDK usage.
 
 ## Requirements
+PaylerSDK requires iOS 6.0 or later.
 
 ## Installation
 
-SDK is available through [CocoaPods](http://cocoapods.org). To install
+PaylerSDK is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-    pod "SDK"
+    pod "PaylerSDK"
 
 ## Author
 
-Maxim Pavlov, mp@poloniumarts.com
+Maxim Pavlov, <mp@poloniumarts.com>
 
 ## License
 
