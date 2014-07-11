@@ -134,41 +134,31 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     }];
 }
 
-- (void)chargePayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
+- (void)chargePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
     [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Charge" payment:payment] completion:completion];
 }
 
-- (void)retrievePayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
+- (void)retrievePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
     [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Retrieve" payment:payment] completion:completion];
 }
 
-- (void)refundPayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
+- (void)refundPayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
     [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Refund" payment:payment] completion:completion];
 }
 
-- (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRFetchPaymentStatusCompletionBlock)completion {
+- (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRCompletionBlock)completion {
     NSParameterAssert(paymentId);
 
     NSDictionary *parameters = @{@"key": self.merchantKey, @"order_id": paymentId};
-    [self POST:@"GetStatus" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (completion) {
-            if ([self isPaymentStatusInfoValid:responseObject]) {
-                completion([self.class paymentFromJSON:responseObject], responseObject[@"status"], responseObject[@"info"], nil);
-            } else {
-                completion(nil, nil, nil, [self.class invalidParametersError]);
-            }
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (completion) {
-            completion(nil, nil, nil, [self.class errorFromRequestOperation:operation]);
-        }
-    }];
+    NSString *URLString = [[NSURL URLWithString:@"GetStatus" relativeToURL:self.baseURL] absoluteString];
+    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"POST" URLString:URLString parameters:parameters error:nil];
+    [self enqueuePaymentRequest:request completion:completion];
 }
 
 #pragma mark - Private methods
 
 - (void)enqueuePaymentRequest:(NSURLRequest *)request
-                   completion:(PLRPaymentCompletionBlock)completion {
+                   completion:(PLRCompletionBlock)completion {
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (completion) {
             if ([self isPaymentInfoValid:responseObject]) {
@@ -212,11 +202,7 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
 
 + (PLRPayment *)paymentFromJSON:(NSDictionary *)JSONPayment {
     NSInteger amount = [(JSONPayment[@"amount"] ?: JSONPayment[@"new_amount"]) integerValue];
-    return [[PLRPayment alloc] initWithId:JSONPayment[@"order_id"] amount:amount];
-}
-
-- (BOOL)isPaymentStatusInfoValid:(NSDictionary *)paymentStatusInfo {
-    return [self isPaymentInfoValid:paymentStatusInfo] && [paymentStatusInfo[@"status"] length];
+    return [[PLRPayment alloc] initWithId:JSONPayment[@"order_id"] amount:amount status:JSONPayment[@"status"]];
 }
 
 @end

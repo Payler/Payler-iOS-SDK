@@ -118,11 +118,11 @@
 - (void)testFetchingPaymentStatus {
     [self setupStubWithURL:@"GetStatus" filePath:@"Status.txt"];
 
-    __block NSString *status;
-    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSString *fetchedStatus, NSDictionary *info, NSError *error) {
-        status = fetchedStatus;
+    __block PLRPaymentStatus status;
+    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+        status = payment.status;
 
-        expect(fetchedStatus).to.equal(@"Charged");
+        expect(status).to.equal(PLRPaymentStatusCharged);
         expect(error).to.beNil();
     }];
 
@@ -138,11 +138,10 @@
     }];
 
     __block NSError *error;
-    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSString *status, NSDictionary *info, NSError *err) {
+    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSDictionary *info, NSError *err) {
         error = err;
 
         expect(payment).to.beNil();
-        expect(status).to.beNil();
         expect(info).to.beNil();
         expect(error.domain).to.equal(PaylerErrorDomain);
         expect(error.code).to.equal(7);
