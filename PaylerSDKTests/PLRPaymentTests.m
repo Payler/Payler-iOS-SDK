@@ -32,16 +32,18 @@
 
     expect(payment.paymentId).to.equal(@"uniqueId");
     expect(payment.amount).to.equal(100);
+    expect(payment.status).to.equal(PLRPaymentStatusUnknown);
     expect(payment.product).to.beNil();
     expect(payment.total).to.equal(CGFLOAT_MIN);
 }
 
-- (void)testPaymentCreationWithIdAmountAndProduct {
-    PLRPayment *payment = [[PLRPayment alloc] initWithId:@"uniqueId" amount:100 product:@"Product"];
+- (void)testPaymentCreationWithIdAmountAndStatus {
+    PLRPayment *payment = [[PLRPayment alloc] initWithId:@"uniqueId" amount:100 status:@"Refunded"];
 
     expect(payment.paymentId).to.equal(@"uniqueId");
     expect(payment.amount).to.equal(100);
-    expect(payment.product).to.equal(@"Product");
+    expect(payment.status).to.equal(PLRPaymentStatusRefunded);
+    expect(payment.product).to.beNil();
     expect(payment.total).to.equal(CGFLOAT_MIN);
 }
 
@@ -50,6 +52,7 @@
 
     expect(self.payment.paymentId).to.equal(@"uniqueId");
     expect(self.payment.amount).to.equal(100);
+    expect(self.payment.status).to.equal(PLRPaymentStatusCharged);
     expect(self.payment.product).to.equal(@"Product");
     expect(self.payment.total).to.equal(25.5);
 }
@@ -69,7 +72,7 @@
 }
 
 - (void)setupPaymentWithAllParameters {
-    self.payment = [[PLRPayment alloc] initWithId:@"uniqueId" amount:100 product:@"Product" total:25.5];
+    self.payment = [[PLRPayment alloc] initWithId:@"uniqueId" amount:100 status:@"Charged" product:@"Product" total:25.5];
 }
 
 @end
