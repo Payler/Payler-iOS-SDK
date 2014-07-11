@@ -58,9 +58,8 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
  */
 - (NSDictionary *)dictionaryRepresentation;
 
-/**
- *  Следующие методы инициализируют и возвращают объект класса PLRPayment. Параметр paymentId не должен быть nil.
- */
+
+//  Следующие методы инициализируют и возвращают объект класса PLRPayment. Параметр paymentId не должен быть nil.
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount;
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount status:(NSString *)status;
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total;

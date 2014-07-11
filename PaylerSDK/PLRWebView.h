@@ -8,28 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
-@class PLRSessionInfo;
-@class PaylerAPIClient;
+@class PLRSessionInfo, PaylerAPIClient, PLRPayment;
 
-typedef void(^PLRPayBlock)(BOOL completed, NSError *error);
+typedef void(^PLRPayBlock)(PLRPayment *payment, NSError *error);
 
 /**
  *  Наследник класса UIWebView, в котором инкапсулирована логика оплаты через страницу шлюза Payler.
  */
 @interface PLRWebView : UIWebView
 
-/**
- *  Свойства, используемые для выполнения запроса старта сессии, необходимого для проведения платежа.
- */
+// Свойства, используемые для выполнения запроса старта сессии, необходимого для проведения платежа.
 @property (nonatomic, strong) PLRSessionInfo *sessionInfo;
 @property (nonatomic, strong) PaylerAPIClient *client;
 
 /**
  *  Запрос с перенаправлением Пользователя на страницу шлюза для выполнения одностадийного платежа или блокировки средств на карте Пользователя при двухстадийном платеже. При вызове этого метода свойства класса sessionInfo и client не должны быть nil.
  *
- *  @param completion Блок вызывается либо после завершения оплаты(в этом случае параметр completed равен YES, а error равен nil), либо при возникновении ошибки при оплате(в этом случае параметр completed равен NO, а error содержит информацию об ошибке).
+ *  @param completion Блок вызывается либо после получения результатов оплаты(в этом случае параметр payment содержит paymentId, amount и status, а error равен nil), либо при возникновении ошибки при оплате(в этом случае параметр payment равен nil, а error содержит информацию об ошибке).
  *
- *  @warning Для получения результатов транзакции следует использовать данные, полученные в рамках запроса статуса транзакции @see PaylerAPIClient
  */
 - (void)payWithCompletion:(PLRPayBlock)completion;
 

@@ -35,6 +35,7 @@ NSDictionary *PLRPaymentStatusMappingDictionary() {
 @interface PLRPayment ()
 @property (nonatomic, readwrite, copy) NSString *paymentId;
 @property (nonatomic, readwrite, assign) NSInteger amount;
+@property (nonatomic, readwrite, assign) PLRPaymentStatus status;
 @property (nonatomic, readwrite, copy) NSString *product;
 @property (nonatomic, readwrite, assign) CGFloat total;
 @end

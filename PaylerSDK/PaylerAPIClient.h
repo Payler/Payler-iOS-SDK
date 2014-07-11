@@ -9,8 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AFHTTPRequestOperationManager.h>
 
-@class PLRPayment;
-@class PLRSessionInfo;
+@class PLRPayment, PLRSessionInfo;
 
 typedef void(^PLRStartSessionCompletionBlock)(PLRPayment *payment, NSString *sessionId, NSDictionary *info, NSError *error);
 typedef void(^PLRCompletionBlock)(PLRPayment *payment, NSDictionary *info, NSError *error);

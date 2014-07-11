@@ -50,9 +50,7 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
  */
 - (NSDictionary *)dictionaryRepresentation;
 
-/**
- *  Следующие методы инициализируют и возвращают объект класса PLRSessionInfo. Параметры paymentInfo и URL не должен быть nil.
- */
+//  Следующие методы инициализируют и возвращают объект класса PLRSessionInfo. Параметры paymentInfo и URL не должен быть nil.
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL;
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType;
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType template:(NSString *)templateName language:(NSString *)language;

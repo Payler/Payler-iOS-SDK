@@ -14,6 +14,7 @@
 
 @interface PLRWebView ()<UIWebViewDelegate>
 
+@property (nonatomic, weak) UIActivityIndicatorView *activityView;
 @property (nonatomic, copy) PLRPayBlock completionBlock;
 
 @end
@@ -37,6 +38,11 @@
 - (void)commonInit {
     self.delegate = self;
     self.scalesPageToFit = YES;
+
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityView.center = CGPointMake(CGRectGetWidth(self.frame)/2, 40.0);
+    [self addSubview:activityView];
+    self.activityView = activityView;
 }
 
 - (void)dealloc {
@@ -50,6 +56,7 @@
 
     self.completionBlock = completion;
 
+    [self.activityView startAnimating];
     [self.client startSessionWithInfo:self.sessionInfo completion:^(PLRPayment *payment, NSString *sessionId, NSDictionary *info, NSError *error) {
         if (!error) {
             NSString *path = [[NSURL URLWithString:@"Pay" relativeToURL:self.client.baseURL] absoluteString];
@@ -57,8 +64,9 @@
             NSMutableURLRequest *request = [self.client.requestSerializer requestWithMethod:@"POST" URLString:path parameters:parameters error:nil];
             [self loadRequest:request];
         } else {
+            [self.activityView stopAnimating];
             if (completion) {
-                completion(NO, error);
+                completion(nil, error);
             }
         }
     }];
@@ -68,25 +76,30 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if ([[[request URL] absoluteString] isEqualToString:[self.sessionInfo.callbackURL absoluteString]]) {
-        if (self.completionBlock) {
-            self.completionBlock(YES, nil);
-        }
+
+        if (!self.activityView.isAnimating) [self.activityView startAnimating];
+        [self.client fetchStatusForPaymentWithId:self.sessionInfo.paymentInfo.paymentId completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+            [self.activityView stopAnimating];
+            if (self.completionBlock) {
+                self.completionBlock(payment, error);
+            }
+        }];
     }
     return YES;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    if (!self.activityView.isAnimating) [self.activityView startAnimating];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self.activityView stopAnimating];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self.activityView stopAnimating];
     if (self.completionBlock) {
-        self.completionBlock(NO, error);
+        self.completionBlock(nil, error);
     }
 }
 
