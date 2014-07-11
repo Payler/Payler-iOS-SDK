@@ -16,8 +16,6 @@
 
 @property (nonatomic, weak) UIActivityIndicatorView *activityView;
 @property (nonatomic, copy) PLRPayBlock completionBlock;
-@property (nonatomic, weak) PLRSessionInfo *sessionInfo;
-@property (nonatomic, weak) PaylerAPIClient *client;
 
 @end
 
@@ -66,22 +64,22 @@
     }
 
     _dataSource = dataSource;
-    _sessionInfo = [_dataSource webViewSessionInfo:self];
-    _client = [_dataSource webViewClient:self];
 }
 
 - (void)payWithCompletion:(PLRPayBlock)completion {
-    if (!self.sessionInfo) [NSException raise:@"RequiredParameter" format:@"'sessionInfo' is required."];
-    if (!self.client) [NSException raise:@"RequiredParameter" format:@"'client' is required."];
+    PLRSessionInfo *sessionInfo = [self.dataSource webViewSessionInfo:self];
+    PaylerAPIClient *client = [self.dataSource webViewClient:self];
+    if (!sessionInfo) [NSException raise:@"RequiredParameter" format:@"'sessionInfo' is required."];
+    if (!client) [NSException raise:@"RequiredParameter" format:@"'client' is required."];
 
     self.completionBlock = completion;
 
     [self.activityView startAnimating];
-    [self.client startSessionWithInfo:self.sessionInfo completion:^(PLRPayment *payment, NSString *sessionId, NSDictionary *info, NSError *error) {
+    [client startSessionWithInfo:sessionInfo completion:^(PLRPayment *payment, NSString *sessionId, NSDictionary *info, NSError *error) {
         if (!error) {
-            NSString *path = [[NSURL URLWithString:@"Pay" relativeToURL:self.client.baseURL] absoluteString];
+            NSString *path = [[NSURL URLWithString:@"Pay" relativeToURL:client.baseURL] absoluteString];
             NSDictionary *parameters = @{@"session_id": sessionId};
-            NSMutableURLRequest *request = [self.client.requestSerializer requestWithMethod:@"POST" URLString:path parameters:parameters error:nil];
+            NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:path parameters:parameters error:nil];
             [self loadRequest:request];
         } else {
             [self.activityView stopAnimating];
@@ -95,10 +93,12 @@
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if ([[[request URL] absoluteString] isEqualToString:[self.sessionInfo.callbackURL absoluteString]]) {
+    PLRSessionInfo *sessionInfo = [self.dataSource webViewSessionInfo:self];
+    PaylerAPIClient *client = [self.dataSource webViewClient:self];
+    if ([[[request URL] absoluteString] isEqualToString:[sessionInfo.callbackURL absoluteString]]) {
 
         if (!self.activityView.isAnimating) [self.activityView startAnimating];
-        [self.client fetchStatusForPaymentWithId:self.sessionInfo.paymentInfo.paymentId completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+        [client fetchStatusForPaymentWithId:sessionInfo.paymentInfo.paymentId completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
             [self.activityView stopAnimating];
             if (self.completionBlock) {
                 self.completionBlock(payment, error);

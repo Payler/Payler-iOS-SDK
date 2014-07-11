@@ -25,6 +25,12 @@
 
 @implementation PLRViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    self.webView.dataSource = self;
+}
+
 #pragma mark - PLRWebViewDataSource
 
 - (PLRSessionInfo *)webViewSessionInfo:(PLRWebView *)sender {
@@ -43,8 +49,7 @@
     NSURL *callbackURL = [NSURL URLWithString:[@"http://localhost:7820/Complete-order_id=" stringByAppendingString:paymentId]];
     self.sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment callbackURL:callbackURL];
     self.client = [[PaylerAPIClient alloc] initWithMerchantKey:nil password:nil];
-    
-    self.webView.dataSource = self;
+
     self.webView.hidden = NO;
     [self.webView payWithCompletion:^(PLRPayment *payment, NSError *error) {
         if (!error) {
