@@ -20,7 +20,7 @@ typedef void(^PLRCompletionBlock)(PLRPayment *payment, NSDictionary *info, NSErr
 @interface PaylerAPIClient : AFHTTPRequestOperationManager
 
 /**
- *  Инициализирует и возвращает объект класса PaylerAPIClient с соответствующими идентификатором и паролем Продавца. Если один из параметров nil, то запросы выполняются к тестовому серверу.
+ *  Инициализирует и возвращает объект класса PaylerAPIClient с соответствующими идентификатором и паролем Продавца. Если один из параметров nil, то используются параметры тестового доступа.
  *
  *  @param merchantKey      Идентификатор Продавца.
  *  @param merchantPassword Пароль Продавца для проведения операций через Gate API.

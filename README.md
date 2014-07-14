@@ -1,11 +1,20 @@
 # PaylerSDK
 
-A simple wrapper to work with Payler Gate API. 
+A simple wrapper to work with Payler Gate API.
 
+## Example Usage
 
-## Usage
+    PaylerAPIClient *client = [[PaylerAPIClient alloc] initWithMerchantKey:@"..." password:@"..."];
+    PLRPayment *payment = [[PLRPayment alloc] initWithId:@"paymentId" amount:10000];
+    [client refundPayment:payment completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+        if (!error) {
+            NSLog(@"Refund completed");
+        } else {
+            NSLog(@"Error: %@", error);
+        }
+    }];
 
-Download example project to see examples of SDK usage.
+Download sample project to see more examples.
 
 ## Requirements
 PaylerSDK requires iOS 6.0 or later.
@@ -17,11 +26,11 @@ it, simply add the following line to your Podfile:
 
     pod "PaylerSDK"
 
-## Author
+## Contact
 
 Maxim Pavlov, <mp@poloniumarts.com>
 
 ## License
 
-SDK is available under the MIT license. See the LICENSE file for more info.
+PaylerSDK is available under the MIT license. See the LICENSE file for more info.
 
