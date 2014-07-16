@@ -29,14 +29,14 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 @interface PLRPayment : NSObject
 
 /**
- *  Идентификатор оплачиваемого заказа в системе Продавца. Должен быть уникальным для каждого платежа(сессии). Допускаются только печатные ASCII-символы, максимальное количество 50.
+ *  Идентификатор оплачиваемого заказа в системе Продавца. Должен быть уникальным для каждого платежа(сессии). Допускаются только печатные ASCII-символы, максимальное количество 100.
  */
 @property (nonatomic, readonly, copy) NSString *paymentId;
 
 /**
  *  Сумма платежа в копейках.
  */
-@property (nonatomic, readonly, assign) NSInteger amount;
+@property (nonatomic, readonly, assign) NSUInteger amount;
 
 /**
  *  Статус платежа.
@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 @property (nonatomic, readonly, assign) PLRPaymentStatus status;
 
 /**
- *  Наименование оплачиваемого продукта.
+ *  Наименование оплачиваемого продукта. Максимальное количество символов - 100.
  */
 @property (nonatomic, readonly, copy) NSString *product;
 
@@ -59,9 +59,9 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 - (NSDictionary *)dictionaryRepresentation;
 
 //  Следующие методы инициализируют и возвращают объект класса PLRPayment. Параметр paymentId не должен быть nil.
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount;
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount status:(NSString *)status;
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total;
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount;
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status;
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total;
 
 - (id)init __attribute__((unavailable("Must use initWithId:amount: instead.")));
 + (id)new __attribute__((unavailable("Must use initWithId:amount: instead.")));

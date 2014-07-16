@@ -34,7 +34,7 @@ NSDictionary *PLRPaymentStatusMappingDictionary() {
 
 @interface PLRPayment ()
 @property (nonatomic, readwrite, copy) NSString *paymentId;
-@property (nonatomic, readwrite, assign) NSInteger amount;
+@property (nonatomic, readwrite, assign) NSUInteger amount;
 @property (nonatomic, readwrite, assign) PLRPaymentStatus status;
 @property (nonatomic, readwrite, copy) NSString *product;
 @property (nonatomic, readwrite, assign) CGFloat total;
@@ -42,18 +42,19 @@ NSDictionary *PLRPaymentStatusMappingDictionary() {
 
 @implementation PLRPayment
 
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount {
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount {
     return [self initWithId:paymentId amount:amount status:nil];
 }
 
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount status:(NSString *)status {
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status {
     return [self initWithId:paymentId amount:amount status:status product:nil total:CGFLOAT_MIN];
 }
 
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total {
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total {
     self = [super init];
     if (self) {
         if (!paymentId) [NSException raise:@"RequiredParameter" format:@"'paymentId' is required."];
+        if (paymentId.length > 100 || product.length > 100) [NSException raise:@"Illegal string length" format:@"String length must be less than or equal 100 symbols."];
 
         _paymentId = paymentId;
         _amount = amount;

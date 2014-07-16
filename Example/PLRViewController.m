@@ -44,10 +44,12 @@
 #pragma mark - Actions
 
 - (IBAction)buttonPressed:(UIButton *)sender {
+#warning Здесь нужно указать ваши параметры.
     NSString *paymentId = [NSString stringWithFormat:@"SDK_iOS_%@", [[NSUUID UUID] UUIDString]];
     PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:100];
     NSURL *callbackURL = [NSURL URLWithString:[@"http://localhost:7820/Complete-order_id=" stringByAppendingString:paymentId]];
     self.sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment callbackURL:callbackURL];
+
     self.client = [[PaylerAPIClient alloc] initWithMerchantKey:nil password:nil];
 
     self.webView.hidden = NO;
