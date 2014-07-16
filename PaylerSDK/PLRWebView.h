@@ -18,7 +18,7 @@
 
 @end
 
-typedef void(^PLRPayBlock)(PLRPayment *payment, NSError *error);
+typedef void (^PLRPayBlock)(PLRPayment *payment, NSError *error);
 
 /**
  *  Наследник класса UIWebView, в котором инкапсулирована логика оплаты через страницу шлюза Payler.
@@ -30,7 +30,7 @@ typedef void(^PLRPayBlock)(PLRPayment *payment, NSError *error);
 /**
  *  Запрос с перенаправлением Пользователя на страницу шлюза для выполнения одностадийного платежа или блокировки средств на карте Пользователя при двухстадийном платеже.
  *
- *  @param completion Блок вызывается либо после получения результатов оплаты(в этом случае параметр payment содержит paymentId, amount и status, а error равен nil), либо при возникновении ошибки при оплате(в этом случае параметр payment равен nil, а error содержит информацию об ошибке).
+ *  @param completion Блок вызывается либо после получения результатов оплаты (в этом случае параметр payment содержит paymentId, amount и status, а error равен nil), либо при возникновении ошибки при оплате (в этом случае параметр payment равен nil, а error содержит информацию об ошибке).
  *
  */
 - (void)payWithCompletion:(PLRPayBlock)completion;

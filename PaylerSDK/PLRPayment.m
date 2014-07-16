@@ -8,16 +8,16 @@
 
 #import "PLRPayment.h"
 
-NSString *const PLRPaymentStatusCreatedKey = @"Created";
+NSString *const PLRPaymentStatusCreatedKey          = @"Created";
 NSString *const PLRPaymentStatusPreAuthorized3DSKey = @"PreAuthorized3DS";
-NSString *const PLRPaymentStatusPreAuthorizedAFKey = @"PreAuthorizedAF";
-NSString *const PLRPaymentStatusAuthorizedKey = @"Authorized";
-NSString *const PLRPaymentStatusRetrievedKey = @"Retrieved";
-NSString *const PLRPaymentStatusReversedKey = @"Reversed";
-NSString *const PLRPaymentStatusChargedKey = @"Charged";
-NSString *const PLRPaymentStatusRefundedKey = @"Refunded";
-NSString *const PLRPaymentStatusRejectedKey = @"Rejected";
-NSString *const PLRPaymentStatusErrorKey = @"Error";
+NSString *const PLRPaymentStatusPreAuthorizedAFKey  = @"PreAuthorizedAF";
+NSString *const PLRPaymentStatusAuthorizedKey       = @"Authorized";
+NSString *const PLRPaymentStatusRetrievedKey        = @"Retrieved";
+NSString *const PLRPaymentStatusReversedKey         = @"Reversed";
+NSString *const PLRPaymentStatusChargedKey          = @"Charged";
+NSString *const PLRPaymentStatusRefundedKey         = @"Refunded";
+NSString *const PLRPaymentStatusRejectedKey         = @"Rejected";
+NSString *const PLRPaymentStatusErrorKey            = @"Error";
 
 NSDictionary *PLRPaymentStatusMappingDictionary() {
     return @{PLRPaymentStatusCreatedKey: @(PLRPaymentStatusCreated),

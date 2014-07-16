@@ -25,18 +25,11 @@
 
 @implementation PaylerAPIClientTests
 
-- (void)setUp
-{
+- (void)setUp {
     [super setUp];
 
     self.client = [[PaylerAPIClient alloc] init];
     self.payment = [[PLRPayment alloc] initWithId:@"SDK_iOS_2014-07-10 10:48:09  0000" amount:100];
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
 }
 
 - (void)testClientCreationWithNilArguments {
@@ -130,7 +123,7 @@
 }
 
 - (void)testReceivingError {
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL (NSURLRequest *request) {
         return [request.HTTPMethod isEqualToString:@"POST"] &&
         [request.URL.absoluteString isEqualToString:[self URLWithPath:@"GetStatus"]];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
@@ -153,7 +146,7 @@
 #pragma mark - Private methods
 
 - (void)setupStubWithURL:(NSString *)URL filePath:(NSString *)filePath {
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL (NSURLRequest *request) {
         return [request.HTTPMethod isEqualToString:@"POST"] &&
         [request.URL.absoluteString isEqualToString:[self URLWithPath:URL]];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {

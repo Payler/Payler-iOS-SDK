@@ -24,8 +24,7 @@
 
 @implementation PLRSessionInfoTests
 
-- (void)setUp
-{
+- (void)setUp {
     [super setUp];
 
     self.payment = OCMClassMock([PLRPayment class]);
@@ -34,12 +33,6 @@
 
     self.callbackURL = [NSURL URLWithString:@"http://poloniumarts.com"];
     self.sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:self.payment callbackURL:self.callbackURL];
-}
-
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
 }
 
 - (void)testSessionInfoCreationWithoutPaymentOrCallbackURLShouldRaiseException {
