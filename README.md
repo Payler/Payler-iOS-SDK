@@ -5,7 +5,7 @@
 
 ## Пример использования
 
-    PaylerAPIClient *client = [[PaylerAPIClient alloc] initWithMerchantKey:@"..." password:@"..."];
+    PaylerAPIClient *client = [PaylerAPIClient clientWithMerchantKey:@"..." password:@"..."];
     PLRPayment *payment = [[PLRPayment alloc] initWithId:@"paymentId" amount:10000];
     [client refundPayment:payment completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
         if (!error) {
