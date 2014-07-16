@@ -24,7 +24,7 @@
     __block PLRPayment *payment;
     expect(^{
         payment = [[PLRPayment alloc] initWithId:nil amount:0.0];
-    }).to.raise(@"RequiredParameter");
+    }).to.raise(NSInvalidArgumentException);
 }
 
 - (void)testPaymentCreationWithIdAndAmount {

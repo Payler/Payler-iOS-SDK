@@ -20,12 +20,23 @@ typedef void (^PLRCompletionBlock)(PLRPayment *payment, NSDictionary *info, NSEr
 @interface PaylerAPIClient : AFHTTPRequestOperationManager
 
 /**
- *  Инициализирует и возвращает объект класса PaylerAPIClient с соответствующими идентификатором и паролем Продавца. Если один из параметров nil, то используются параметры тестового доступа.
+ *  Инициализирует и возвращает объект класса PaylerAPIClient с соответствующими параметрами боевого доступа.
  *
- *  @param merchantKey      Идентификатор Продавца.
- *  @param merchantPassword Пароль Продавца для проведения операций через Gate API.
+ *  @param merchantKey      Идентификатор Продавца. Не должен быть nil.
+ *  @param merchantPassword Пароль Продавца для проведения операций через Gate API. Не должен быть nil.
  */
-- (instancetype)initWithMerchantKey:(NSString *)merchantKey password:(NSString *)merchantPassword;
++ (instancetype)clientWithMerchantKey:(NSString *)merchantKey password:(NSString *)merchantPassword;
+
+/**
+ *  Инициализирует и возвращает объект класса PaylerAPIClient с соответствующими параметрами тестового доступа.
+ *
+ *  @param merchantKey      Идентификатор Продавца для тестового доступа. Не должен быть nil.
+ *  @param merchantPassword Пароль Продавца для тестового доступа. Не должен быть nil.
+ */
++ (instancetype)testClientWithMerchantKey:(NSString *)merchantKey password:(NSString *)merchantPassword;
+
+- (id)init __attribute__((unavailable("Must use clientWithMerchantKey:password: or testClientWithMerchantKey:password: instead.")));
++ (id)new __attribute__((unavailable("Must use clientWithMerchantKey:password: or testClientWithMerchantKey:password: instead.")));
 
 @end
 

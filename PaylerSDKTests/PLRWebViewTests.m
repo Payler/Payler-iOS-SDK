@@ -30,10 +30,9 @@
 }
 
 - (void)testPayWithoutDataSourceShouldRaiseException {
-    NSString *exceptionName = @"RequiredParameter";
     expect(^{
         [self.webView payWithCompletion:nil];
-    }).to.raise(exceptionName);
+    }).to.raise(NSInvalidArgumentException);
 }
 
 - (void)testSettingInvalidDataSourceShouldRaiseException {
@@ -54,7 +53,7 @@
         OCMStub([dataSource webViewClient:OCMOCK_ANY]).andReturn(OCMClassMock([PaylerAPIClient class]));
         self.webView.dataSource = dataSource;
         [self.webView payWithCompletion:nil];
-    }).to.raise(@"RequiredParameter");
+    }).to.raise(NSInvalidArgumentException);
 }
 
 - (void)testPayWithoutClientShouldRaiseException {
@@ -63,7 +62,7 @@
         OCMStub([dataSource webViewSessionInfo:OCMOCK_ANY]).andReturn(OCMClassMock([PLRSessionInfo class]));
         self.webView.dataSource = dataSource;
         [self.webView payWithCompletion:nil];
-    }).to.raise(@"RequiredParameter");
+    }).to.raise(NSInvalidArgumentException);
 }
 
 - (void)testPayWithSessionInfoAndClient {

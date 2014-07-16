@@ -35,8 +35,8 @@ NSString *const PLRSessionEnumToString[] = {
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType template:(NSString *)templateName language:(NSString *)language {
     self = [super init];
     if (self) {
-        if (!paymentInfo) [NSException raise:@"RequiredParameter" format:@"'paymentInfo' is required."];
-        if (!URL) [NSException raise:@"RequiredParameter" format:@"'URL' is required."];
+        if (!paymentInfo) [NSException raise:NSInvalidArgumentException format:@"'paymentInfo' is required."];
+        if (!URL) [NSException raise:NSInvalidArgumentException format:@"'URL' is required."];
         
         _paymentInfo = paymentInfo;
         _callbackURL = [URL copy];

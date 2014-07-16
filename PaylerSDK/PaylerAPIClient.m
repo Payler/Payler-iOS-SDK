@@ -75,17 +75,21 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
 
 @implementation PaylerAPIClient
 
-- (id)init {
-    return [self initWithMerchantKey:nil password:nil];
++ (instancetype)clientWithMerchantKey:(NSString *)merchantKey password:(NSString *)merchantPassword {
+    return [[self alloc] initWithHost:@"secure" merchantKey:merchantKey password:merchantPassword];
 }
 
-- (instancetype)initWithMerchantKey:(NSString *)merchantKey password:(NSString *)merchantPassword {
-    BOOL merchantIdentifiersValid = merchantKey.length && merchantPassword.length;
-    NSString *host = merchantIdentifiersValid ? @"secure" : @"sandbox";
++ (instancetype)testClientWithMerchantKey:(NSString *)merchantKey password:(NSString *)merchantPassword {
+    return [[self alloc] initWithHost:@"sandbox" merchantKey:merchantKey password:merchantPassword];
+}
+
+- (instancetype)initWithHost:(NSString *)host merchantKey:(NSString *)merchantKey password:(NSString *)merchantPassword {
+    if (!merchantKey.length || !merchantPassword.length) [NSException raise:NSInvalidArgumentException format:@"Required parameters omitted"];
+
     self = [super initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@.payler.com/gapi", host]]];
     if (self) {
-        _merchantKey = merchantIdentifiersValid ? [merchantKey copy] : @"TestMerchantBM";
-        _merchantPassword = merchantIdentifiersValid ? [merchantPassword copy] : @"123";
+        _merchantKey = [merchantKey copy];
+        _merchantPassword = [merchantPassword copy];
         self.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     }
     return self;

@@ -69,8 +69,8 @@
 - (void)payWithCompletion:(PLRPayBlock)completion {
     PLRSessionInfo *sessionInfo = [self.dataSource webViewSessionInfo:self];
     PaylerAPIClient *client = [self.dataSource webViewClient:self];
-    if (!sessionInfo) [NSException raise:@"RequiredParameter" format:@"'sessionInfo' is required."];
-    if (!client) [NSException raise:@"RequiredParameter" format:@"'client' is required."];
+    if (!sessionInfo) [NSException raise:NSInvalidArgumentException format:@"'sessionInfo' is required."];
+    if (!client) [NSException raise:NSInvalidArgumentException format:@"'client' is required."];
 
     self.completionBlock = completion;
 

@@ -28,17 +28,24 @@
 - (void)setUp {
     [super setUp];
 
-    self.client = [[PaylerAPIClient alloc] init];
+    self.client = [PaylerAPIClient clientWithMerchantKey:@"MerchantKey" password:@"MerchantPassword"];
     self.payment = [[PLRPayment alloc] initWithId:@"SDK_iOS_2014-07-10 10:48:09  0000" amount:100];
 }
 
-- (void)testClientCreationWithNilArguments {
-    expect([self.client.baseURL absoluteString]).to.equal(@"https://sandbox.payler.com/gapi/");
+- (void)testClientCreation {
+    expect([self.client.baseURL absoluteString]).to.equal(@"https://secure.payler.com/gapi/");
 }
 
-- (void)testClientCreationWithNonNilArguments {
-    PaylerAPIClient *client = [[PaylerAPIClient alloc] initWithMerchantKey:@"MerchantKey" password:@"MerchantPassword"];
-    expect([client.baseURL absoluteString]).to.equal(@"https://secure.payler.com/gapi/");
+- (void)testClientCreationWithNilArgument {
+    __block PaylerAPIClient *client;
+    expect(^{
+        client = [PaylerAPIClient clientWithMerchantKey:nil password:nil];
+    }).to.raise(NSInvalidArgumentException);
+}
+
+- (void)testTestClientCreation {
+    PaylerAPIClient *client = [PaylerAPIClient testClientWithMerchantKey:@"test" password:@"test"];
+    expect([client.baseURL absoluteString]).to.equal(@"https://sandbox.payler.com/gapi/");
 }
 
 - (void)testClientSecurityPolicy {

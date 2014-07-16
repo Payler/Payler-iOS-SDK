@@ -37,18 +37,17 @@
 
 - (void)testSessionInfoCreationWithoutPaymentOrCallbackURLShouldRaiseException {
     __block PLRSessionInfo *sessionInfo;
-    NSString *exceptionName = @"RequiredParameter";
     expect(^{
         sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:nil callbackURL:nil];
-    }).to.raise(exceptionName);
+    }).to.raise(NSInvalidArgumentException);
 
     expect(^{
         sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:nil callbackURL:self.callbackURL];
-    }).to.raise(exceptionName);
+    }).to.raise(NSInvalidArgumentException);
 
     expect(^{
         sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:self.payment callbackURL:nil];
-    }).to.raise(exceptionName);
+    }).to.raise(NSInvalidArgumentException);
 }
 
 - (void)testSessionInfoCreationWithPaymentAndCallbackURL {

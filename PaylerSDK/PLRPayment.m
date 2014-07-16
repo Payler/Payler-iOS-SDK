@@ -53,8 +53,8 @@ NSDictionary *PLRPaymentStatusMappingDictionary() {
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total {
     self = [super init];
     if (self) {
-        if (!paymentId) [NSException raise:@"RequiredParameter" format:@"'paymentId' is required."];
-        if (paymentId.length > 100 || product.length > 100) [NSException raise:@"Illegal string length" format:@"String length must be less than or equal 100 symbols."];
+        if (!paymentId) [NSException raise:NSInvalidArgumentException format:@"'paymentId' is required."];
+        if (paymentId.length > 100 || product.length > 100) [NSException raise:NSInvalidArgumentException format:@"String length must be less than or equal 100 symbols."];
 
         _paymentId = paymentId;
         _amount = amount;
