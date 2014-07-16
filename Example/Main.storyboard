@@ -5,6 +5,71 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
+        <!--Table View Controller - PaylerSDK-->
+        <scene sceneID="wMo-aG-ABy">
+            <objects>
+                <tableViewController id="PD2-Kl-q7e" customClass="PLRTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="yfk-pI-tzc">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <sections>
+                            <tableViewSection id="RiY-ff-7qB">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="ttY-Ox-VhI" style="IBUITableViewCellStyleDefault" id="bcp-K3-6Hf">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bcp-K3-6Hf" id="xdi-R5-huT">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Одностадийный платеж" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ttY-Ox-VhI">
+                                                    <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="2eS-rt-vqt" kind="push" identifier="OneStepSegue" id="7ZT-sQ-6ii"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="XWV-Se-nKv" style="IBUITableViewCellStyleDefault" id="hH3-xp-tBi">
+                                        <rect key="frame" x="0.0" y="44" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hH3-xp-tBi" id="9af-b7-7KP">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Двухстадийный платеж" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XWV-Se-nKv">
+                                                    <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="2eS-rt-vqt" kind="push" identifier="TwoStepSegue" id="yLc-dd-Kzy"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="PD2-Kl-q7e" id="tjv-hp-GpH"/>
+                            <outlet property="delegate" destination="PD2-Kl-q7e" id="in0-Yz-hgt"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="PaylerSDK" id="CsJ-tw-XWf"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Stg-hy-a9T" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="892" y="57"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="h75-cv-i6c">
             <objects>
@@ -13,25 +78,34 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Платеж завершен успешно" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1RS-rP-YLW">
-                                <rect key="frame" x="39" y="152" width="242" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Средства успешно списаны" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1RS-rP-YLW">
+                                <rect key="frame" x="10" y="178" width="300" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="G6m-TH-dwd">
-                                <rect key="frame" x="114" y="237" width="93" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                <state key="normal" title="Оплатить">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3pf-Xn-fg2">
+                                <rect key="frame" x="125" y="206" width="70" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Списание">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="buttonPressed:" destination="2eS-rt-vqt" eventType="touchUpInside" id="J7E-fa-Kom"/>
+                                    <action selector="chargeButtonPressed:" destination="2eS-rt-vqt" eventType="touchUpInside" id="CM6-Ks-UGC"/>
                                 </connections>
                             </button>
-                            <webView hidden="YES" contentMode="scaleToFill" id="Trf-Cw-x2Y" customClass="PLRWebView">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ygX-vt-A2t">
+                                <rect key="frame" x="20" y="244" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Возврат">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="refundButtonPressed:" destination="2eS-rt-vqt" eventType="touchUpInside" id="gOz-y4-gfC"/>
+                                </connections>
+                            </button>
+                            <webView contentMode="scaleToFill" id="Trf-Cw-x2Y" customClass="PLRWebView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -42,27 +116,28 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="maw-Fn-Ujz"/>
                     <connections>
-                        <outlet property="button" destination="G6m-TH-dwd" id="vbI-uW-S1Y"/>
+                        <outlet property="chargeButton" destination="3pf-Xn-fg2" id="myt-Ne-LgN"/>
+                        <outlet property="refundButton" destination="ygX-vt-A2t" id="XhQ-Qq-7JB"/>
                         <outlet property="textLabel" destination="1RS-rP-YLW" id="xAp-p3-3yf"/>
                         <outlet property="webView" destination="Trf-Cw-x2Y" id="Fcc-PR-GLh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NsY-7C-erG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="946" y="57"/>
+            <point key="canvasLocation" x="1372" y="57"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Bdf-va-w21">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="omd-Vo-dpr" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vnk-gd-dqT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="vnk-gd-dqT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="2eS-rt-vqt" kind="relationship" relationship="rootViewController" id="UCQ-RN-qhw"/>
+                        <segue destination="PD2-Kl-q7e" kind="relationship" relationship="rootViewController" id="qWN-ks-ykS"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qab-sh-nV3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -75,4 +150,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="7ZT-sQ-6ii"/>
+    </inferredMetricsTieBreakers>
 </document>

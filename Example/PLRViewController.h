@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PLRSessionInfo.h"
 
 @interface PLRViewController : UIViewController
+
+@property (nonatomic, assign) PLRSessionType sessionType;
 
 @end

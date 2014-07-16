@@ -15,7 +15,8 @@
 @interface PLRViewController ()<PLRWebViewDataSource>
 
 @property (nonatomic, weak) IBOutlet PLRWebView *webView;
-@property (nonatomic, weak) IBOutlet UIButton *button;
+@property (nonatomic, weak) IBOutlet UIButton *chargeButton;
+@property (nonatomic, weak) IBOutlet UIButton *refundButton;
 @property (nonatomic, weak) IBOutlet UILabel *textLabel;
 
 @property (nonatomic, strong) PLRSessionInfo *sessionInfo;
@@ -28,7 +29,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.webView.dataSource = self;
+    if (self.sessionType == PLRSessionTypeOneStep) {
+        self.title = @"Одностадийный платеж";
+        self.chargeButton.hidden = YES;
+    } else if (self.sessionType == PLRSessionTypeTwoStep) {
+        self.title = @"Двухстадийный платеж";
+        self.textLabel.text = @"Средства успешно заблокированы";
+        [self.refundButton setTitle:@"Разблокировка" forState:UIControlStateNormal];
+    }
+
+    [self startPayment];
 }
 
 #pragma mark - PLRWebViewDataSource
@@ -43,22 +53,59 @@
 
 #pragma mark - Actions
 
-- (IBAction)buttonPressed:(UIButton *)sender {
+- (IBAction)chargeButtonPressed:(UIButton *)sender {
+    [self.client chargePayment:self.sessionInfo.paymentInfo completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+        if (!error) {
+            self.textLabel.text = @"Средства успешно списаны";
+            [self hideButtons];
+        }
+    }];
+}
+
+- (IBAction)refundButtonPressed:(UIButton *)sender {
+    if (self.sessionType == PLRSessionTypeOneStep) {
+        [self.client refundPayment:self.sessionInfo.paymentInfo completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+            if (!error) {
+                self.textLabel.text = @"Средства успешно возвращены";
+                [self hideButtons];
+            }
+        }];
+    } else if (self.sessionType == PLRSessionTypeTwoStep) {
+        [self.client retrievePayment:self.sessionInfo.paymentInfo completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+            if (!error) {
+                self.textLabel.text = @"Средства успешно разблокированы";
+                [self hideButtons];
+            }
+        }];
+    }
+}
+
+#pragma mark - Private methods
+
+- (void)startPayment {
+    self.webView.dataSource = self;
+
 #warning Здесь нужно указать ваши параметры.
     NSString *paymentId = [NSString stringWithFormat:@"SDK_iOS_%@", [[NSUUID UUID] UUIDString]];
     PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:100];
     NSURL *callbackURL = [NSURL URLWithString:[@"http://localhost:7820/Complete-order_id=" stringByAppendingString:paymentId]];
-    self.sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment callbackURL:callbackURL];
+    self.sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment callbackURL:callbackURL sessionType:self.sessionType];
 
     self.client = [[PaylerAPIClient alloc] initWithMerchantKey:nil password:nil];
 
-    self.webView.hidden = NO;
     [self.webView payWithCompletion:^(PLRPayment *payment, NSError *error) {
         if (!error) {
+            if (self.sessionType == PLRSessionTypeTwoStep) {
+                self.textLabel.text = @"Средства успешно заблокированы";
+            }
             self.webView.hidden = YES;
-            self.textLabel.hidden = NO;
         }
     }];
+}
+
+- (void)hideButtons {
+    self.chargeButton.hidden = YES;
+    self.refundButton.hidden = YES;
 }
 
 @end
