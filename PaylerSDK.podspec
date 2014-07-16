@@ -1,16 +1,16 @@
 Pod::Spec.new do |s|
-  s.name             = "PaylerSDK"
-  s.version          = "1.0"
-  s.license          = 'MIT'
-# s.homepage     = "http://EXAMPLE/Test"
-  s.summary          = "iOS SDK for Payler Gate API"
+  s.name                = "PaylerSDK"
+  s.version             = "1.0"
+  s.license             = 'MIT'
+  s.homepage            = "https://github.com/Payler/Payler-iOS-SDK"
+  s.summary             = "iOS SDK for Payler Gate API"
 
-  s.author           = { "Maxim Pavlov" => "mp@poloniumarts.com" }
-  s.social_media_url   = "http://payler.com"
+  s.author              = { "Maxim Pavlov" => "mp@poloniumarts.com" }
+  s.social_media_url    = "http://payler.com"
 
-  s.platform     = :ios, "6.0"
-# s.source       = { :git => "http://EXAMPLE/Test.git", :tag => "1.0" }
-  s.source_files = 'PaylerSDK/*.{h,m}'
+  s.platform            = :ios, "6.0"
+  s.source              = { :git => "https://github.com/Payler/Payler-iOS-SDK.git", :tag => "1.0" }
+  s.source_files        = 'PaylerSDK/*.{h,m}'
   s.ios.resource_bundle = { 'PaylerSDK' => 'PaylerSDK/*.cer' }
 
   s.requires_arc = true
