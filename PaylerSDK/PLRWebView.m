@@ -48,9 +48,14 @@
     self.scalesPageToFit = YES;
 
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    activityView.center = CGPointMake(CGRectGetWidth(self.frame)/2, 40.0);
     [self addSubview:activityView];
     self.activityView = activityView;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    self.activityView.center = CGPointMake(CGRectGetWidth(self.frame)/2, 40.0);
 }
 
 - (void)dealloc {
