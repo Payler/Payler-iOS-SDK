@@ -11,8 +11,8 @@
 
 @class PLRPayment, PLRSessionInfo;
 
-typedef void (^PLRStartSessionCompletionBlock)(PLRPayment *payment, NSString *sessionId, NSDictionary *info, NSError *error);
-typedef void (^PLRCompletionBlock)(PLRPayment *payment, NSDictionary *info, NSError *error);
+typedef void (^PLRStartSessionCompletionBlock)(PLRPayment *payment, NSString *sessionId, NSError *error);
+typedef void (^PLRCompletionBlock)(PLRPayment *payment, NSError *error);
 
 /**
  *  В классе инкапсулированы запросы и логика работы с Payler Gate API.
@@ -41,7 +41,7 @@ typedef void (^PLRCompletionBlock)(PLRPayment *payment, NSDictionary *info, NSEr
 @end
 
 /**
- *   Если запрос выполнился успешно, то параметры payment и info в блоке содержат информацию о платеже, а error равен nil. Если запрос выполнился неудачно, то payment и info равны nil, а error содержит информацию об ошибке.
+ *   Если запрос выполнился успешно, то параметр payment в блоке содержит информацию о платеже, а error равен nil. Если запрос выполнился неудачно, то payment равен nil, а error содержит информацию об ошибке.
  */
 @interface PaylerAPIClient (Requests)
 

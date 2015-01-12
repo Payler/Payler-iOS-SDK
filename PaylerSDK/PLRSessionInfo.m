@@ -10,8 +10,8 @@
 #import "PLRPayment.h"
 
 NSString *const PLRSessionEnumToString[] = {
-    [PLRSessionTypeOneStep] = @"Pay",
-    [PLRSessionTypeTwoStep] = @"Block"
+    [PLRSessionTypeOneStep] = @"OneStep",
+    [PLRSessionTypeTwoStep] = @"TwoStep"
 };
 
 @interface PLRSessionInfo ()

@@ -126,14 +126,14 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     [self POST:@"StartSession" parameters:[parameters copy] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (completion) {
             if ([self isStartSessionInfoValid:responseObject]) {
-                completion([self.class paymentFromJSON:responseObject], responseObject[@"session_id"], responseObject[@"info"], nil);
+                completion([self.class paymentFromJSON:responseObject], responseObject[@"session_id"], nil);
             } else {
-                completion(nil, nil, nil, [self.class invalidParametersError]);
+                completion(nil, nil, [self.class invalidParametersError]);
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (completion) {
-            completion(nil, nil, nil, [self.class errorFromRequestOperation:operation]);
+            completion(nil, nil, [self.class errorFromRequestOperation:operation]);
         }
     }];
 }
@@ -166,14 +166,14 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (completion) {
             if ([self isPaymentInfoValid:responseObject]) {
-                completion([self.class paymentFromJSON:responseObject], responseObject[@"info"], nil);
+                completion([self.class paymentFromJSON:responseObject], nil);
             } else {
-                completion(nil, nil, [self.class invalidParametersError]);
+                completion(nil, [self.class invalidParametersError]);
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (completion) {
-            completion(nil, nil, [self.class errorFromRequestOperation:operation]);
+            completion(nil, [self.class errorFromRequestOperation:operation]);
         }
     }];
 

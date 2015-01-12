@@ -57,7 +57,7 @@
 
     PLRSessionInfo *sessionInfo = OCMClassMock([PLRSessionInfo class]);
     __block NSString *sessionId;
-    [self.client startSessionWithInfo:sessionInfo completion:^(PLRPayment *fetchedPayment, NSString *fetchedSessionId, NSDictionary *info, NSError *error) {
+    [self.client startSessionWithInfo:sessionInfo completion:^(PLRPayment *fetchedPayment, NSString *fetchedSessionId, NSError *error) {
         sessionId = fetchedSessionId;
 
         expect(self.payment.paymentId).to.equal(fetchedPayment.paymentId);
@@ -74,7 +74,7 @@
     [self setupStubWithURL:@"Charge" filePath:@"Charge.txt"];
 
     __block PLRPayment *payment;
-    [self.client chargePayment:self.payment completion:^(PLRPayment *fetchedPayment, NSDictionary *info, NSError *error) {
+    [self.client chargePayment:self.payment completion:^(PLRPayment *fetchedPayment, NSError *error) {
         payment = fetchedPayment;
 
         expect(payment.paymentId).to.equal(self.payment.paymentId);
@@ -89,7 +89,7 @@
     [self setupStubWithURL:@"Retrieve" filePath:@"Retrieve.txt"];
 
     __block PLRPayment *payment;
-    [self.client retrievePayment:self.payment completion:^(PLRPayment *fetchedPayment, NSDictionary *info, NSError *error) {
+    [self.client retrievePayment:self.payment completion:^(PLRPayment *fetchedPayment, NSError *error) {
         payment = fetchedPayment;
 
         expect(payment.paymentId).to.equal(self.payment.paymentId);
@@ -104,7 +104,7 @@
     [self setupStubWithURL:@"Refund" filePath:@"Refund.txt"];
 
     __block PLRPayment *payment;
-    [self.client refundPayment:self.payment completion:^(PLRPayment *fetchedPayment, NSDictionary *info, NSError *error) {
+    [self.client refundPayment:self.payment completion:^(PLRPayment *fetchedPayment, NSError *error) {
         payment = fetchedPayment;
 
         expect(fetchedPayment.paymentId).to.equal(self.payment.paymentId);
@@ -119,7 +119,7 @@
     [self setupStubWithURL:@"GetStatus" filePath:@"Status.txt"];
 
     __block PLRPaymentStatus status;
-    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSError *error) {
         status = payment.status;
 
         expect(status).to.equal(PLRPaymentStatusCharged);
@@ -138,11 +138,10 @@
     }];
 
     __block NSError *error;
-    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSDictionary *info, NSError *err) {
+    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSError *err) {
         error = err;
 
         expect(payment).to.beNil();
-        expect(info).to.beNil();
         expect(error.domain).to.equal(PaylerErrorDomain);
         expect(error.code).to.equal(7);
     }];

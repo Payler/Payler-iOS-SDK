@@ -75,7 +75,7 @@
     self.completionBlock = completion;
 
     [self.activityView startAnimating];
-    [client startSessionWithInfo:sessionInfo completion:^(PLRPayment *payment, NSString *sessionId, NSDictionary *info, NSError *error) {
+    [client startSessionWithInfo:sessionInfo completion:^(PLRPayment *payment, NSString *sessionId, NSError *error) {
         if (!error) {
             NSString *path = [[NSURL URLWithString:@"Pay" relativeToURL:client.baseURL] absoluteString];
             NSDictionary *parameters = @{@"session_id": sessionId};
@@ -98,7 +98,7 @@
     if ([[[request URL] absoluteString] isEqualToString:[sessionInfo.callbackURL absoluteString]]) {
 
         if (!self.activityView.isAnimating) [self.activityView startAnimating];
-        [client fetchStatusForPaymentWithId:sessionInfo.paymentInfo.paymentId completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+        [client fetchStatusForPaymentWithId:sessionInfo.paymentInfo.paymentId completion:^(PLRPayment *payment, NSError *error) {
             [self.activityView stopAnimating];
             if (self.completionBlock) {
                 self.completionBlock(payment, error);
