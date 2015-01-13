@@ -46,6 +46,11 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
 @property (nonatomic, readonly, copy) NSString *language;
 
 /**
+ *  Показывает, требуется ли создать шаблон рекуррентных платежей на основе текущего.
+ */
+@property (nonatomic, getter=isRecurrent) BOOL recurrent;
+
+/**
  *  Словарь, содержащий параметры запроса инициализации сессии платежа.
  */
 - (NSDictionary *)dictionaryRepresentation;
@@ -53,7 +58,7 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
 //  Следующие методы инициализируют и возвращают объект класса PLRSessionInfo. Параметры paymentInfo и URL не должен быть nil.
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL;
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType;
-- (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType template:(NSString *)templateName language:(NSString *)language;
+- (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType template:(NSString *)templateName language:(NSString *)language NS_DESIGNATED_INITIALIZER;
 
 - (id)init __attribute__((unavailable("Must use initWithPaymentInfo: instead.")));
 + (id)new __attribute__((unavailable("Must use initWithPaymentInfo: instead.")));
