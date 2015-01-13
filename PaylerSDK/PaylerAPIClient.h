@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <AFHTTPRequestOperationManager.h>
 
-@class PLRPayment, PLRSessionInfo;
+@class PLRPayment, PLRSessionInfo, PLRPaymentTemplate;
 
 typedef void (^PLRStartSessionCompletionBlock)(PLRPayment *payment, NSString *sessionId, NSError *error);
 typedef void (^PLRCompletionBlock)(PLRPayment *payment, NSError *error);
+typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
 
 /**
  *  В классе инкапсулированы запросы и логика работы с Payler Gate API.
@@ -43,7 +44,7 @@ typedef void (^PLRCompletionBlock)(PLRPayment *payment, NSError *error);
 /**
  *   Если запрос выполнился успешно, то параметр payment в блоке содержит информацию о платеже, а error равен nil. Если запрос выполнился неудачно, то payment равен nil, а error содержит информацию об ошибке.
  */
-@interface PaylerAPIClient (Requests)
+@interface PaylerAPIClient (Payments)
 
 /**
  *  Запрос инициализации сессии платежа. Обязательно выполняется перед операциями списания или блокировки средств на карте Пользователя.
@@ -84,6 +85,35 @@ typedef void (^PLRCompletionBlock)(PLRPayment *payment, NSError *error);
  *  @param completion Блок выполняется после завершения запроса. В поле status параметра payment приходит текущий статус платежа.
  */
 - (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRCompletionBlock)completion;
+
+@end
+
+@interface PaylerAPIClient (RecurrentPayments)
+
+/**
+ *  Запрос осуществления повторного платежа в рамках серии рекуррентных платежей.
+ *
+ *  @param payment    Объект класса PLRPayment. Сам объект и его свойство recurrentTemplate не должны быть nil.
+ *  @param completion Блок выполняется после завершения запроса.
+ */
+- (void)repeatPayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion;
+
+/**
+ *  Запрос получения информации о шаблоне рекуррентных платежей.
+ *
+ *  @param recurrentTemplateId Идентификатор шаблона рекуррентных платежей.
+ *  @param completion          Блок выполняется после завершения запроса. Если recurrentTemplateId == nil, то в параметре object блока придет массив всех зарегистрированных на Продавца шаблонов, иначе объект PLRPaymentTemplate.
+ */
+- (void)fetchTemplateWithId:(NSString *)recurrentTemplateId completion:(PLRPaymentTemplateBlock)completion;
+
+/**
+ *  Запрос активации/деактивации шаблона рекуррентных платежей.
+ *
+ *  @param recurrentTemplateId Идентификатор шаблона рекуррентных платежей. Не должен быть nil.
+ *  @param active              Показывает, требуется ли активировать или деактивировать шаблон рекуррентных платежей.
+ *  @param completion          Блок выполняется после завершения запроса. В параметре object - объект класса PLRPaymentTemplate.
+ */
+- (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRPaymentTemplateBlock)completion;
 
 @end
 
