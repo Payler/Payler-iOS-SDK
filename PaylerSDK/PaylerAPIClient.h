@@ -116,5 +116,3 @@ typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
 - (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRPaymentTemplateBlock)completion;
 
 @end
-
-extern NSString *const PaylerErrorDomain;

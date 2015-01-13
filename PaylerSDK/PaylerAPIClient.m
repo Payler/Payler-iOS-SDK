@@ -9,64 +9,9 @@
 #import "PaylerAPIClient.h"
 #import "PLRPayment.h"
 #import "PLRSessionInfo.h"
-
-NSString *const PaylerErrorDomain = @"com.poloniumarts.PaylerSDK.error";
+#import "PLRError.h"
 
 static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
-
-typedef NS_ENUM (NSUInteger, PaylerErrorCode) {
-	PaylerErrorNone,
-	PaylerErrorInvalidAmount,
-	PaylerErrorBalanceExceeded,
-	PaylerErrorDuplicateOrderId,
-	PaylerErrorIssuerDeclinedOperation,
-	PaylerErrorLimitExceded,
-	PaylerErrorAFDeclined,
-	PaylerErrorInvalidOrderState,
-	PaylerErrorMerchantDeclined,
-	PaylerErrorOrderNotFound,
-	PaylerErrorProcessingError,
-	PaylerErrorPartialRetrieveNotAllowed,
-	PaylerErrorRefundNotAllowed,
-	PaylerErrorGateDeclined,
-	PaylerErrorInvalidCardInfo,
-	PaylerErrorInvalidCardPan,
-	PaylerErrorInvalidCardholder,
-	PaylerErrorInvalidPayInfo,
-	PaylerErrorAPINotAllowed,
-	PaylerErrorAccessDenied,
-	PaylerErrorInvalidParams,
-	PaylerErrorSessionTimeout,
-	PaylerErrorMerchantNotFound,
-	PaylerErrorUnexpectedError
-};
-
-NSString *const PaylerErrorDescriptionFromCode[] = {
-	[PaylerErrorNone]                      = @"",
-	[PaylerErrorInvalidAmount]             = @"Неверно указана сумма транзакции",
-	[PaylerErrorBalanceExceeded]           = @"Превышен баланс",
-	[PaylerErrorDuplicateOrderId]          = @"Заказ с таким order_id уже регистрировали",
-	[PaylerErrorIssuerDeclinedOperation]   = @"Эмитент карты отказал в операции",
-	[PaylerErrorLimitExceded]              = @"Превышен лимит",
-	[PaylerErrorAFDeclined]                = @"Транзакция отклонена АнтиФрод механизмом",
-	[PaylerErrorInvalidOrderState]         = @"Попытка выполнения транзакции для недопустимого состояния платежа",
-	[PaylerErrorMerchantDeclined]          = @"Превышен лимит магазина или транзакции запрещены Магазину",
-	[PaylerErrorOrderNotFound]             = @"Платёж с указанным order_id не найден",
-	[PaylerErrorProcessingError]           = @"Ошибка при взаимодействии с процессинговым центром",
-	[PaylerErrorPartialRetrieveNotAllowed] = @"Изменение суммы авторизации не может быть выполнено",
-	[PaylerErrorRefundNotAllowed]          = @"Возврат не может быть выполнен",
-	[PaylerErrorGateDeclined]              = @"Отказ шлюза в выполнении транзакции",
-	[PaylerErrorInvalidCardInfo]           = @"Введены неправильные параметры карты",
-	[PaylerErrorInvalidCardPan]            = @"Неверный номер карты",
-	[PaylerErrorInvalidCardholder]         = @"Недопустимое имя держателя карты",
-	[PaylerErrorInvalidPayInfo]            = @"Некорректный параметр PayInfo (неправильно сформирован или нарушена крипта)",
-	[PaylerErrorAPINotAllowed]             = @"Данное API не разрешено к использованию",
-	[PaylerErrorAccessDenied]              = @"Доступ с текущего IP или по указанным параметрам запрещен",
-	[PaylerErrorInvalidParams]             = @"Неверный набор или формат параметров",
-	[PaylerErrorSessionTimeout]            = @"Время платежа истекло",
-	[PaylerErrorMerchantNotFound]          = @"Описание продавца не найдено",
-	[PaylerErrorUnexpectedError]           = @"Непредвиденная ошибка"
-};
 
 @interface PaylerAPIClient ()
 
@@ -111,7 +56,7 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
 
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     PaylerErrorCode errorCode = [[operation.responseObject valueForKeyPath:@"error.code"] integerValue];
-    userInfo[NSLocalizedDescriptionKey] = PaylerErrorDescriptionFromCode[errorCode];
+    userInfo[NSLocalizedDescriptionKey] = PaylerErrorDescriptionFromCode(errorCode);
 	if (operation.error) userInfo[NSUnderlyingErrorKey] = operation.error;
 	return [NSError errorWithDomain:PaylerErrorDomain code:errorCode userInfo:userInfo];
 }
@@ -119,7 +64,7 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
 + (NSError *)invalidParametersError {
     return [NSError errorWithDomain:PaylerErrorDomain
                                code:PaylerErrorInvalidParams
-                           userInfo:@{NSLocalizedDescriptionKey: PaylerErrorDescriptionFromCode[PaylerErrorInvalidParams]}];
+                           userInfo:@{NSLocalizedDescriptionKey: PaylerErrorDescriptionFromCode(PaylerErrorInvalidParams)}];
 }
 
 @end

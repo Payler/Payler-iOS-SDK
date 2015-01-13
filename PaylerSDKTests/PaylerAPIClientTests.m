@@ -11,6 +11,7 @@
 #import "PLRSessionInfo.h"
 #import "PLRPayment.h"
 #import <OCMock.h>
+#import "PLRError.h"
 
 #define EXP_SHORTHAND YES
 #import <Expecta.h>
@@ -193,6 +194,7 @@
         expect(payment).to.beNil();
         expect(error.domain).to.equal(PaylerErrorDomain);
         expect(error.code).to.equal(7);
+        expect(error.localizedDescription).to.equal(@"Попытка выполнения транзакции для недопустимого состояния платежа");
     }];
 
     expect(error).willNot.beNil();
