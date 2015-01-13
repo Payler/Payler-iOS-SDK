@@ -71,6 +71,18 @@
     expect([self.payment dictionaryRepresentation]).to.equal(parameters);
 }
 
+- (void)testPaymentTemplateCreationWithoutIdShouldRaiseException {
+    __block PLRPaymentTemplate *template;
+    expect(^{
+        template = [[PLRPaymentTemplate alloc] initWithTemplateId:nil];
+    }).to.raise(NSInvalidArgumentException);
+}
+
+- (void)testPaymentTemplateCreationWithId {
+    PLRPaymentTemplate *template = [[PLRPaymentTemplate alloc] initWithTemplateId:@"id"];
+    expect(template.recurrentTemplateId).to.equal(@"id");
+}
+
 - (void)setupPaymentWithAllParameters {
     self.payment = [[PLRPayment alloc] initWithId:@"uniqueId" amount:100 status:@"Charged" product:@"Product" total:25.5];
 }

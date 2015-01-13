@@ -35,6 +35,8 @@
 		0220D44D196ACFA400FC5AF3 /* PLRPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D40F196AAC4D00FC5AF3 /* PLRPayment.m */; };
 		0220D44E196ACFA700FC5AF3 /* PLRWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0220D415196AC6BA00FC5AF3 /* PLRWebView.m */; };
 		0240D1D2196BD442005A8070 /* PaylerAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0240D1D1196BD442005A8070 /* PaylerAPIClient.m */; };
+		0249DC3D1A653EF000AC547A /* RepeatPay.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0249DC3C1A653EF000AC547A /* RepeatPay.txt */; };
+		0249DC3F1A65440100AC547A /* GetTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0249DC3E1A65440100AC547A /* GetTemplate.txt */; };
 		02CCAF76196D5CF2002CFD3D /* PaylerCert.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CCAF73196D5CF2002CFD3D /* PaylerCert.cer */; };
 		02CCAF77196D5CF2002CFD3D /* RootCert.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CCAF74196D5CF2002CFD3D /* RootCert.cer */; };
 		02CCAF7A196D5DA0002CFD3D /* ThawteCert.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CCAF79196D5DA0002CFD3D /* ThawteCert.cer */; };
@@ -92,6 +94,8 @@
 		0220D449196ACC1600FC5AF3 /* PLRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRViewController.m; sourceTree = "<group>"; };
 		0240D1D0196BD442005A8070 /* PaylerAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaylerAPIClient.h; sourceTree = "<group>"; };
 		0240D1D1196BD442005A8070 /* PaylerAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaylerAPIClient.m; sourceTree = "<group>"; };
+		0249DC3C1A653EF000AC547A /* RepeatPay.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RepeatPay.txt; sourceTree = "<group>"; };
+		0249DC3E1A65440100AC547A /* GetTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GetTemplate.txt; sourceTree = "<group>"; };
 		02CCAF73196D5CF2002CFD3D /* PaylerCert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = PaylerCert.cer; sourceTree = "<group>"; };
 		02CCAF74196D5CF2002CFD3D /* RootCert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = RootCert.cer; sourceTree = "<group>"; };
 		02CCAF79196D5DA0002CFD3D /* ThawteCert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThawteCert.cer; sourceTree = "<group>"; };
@@ -153,6 +157,8 @@
 		021DA1DE196EB48C00B6EC2F /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				0249DC3E1A65440100AC547A /* GetTemplate.txt */,
+				0249DC3C1A653EF000AC547A /* RepeatPay.txt */,
 				021DA1DF196EB48C00B6EC2F /* Charge.txt */,
 				021DA1E0196EB48C00B6EC2F /* Refund.txt */,
 				021DA1E1196EB48C00B6EC2F /* Retrieve.txt */,
@@ -329,9 +335,11 @@
 				021DA1E6196EB48C00B6EC2F /* Retrieve.txt in Resources */,
 				021DA1EA196EB4A400B6EC2F /* Error.txt in Resources */,
 				021DA1E4196EB48C00B6EC2F /* Charge.txt in Resources */,
+				0249DC3F1A65440100AC547A /* GetTemplate.txt in Resources */,
 				021DA1E8196EB48C00B6EC2F /* Status.txt in Resources */,
 				021DA1E7196EB48C00B6EC2F /* StartSession.txt in Resources */,
 				021DA1BE196E7B6D00B6EC2F /* InfoPlist.strings in Resources */,
+				0249DC3D1A653EF000AC547A /* RepeatPay.txt in Resources */,
 				021DA1E5196EB48C00B6EC2F /* Refund.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

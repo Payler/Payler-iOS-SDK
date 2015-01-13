@@ -1,0 +1,8 @@
+{
+    "recurrent_template_id": "templateId",
+    "created": "2014-07-10 10:48:09",
+    "card_holder": "IVAN IVANOV",
+    "card_number": "549223#####2323",
+    "expiry": "06/17",
+    "active": true,
+}
