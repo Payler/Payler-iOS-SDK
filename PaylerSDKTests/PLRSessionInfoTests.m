@@ -72,14 +72,15 @@
 }
 
 - (void)testDictionaryRepresentationForSessionInfoWithDefaultParameters {
-    NSDictionary *parameters = @{@"type": @"Pay", @"order_id": @"id", @"amount": @(100), @"template": @"mobile"};
+    NSDictionary *parameters = @{@"type": @"OneStep", @"order_id": @"id", @"amount": @(100), @"template": @"mobile"};
     expect([self.sessionInfo dictionaryRepresentation]).to.equal(parameters);
     OCMVerify([self.payment dictionaryRepresentation]);
 }
 
 - (void)testDictionaryRepresentationForSessionInfoWithAllParameters {
-    NSDictionary *parameters = @{@"type": @"Block", @"order_id": @"id", @"amount": @(100), @"template": @"myTemplate", @"language": @"en"};
+    NSDictionary *parameters = @{@"type": @"TwoStep", @"order_id": @"id", @"amount": @(100), @"template": @"myTemplate", @"language": @"en", @"recurrent": @"true"};
     PLRSessionInfo *sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:self.payment callbackURL:self.callbackURL sessionType:PLRSessionTypeTwoStep template:@"myTemplate" language:@"en"];
+    sessionInfo.recurrent = YES;
     expect([sessionInfo dictionaryRepresentation]).to.equal(parameters);
     OCMVerify([self.payment dictionaryRepresentation]);
 }

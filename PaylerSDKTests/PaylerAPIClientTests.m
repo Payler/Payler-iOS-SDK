@@ -11,6 +11,7 @@
 #import "PLRSessionInfo.h"
 #import "PLRPayment.h"
 #import <OCMock.h>
+#import "PLRError.h"
 
 #define EXP_SHORTHAND YES
 #import <Expecta.h>
@@ -30,6 +31,8 @@
 
     self.client = [PaylerAPIClient clientWithMerchantKey:@"MerchantKey" password:@"MerchantPassword"];
     self.payment = [[PLRPayment alloc] initWithId:@"SDK_iOS_2014-07-10 10:48:09  0000" amount:100];
+    PLRPaymentTemplate *template = [[PLRPaymentTemplate alloc] initWithTemplateId:@"templateId"];
+    self.payment.recurrentTemplate = template;
 }
 
 - (void)testClientCreation {
@@ -57,7 +60,7 @@
 
     PLRSessionInfo *sessionInfo = OCMClassMock([PLRSessionInfo class]);
     __block NSString *sessionId;
-    [self.client startSessionWithInfo:sessionInfo completion:^(PLRPayment *fetchedPayment, NSString *fetchedSessionId, NSDictionary *info, NSError *error) {
+    [self.client startSessionWithInfo:sessionInfo completion:^(PLRPayment *fetchedPayment, NSString *fetchedSessionId, NSError *error) {
         sessionId = fetchedSessionId;
 
         expect(self.payment.paymentId).to.equal(fetchedPayment.paymentId);
@@ -74,7 +77,7 @@
     [self setupStubWithURL:@"Charge" filePath:@"Charge.txt"];
 
     __block PLRPayment *payment;
-    [self.client chargePayment:self.payment completion:^(PLRPayment *fetchedPayment, NSDictionary *info, NSError *error) {
+    [self.client chargePayment:self.payment completion:^(PLRPayment *fetchedPayment, NSError *error) {
         payment = fetchedPayment;
 
         expect(payment.paymentId).to.equal(self.payment.paymentId);
@@ -89,7 +92,7 @@
     [self setupStubWithURL:@"Retrieve" filePath:@"Retrieve.txt"];
 
     __block PLRPayment *payment;
-    [self.client retrievePayment:self.payment completion:^(PLRPayment *fetchedPayment, NSDictionary *info, NSError *error) {
+    [self.client retrievePayment:self.payment completion:^(PLRPayment *fetchedPayment, NSError *error) {
         payment = fetchedPayment;
 
         expect(payment.paymentId).to.equal(self.payment.paymentId);
@@ -104,7 +107,7 @@
     [self setupStubWithURL:@"Refund" filePath:@"Refund.txt"];
 
     __block PLRPayment *payment;
-    [self.client refundPayment:self.payment completion:^(PLRPayment *fetchedPayment, NSDictionary *info, NSError *error) {
+    [self.client refundPayment:self.payment completion:^(PLRPayment *fetchedPayment, NSError *error) {
         payment = fetchedPayment;
 
         expect(fetchedPayment.paymentId).to.equal(self.payment.paymentId);
@@ -119,7 +122,7 @@
     [self setupStubWithURL:@"GetStatus" filePath:@"Status.txt"];
 
     __block PLRPaymentStatus status;
-    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSError *error) {
         status = payment.status;
 
         expect(status).to.equal(PLRPaymentStatusCharged);
@@ -127,6 +130,53 @@
     }];
 
     expect(status).willNot.beNil();
+}
+
+- (void)testRepeatPayment {
+    [self setupStubWithURL:@"RepeatPay" filePath:@"RepeatPay.txt"];
+    
+    __block PLRPayment *payment;
+    [self.client repeatPayment:self.payment completion:^(PLRPayment *fetchedPayment, NSError *error) {
+        payment = fetchedPayment;
+        
+        expect(payment.paymentId).to.equal(self.payment.paymentId);
+        expect(payment.amount).to.equal(self.payment.amount);
+    }];
+    
+    expect(payment).willNot.beNil();
+}
+
+- (void)testFetchTemplate {
+    [self setupStubWithURL:@"GetTemplate" filePath:@"GetTemplate.txt"];
+    [self setupStubWithURL:@"ActivateTemplate" filePath:@"GetTemplate.txt"];
+    
+    __block PLRPaymentTemplate *template1, *template2;
+    NSString *templateId = @"templateId";
+    
+    void(^validationBlock)(PLRPaymentTemplate*) = ^(PLRPaymentTemplate *aTemplate) {
+        expect(aTemplate.recurrentTemplateId).to.equal(templateId);
+        expect(aTemplate.cardHolder).to.equal(@"IVAN IVANOV");
+        expect(aTemplate.cardNumber).to.equal(@"549223#####2323");
+        expect(aTemplate.expiry).to.equal(@"06/17");
+        expect(aTemplate.active).to.beTruthy();
+    };
+    
+
+    [self.client fetchTemplateWithId:templateId completion:^(PLRPaymentTemplate *fetchedTemplate, NSError *error) {
+        template1 = fetchedTemplate;
+        
+        validationBlock(template1);
+    }];
+    
+    expect(template1).willNot.beNil();
+    
+    [self.client activateTemplateWithId:templateId active:YES completion:^(PLRPaymentTemplate *fetchedTemplate, NSError *error) {
+        template2 = fetchedTemplate;
+        
+        validationBlock(template2);
+    }];
+    
+    expect(template2).willNot.beNil();
 }
 
 - (void)testReceivingError {
@@ -138,13 +188,13 @@
     }];
 
     __block NSError *error;
-    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSDictionary *info, NSError *err) {
+    [self.client fetchStatusForPaymentWithId:self.payment.paymentId completion:^(PLRPayment *payment, NSError *err) {
         error = err;
 
         expect(payment).to.beNil();
-        expect(info).to.beNil();
         expect(error.domain).to.equal(PaylerErrorDomain);
         expect(error.code).to.equal(7);
+        expect(error.localizedDescription).to.equal(@"Попытка выполнения транзакции для недопустимого состояния платежа");
     }];
 
     expect(error).willNot.beNil();

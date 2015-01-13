@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class PLRPaymentTemplate;
+
 typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
     PLRPaymentStatusUnknown,
     PLRPaymentStatusCreated, // Платеж зарегистрирован в шлюзе, но его обработка в процессинге не начата.
@@ -54,6 +56,11 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 @property (nonatomic, readonly, assign) CGFloat total;
 
 /**
+ *  Если не nil, то это шаблон рекуррентных платежей, по которому был выполнен данный платеж.
+ */
+@property (nonatomic, strong) PLRPaymentTemplate *recurrentTemplate;
+
+/**
  *  Словарь, содержащий параметры, использумые в запросах к API.
  */
 - (NSDictionary *)dictionaryRepresentation;
@@ -61,9 +68,52 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 //  Следующие методы инициализируют и возвращают объект класса PLRPayment. Параметр paymentId не должен быть nil.
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount;
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status;
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total;
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total NS_DESIGNATED_INITIALIZER;
 
 - (id)init __attribute__((unavailable("Must use initWithId:amount: instead.")));
 + (id)new __attribute__((unavailable("Must use initWithId:amount: instead.")));
+
+@end
+
+/**
+ *  В классе инкапсулирована информация о шаблоне рекуррентного платежа.
+ */
+@interface PLRPaymentTemplate : NSObject
+
+/**
+ *  Идентификатор шаблона рекуррентного платежа.
+ */
+@property (nonatomic, readonly, copy) NSString *recurrentTemplateId;
+
+/**
+ *  Дата и время регистрации шаблона рекуррентных платежей в системе Payler.
+ */
+@property (nonatomic, copy) NSDate *creationDate;
+
+/**
+ *  Имя держателя карты, к которой привязан шаблон.
+ */
+@property (nonatomic, copy) NSString *cardHolder;
+
+/**
+ *  Маскированный номер карты, к которой привязан шаблон.
+ */
+@property (nonatomic, copy) NSString *cardNumber;
+
+/**
+ *  Срок действия шаблона рекуррентных платежей формата "MM/yy".
+ */
+@property (nonatomic, copy) NSString *expiry;
+
+/**
+ *  Показывает, активен ли шаблон.
+ */
+@property (nonatomic, getter=isActive) BOOL active;
+
+// Инициализирует и возвращает объект класса PLRPaymentTemplate. recurrentTemplateId не должен быть nil.
+- (instancetype)initWithTemplateId:(NSString *)recurrentTemplateId;
+
+- (id)init __attribute__((unavailable("Must use initWithTemplateId: instead.")));
++ (id)new __attribute__((unavailable("Must use initWithTemplateId: instead.")));
 
 @end

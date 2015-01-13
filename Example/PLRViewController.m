@@ -54,7 +54,7 @@
 #pragma mark - Actions
 
 - (IBAction)chargeButtonPressed:(UIButton *)sender {
-    [self.client chargePayment:self.sessionInfo.paymentInfo completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+    [self.client chargePayment:self.sessionInfo.paymentInfo completion:^(PLRPayment *payment, NSError *error) {
         if (!error) {
             self.textLabel.text = @"Средства успешно списаны";
             [self hideButtons];
@@ -64,14 +64,14 @@
 
 - (IBAction)refundButtonPressed:(UIButton *)sender {
     if (self.sessionType == PLRSessionTypeOneStep) {
-        [self.client refundPayment:self.sessionInfo.paymentInfo completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+        [self.client refundPayment:self.sessionInfo.paymentInfo completion:^(PLRPayment *payment, NSError *error) {
             if (!error) {
                 self.textLabel.text = @"Средства успешно возвращены";
                 [self hideButtons];
             }
         }];
     } else if (self.sessionType == PLRSessionTypeTwoStep) {
-        [self.client retrievePayment:self.sessionInfo.paymentInfo completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
+        [self.client retrievePayment:self.sessionInfo.paymentInfo completion:^(PLRPayment *payment, NSError *error) {
             if (!error) {
                 self.textLabel.text = @"Средства успешно разблокированы";
                 [self hideButtons];

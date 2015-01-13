@@ -9,62 +9,9 @@
 #import "PaylerAPIClient.h"
 #import "PLRPayment.h"
 #import "PLRSessionInfo.h"
+#import "PLRError.h"
 
-NSString *const PaylerErrorDomain = @"com.poloniumarts.PaylerSDK.error";
-
-typedef NS_ENUM (NSUInteger, PaylerErrorCode) {
-	PaylerErrorNone,
-	PaylerErrorInvalidAmount,
-	PaylerErrorBalanceExceeded,
-	PaylerErrorDuplicateOrderId,
-	PaylerErrorIssuerDeclinedOperation,
-	PaylerErrorLimitExceded,
-	PaylerErrorAFDeclined,
-	PaylerErrorInvalidOrderState,
-	PaylerErrorMerchantDeclined,
-	PaylerErrorOrderNotFound,
-	PaylerErrorProcessingError,
-	PaylerErrorPartialRetrieveNotAllowed,
-	PaylerErrorRefundNotAllowed,
-	PaylerErrorGateDeclined,
-	PaylerErrorInvalidCardInfo,
-	PaylerErrorInvalidCardPan,
-	PaylerErrorInvalidCardholder,
-	PaylerErrorInvalidPayInfo,
-	PaylerErrorAPINotAllowed,
-	PaylerErrorAccessDenied,
-	PaylerErrorInvalidParams,
-	PaylerErrorSessionTimeout,
-	PaylerErrorMerchantNotFound,
-	PaylerErrorUnexpectedError
-};
-
-NSString *const PaylerErrorDescriptionFromCode[] = {
-	[PaylerErrorNone]                      = @"",
-	[PaylerErrorInvalidAmount]             = @"Неверно указана сумма транзакции",
-	[PaylerErrorBalanceExceeded]           = @"Превышен баланс",
-	[PaylerErrorDuplicateOrderId]          = @"Заказ с таким order_id уже регистрировали",
-	[PaylerErrorIssuerDeclinedOperation]   = @"Эмитент карты отказал в операции",
-	[PaylerErrorLimitExceded]              = @"Превышен лимит",
-	[PaylerErrorAFDeclined]                = @"Транзакция отклонена АнтиФрод механизмом",
-	[PaylerErrorInvalidOrderState]         = @"Попытка выполнения транзакции для недопустимого состояния платежа",
-	[PaylerErrorMerchantDeclined]          = @"Превышен лимит магазина или транзакции запрещены Магазину",
-	[PaylerErrorOrderNotFound]             = @"Платёж с указанным order_id не найден",
-	[PaylerErrorProcessingError]           = @"Ошибка при взаимодействии с процессинговым центром",
-	[PaylerErrorPartialRetrieveNotAllowed] = @"Изменение суммы авторизации не может быть выполнено",
-	[PaylerErrorRefundNotAllowed]          = @"Возврат не может быть выполнен",
-	[PaylerErrorGateDeclined]              = @"Отказ шлюза в выполнении транзакции",
-	[PaylerErrorInvalidCardInfo]           = @"Введены неправильные параметры карты",
-	[PaylerErrorInvalidCardPan]            = @"Неверный номер карты",
-	[PaylerErrorInvalidCardholder]         = @"Недопустимое имя держателя карты",
-	[PaylerErrorInvalidPayInfo]            = @"Некорректный параметр PayInfo (неправильно сформирован или нарушена крипта)",
-	[PaylerErrorAPINotAllowed]             = @"Данное API не разрешено к использованию",
-	[PaylerErrorAccessDenied]              = @"Доступ с текущего IP или по указанным параметрам запрещен",
-	[PaylerErrorInvalidParams]             = @"Неверный набор или формат параметров",
-	[PaylerErrorSessionTimeout]            = @"Время платежа истекло",
-	[PaylerErrorMerchantNotFound]          = @"Описание продавца не найдено",
-	[PaylerErrorUnexpectedError]           = @"Непредвиденная ошибка"
-};
+static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
 
 @interface PaylerAPIClient ()
 
@@ -95,6 +42,13 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     return self;
 }
 
+- (NSMutableURLRequest *)requestWithPath:(NSString *)path parameters:(NSDictionary *)parameters {
+    return [self.requestSerializer requestWithMethod:@"POST"
+                                           URLString:[[NSURL URLWithString:path relativeToURL:self.baseURL] absoluteString]
+                                          parameters:parameters
+                                               error:nil];
+}
+
 #pragma mark - Error handling
 
 + (NSError *)errorFromRequestOperation:(AFHTTPRequestOperation *)operation {
@@ -102,7 +56,7 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
 
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     PaylerErrorCode errorCode = [[operation.responseObject valueForKeyPath:@"error.code"] integerValue];
-    userInfo[NSLocalizedDescriptionKey] = PaylerErrorDescriptionFromCode[errorCode];
+    userInfo[NSLocalizedDescriptionKey] = PaylerErrorDescriptionFromCode(errorCode);
 	if (operation.error) userInfo[NSUnderlyingErrorKey] = operation.error;
 	return [NSError errorWithDomain:PaylerErrorDomain code:errorCode userInfo:userInfo];
 }
@@ -110,12 +64,12 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
 + (NSError *)invalidParametersError {
     return [NSError errorWithDomain:PaylerErrorDomain
                                code:PaylerErrorInvalidParams
-                           userInfo:@{NSLocalizedDescriptionKey: PaylerErrorDescriptionFromCode[PaylerErrorInvalidParams]}];
+                           userInfo:@{NSLocalizedDescriptionKey: PaylerErrorDescriptionFromCode(PaylerErrorInvalidParams)}];
 }
 
 @end
 
-@implementation PaylerAPIClient (Requests)
+@implementation PaylerAPIClient (Payments)
 
 - (void)startSessionWithInfo:(PLRSessionInfo *)sessionInfo completion:(PLRStartSessionCompletionBlock)completion {
     NSParameterAssert(sessionInfo);
@@ -126,14 +80,14 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     [self POST:@"StartSession" parameters:[parameters copy] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (completion) {
             if ([self isStartSessionInfoValid:responseObject]) {
-                completion([self.class paymentFromJSON:responseObject], responseObject[@"session_id"], responseObject[@"info"], nil);
+                completion([self.class paymentFromJSON:responseObject], responseObject[@"session_id"], nil);
             } else {
-                completion(nil, nil, nil, [self.class invalidParametersError]);
+                completion(nil, nil, [self.class invalidParametersError]);
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (completion) {
-            completion(nil, nil, nil, [self.class errorFromRequestOperation:operation]);
+            completion(nil, nil, [self.class errorFromRequestOperation:operation]);
         }
     }];
 }
@@ -153,10 +107,8 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
 - (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRCompletionBlock)completion {
     NSParameterAssert(paymentId);
 
-    NSDictionary *parameters = @{@"key": self.merchantKey, @"order_id": paymentId};
-    NSString *URLString = [[NSURL URLWithString:@"GetStatus" relativeToURL:self.baseURL] absoluteString];
-    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"POST" URLString:URLString parameters:parameters error:nil];
-    [self enqueuePaymentRequest:request completion:completion];
+    PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:0];
+    [self enqueuePaymentRequest:[self requestWithPath:@"GetStatus" parameters:[self parametersWithPayment:payment includePassword:NO includeAmount:NO]] completion:completion];
 }
 
 #pragma mark - Private methods
@@ -166,14 +118,14 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (completion) {
             if ([self isPaymentInfoValid:responseObject]) {
-                completion([self.class paymentFromJSON:responseObject], responseObject[@"info"], nil);
+                completion([self.class paymentFromJSON:responseObject], nil);
             } else {
-                completion(nil, nil, [self.class invalidParametersError]);
+                completion(nil, [self.class invalidParametersError]);
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (completion) {
-            completion(nil, nil, [self.class errorFromRequestOperation:operation]);
+            completion(nil, [self.class errorFromRequestOperation:operation]);
         }
     }];
 
@@ -182,16 +134,23 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
 
 - (NSMutableURLRequest *)paymentRequestWithPath:(NSString *)path payment:(PLRPayment *)payment {
     NSParameterAssert(payment);
-
-    return [self.requestSerializer requestWithMethod:@"POST"
-                                           URLString:[[NSURL URLWithString:path relativeToURL:self.baseURL] absoluteString]
-                                          parameters:[self paymentParametersWithPayment:payment] error:nil];
+    
+    return [self requestWithPath:path parameters:[self parametersWithPayment:payment includePassword:YES includeAmount:YES]];
 }
 
-- (NSDictionary *)paymentParametersWithPayment:(PLRPayment *)payment {
+- (NSDictionary *)parametersWithPayment:(PLRPayment *)payment includePassword:(BOOL)includePassword includeAmount:(BOOL)includeAmount {
     NSParameterAssert(payment);
 
-    return @{@"key": self.merchantKey, @"password": self.merchantPassword, @"order_id": payment.paymentId, @"amount": @(payment.amount)};
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"key": self.merchantKey, @"order_id": payment.paymentId}];
+    if (includePassword) {
+        parameters[@"password"] = self.merchantPassword;
+    }
+    
+    if (includeAmount) {
+        parameters[@"amount"] = @(payment.amount);
+    }
+    
+    return [parameters copy];
 }
 
 - (BOOL)isStartSessionInfoValid:(NSDictionary *)startSessionInfo {
@@ -206,7 +165,92 @@ NSString *const PaylerErrorDescriptionFromCode[] = {
 
 + (PLRPayment *)paymentFromJSON:(NSDictionary *)JSONPayment {
     NSInteger amount = [(JSONPayment[@"amount"] ?: JSONPayment[@"new_amount"]) integerValue];
-    return [[PLRPayment alloc] initWithId:JSONPayment[@"order_id"] amount:amount status:JSONPayment[@"status"]];
+    PLRPayment *payment = [[PLRPayment alloc] initWithId:JSONPayment[@"order_id"] amount:amount status:JSONPayment[@"status"]];
+    if (JSONPayment[kRecurrentTemplateKey]) {
+        PLRPaymentTemplate *template = [[PLRPaymentTemplate alloc] initWithTemplateId:JSONPayment[kRecurrentTemplateKey]];
+        payment.recurrentTemplate = template;
+    }
+    return payment;
+}
+
+@end
+
+@implementation PaylerAPIClient (RecurrentPayments)
+
+- (void)repeatPayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
+    NSParameterAssert(payment);
+    NSParameterAssert(payment.recurrentTemplate);
+    
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:[self parametersWithPayment:payment includePassword:NO includeAmount:YES]];
+    parameters[kRecurrentTemplateKey] = payment.recurrentTemplate.recurrentTemplateId;
+    [self enqueuePaymentRequest:[self requestWithPath:@"RepeatPay" parameters:[parameters copy]] completion:completion];
+}
+
+- (void)fetchTemplateWithId:(NSString *)recurrentTemplateId completion:(PLRPaymentTemplateBlock)completion {
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"key": self.merchantKey}];
+    if (recurrentTemplateId) {
+        parameters[kRecurrentTemplateKey] = recurrentTemplateId;
+    }
+    
+    [self enqueuePaymentTemplateRequest:[self requestWithPath:@"GetTemplate" parameters:[parameters copy]] completion:completion];
+}
+
+- (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRPaymentTemplateBlock)completion {
+    NSParameterAssert(recurrentTemplateId);
+    
+    NSDictionary *parameters = @{@"key": self.merchantKey, kRecurrentTemplateKey: recurrentTemplateId, @"active": active ? @"true": @"false"};
+    [self enqueuePaymentTemplateRequest:[self requestWithPath:@"ActivateTemplate" parameters:parameters] completion:completion];
+}
+
+- (void)enqueuePaymentTemplateRequest:(NSURLRequest *)request
+                           completion:(PLRPaymentTemplateBlock)completion {
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (completion) {
+            if ([responseObject isKindOfClass:[NSArray class]]) {
+                NSMutableArray *templates = [[NSMutableArray alloc] init];
+                for (NSDictionary *templateDict in responseObject) {
+                    PLRPaymentTemplate *template = [self.class paymentTemplateFromJSON:templateDict];
+                    if (template) {
+                        [templates addObject:template];
+                    }
+                }
+                completion([templates copy], nil);
+                return;
+            } else if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                PLRPaymentTemplate *template = [self.class paymentTemplateFromJSON:responseObject];
+                if (template) {
+                    completion(template, nil);
+                }
+                return;
+            }
+            
+            completion(nil, [self.class invalidParametersError]);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (completion) {
+            completion(nil, [self.class errorFromRequestOperation:operation]);
+        }
+    }];
+    
+    [self.operationQueue addOperation:operation];
+}
+
++ (PLRPaymentTemplate *)paymentTemplateFromJSON:(NSDictionary *)JSONTemplate {
+    if (!JSONTemplate[kRecurrentTemplateKey]) {
+        return nil;
+    }
+    
+    PLRPaymentTemplate *template = [[PLRPaymentTemplate alloc] initWithTemplateId:JSONTemplate[kRecurrentTemplateKey]];
+    template.cardHolder = JSONTemplate[@"card_holder"];
+    template.cardNumber = JSONTemplate[@"card_number"];
+    template.expiry = JSONTemplate[@"expiry"];
+    template.active = [JSONTemplate[@"active"] boolValue];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    template.creationDate = [dateFormatter dateFromString:JSONTemplate[@"created"]];
+    
+    return template;
 }
 
 @end
