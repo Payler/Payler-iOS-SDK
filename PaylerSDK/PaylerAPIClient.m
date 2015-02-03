@@ -38,8 +38,22 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
         _merchantKey = [merchantKey copy];
         _merchantPassword = [merchantPassword copy];
         self.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+        [self.securityPolicy setPinnedCertificates:[self pinnedCertificates]];
     }
     return self;
+}
+
+- (NSArray *)pinnedCertificates {
+    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"PaylerSDK" ofType:@"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+    NSArray *paths = [bundle pathsForResourcesOfType:@"cer" inDirectory:@"."];
+    
+    NSMutableArray *certificates = [NSMutableArray arrayWithCapacity:[paths count]];
+    for (NSString *path in paths) {
+        NSData *certificateData = [NSData dataWithContentsOfFile:path];
+        [certificates addObject:certificateData];
+    }
+    return [certificates copy];
 }
 
 - (NSMutableURLRequest *)requestWithPath:(NSString *)path parameters:(NSDictionary *)parameters {
