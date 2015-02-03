@@ -38,9 +38,7 @@
 		0249DC3D1A653EF000AC547A /* RepeatPay.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0249DC3C1A653EF000AC547A /* RepeatPay.txt */; };
 		0249DC3F1A65440100AC547A /* GetTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0249DC3E1A65440100AC547A /* GetTemplate.txt */; };
 		0249DC421A655A5E00AC547A /* PLRError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0249DC411A655A5E00AC547A /* PLRError.m */; };
-		02CCAF76196D5CF2002CFD3D /* PaylerCert.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CCAF73196D5CF2002CFD3D /* PaylerCert.cer */; };
-		02CCAF77196D5CF2002CFD3D /* RootCert.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CCAF74196D5CF2002CFD3D /* RootCert.cer */; };
-		02CCAF7A196D5DA0002CFD3D /* ThawteCert.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CCAF79196D5DA0002CFD3D /* ThawteCert.cer */; };
+		02E7D5FE1A8125B20068309B /* PaylerSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 02E7D5FD1A8125B20068309B /* PaylerSDK.bundle */; };
 		99437952F2F54D4593DB41B2 /* libPods-PaylerSDKTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5DAF8C563492F868C6DB4 /* libPods-PaylerSDKTests.a */; };
 		B1252296972647008FD2E67B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE962A8EFC9A43B98C44B368 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -99,9 +97,7 @@
 		0249DC3E1A65440100AC547A /* GetTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GetTemplate.txt; sourceTree = "<group>"; };
 		0249DC401A655A3900AC547A /* PLRError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PLRError.h; sourceTree = "<group>"; };
 		0249DC411A655A5E00AC547A /* PLRError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRError.m; sourceTree = "<group>"; };
-		02CCAF73196D5CF2002CFD3D /* PaylerCert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = PaylerCert.cer; sourceTree = "<group>"; };
-		02CCAF74196D5CF2002CFD3D /* RootCert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = RootCert.cer; sourceTree = "<group>"; };
-		02CCAF79196D5DA0002CFD3D /* ThawteCert.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThawteCert.cer; sourceTree = "<group>"; };
+		02E7D5FD1A8125B20068309B /* PaylerSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PaylerSDK.bundle; sourceTree = "<group>"; };
 		87CACA086616486AB318DB73 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		A914EBD8B62E49CA83ED292E /* Pods-PaylerSDKTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaylerSDKTests.xcconfig"; path = "Pods/Pods-PaylerSDKTests.xcconfig"; sourceTree = "<group>"; };
 		BE962A8EFC9A43B98C44B368 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -210,9 +206,7 @@
 		0220D3E6196A96E300FC5AF3 /* PaylerSDK */ = {
 			isa = PBXGroup;
 			children = (
-				02CCAF79196D5DA0002CFD3D /* ThawteCert.cer */,
-				02CCAF73196D5CF2002CFD3D /* PaylerCert.cer */,
-				02CCAF74196D5CF2002CFD3D /* RootCert.cer */,
+				02E7D5FD1A8125B20068309B /* PaylerSDK.bundle */,
 				0220D40A196AA8D000FC5AF3 /* PLRSessionInfo.h */,
 				0220D40B196AA8D000FC5AF3 /* PLRSessionInfo.m */,
 				0220D40E196AAC4D00FC5AF3 /* PLRPayment.h */,
@@ -354,10 +348,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0220D447196ACB2100FC5AF3 /* Main.storyboard in Resources */,
-				02CCAF7A196D5DA0002CFD3D /* ThawteCert.cer in Resources */,
-				02CCAF76196D5CF2002CFD3D /* PaylerCert.cer in Resources */,
+				02E7D5FE1A8125B20068309B /* PaylerSDK.bundle in Resources */,
 				0220D425196ACABA00FC5AF3 /* InfoPlist.strings in Resources */,
-				02CCAF77196D5CF2002CFD3D /* RootCert.cer in Resources */,
 				0220D42D196ACABA00FC5AF3 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

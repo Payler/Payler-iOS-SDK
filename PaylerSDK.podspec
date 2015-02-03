@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                = 'PaylerSDK'
-  s.version             = '1.1'
+  s.version             = '1.1.1'
   s.license             = 'MIT'
   s.homepage            = 'https://github.com/Payler/Payler-iOS-SDK'
   s.summary             = 'iOS SDK for Payler Gate API'
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.platform            = :ios, '6.0'
   s.source              = { :git => 'https://github.com/Payler/Payler-iOS-SDK.git', :tag => s.version.to_s }
   s.source_files        = 'PaylerSDK/*.{h,m}'
-  s.ios.resource_bundle = { 'PaylerSDK' => 'PaylerSDK/*.cer' }
+  s.ios.resource       = 'PaylerSDK/PaylerSDK.bundle'
 
   s.requires_arc = true
   s.dependency 'AFNetworking/NSURLConnection', '~> 2.3'
