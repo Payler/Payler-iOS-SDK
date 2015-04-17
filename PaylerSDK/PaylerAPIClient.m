@@ -181,8 +181,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     NSInteger amount = [(JSONPayment[@"amount"] ?: JSONPayment[@"new_amount"]) integerValue];
     PLRPayment *payment = [[PLRPayment alloc] initWithId:JSONPayment[@"order_id"] amount:amount status:JSONPayment[@"status"]];
     if (JSONPayment[kRecurrentTemplateKey]) {
-        PLRPaymentTemplate *template = [[PLRPaymentTemplate alloc] initWithTemplateId:JSONPayment[kRecurrentTemplateKey]];
-        payment.recurrentTemplate = template;
+        payment.recurrentTemplateId = JSONPayment[kRecurrentTemplateKey];
     }
     return payment;
 }
@@ -193,10 +192,10 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
 
 - (void)repeatPayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
     NSParameterAssert(payment);
-    NSParameterAssert(payment.recurrentTemplate);
+    NSParameterAssert(payment.recurrentTemplateId);
     
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:[self parametersWithPayment:payment includePassword:NO includeAmount:YES]];
-    parameters[kRecurrentTemplateKey] = payment.recurrentTemplate.recurrentTemplateId;
+    parameters[kRecurrentTemplateKey] = payment.recurrentTemplateId;
     [self enqueuePaymentRequest:[self requestWithPath:@"RepeatPay" parameters:[parameters copy]] completion:completion];
 }
 
@@ -220,9 +219,10 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
                            completion:(PLRPaymentTemplateBlock)completion {
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (completion) {
-            if ([responseObject isKindOfClass:[NSArray class]]) {
+            NSArray *responseArray = responseObject[@"templates"];
+            if (responseArray) {
                 NSMutableArray *templates = [[NSMutableArray alloc] init];
-                for (NSDictionary *templateDict in responseObject) {
+                for (NSDictionary *templateDict in responseArray) {
                     PLRPaymentTemplate *template = [self.class paymentTemplateFromJSON:templateDict];
                     if (template) {
                         [templates addObject:template];

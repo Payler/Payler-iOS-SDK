@@ -58,7 +58,7 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 /**
  *  Если не nil, то это шаблон рекуррентных платежей, по которому был выполнен данный платеж.
  */
-@property (nonatomic, strong) PLRPaymentTemplate *recurrentTemplate;
+@property (nonatomic, strong) NSString *recurrentTemplateId;
 
 /**
  *  Словарь, содержащий параметры, использумые в запросах к API.

@@ -31,8 +31,7 @@
 
     self.client = [PaylerAPIClient clientWithMerchantKey:@"MerchantKey" password:@"MerchantPassword"];
     self.payment = [[PLRPayment alloc] initWithId:@"SDK_iOS_2014-07-10 10:48:09  0000" amount:100];
-    PLRPaymentTemplate *template = [[PLRPaymentTemplate alloc] initWithTemplateId:@"templateId"];
-    self.payment.recurrentTemplate = template;
+    self.payment.recurrentTemplateId = @"templateId";
 }
 
 - (void)testClientCreation {
