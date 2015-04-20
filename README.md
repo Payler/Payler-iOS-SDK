@@ -4,39 +4,9 @@
 
 
 ## Пример использования
-Регистрация шаблона рекуррентных платежей
 
     PaylerAPIClient *client = [PaylerAPIClient clientWithMerchantKey:@"..." password:@"..."];
     PLRPayment *payment = [[PLRPayment alloc] initWithId:@"paymentId" amount:10000];
-    NSURL *callbackURL = [NSURL URLWithString:[@"callbackURL" stringByAppendingString:paymentId]];
-    PLRSessionInfo *sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment callbackURL:@"callbackURL" sessionType:sessionType];
-    sessionInfo.recurrent = true;
-    [client startSessionWithInfo:sessionInfo completion:^(PLRPayment *payment, NSString *sessionId, NSError *error) {
-        
-    }];
-
-После завершения оплаты получаем информацию о платеже, которая содержит идентификатор шаблона рекуррентных платежей
-    
-    __block PLRPayment *payment;
-    [client fetchStatusForPaymentWithId:sessionInfo.paymentInfo.paymentId completion:^(PLRPayment *fetchPayment, NSError *error) {
-        payment = fetchPayment;
-    }];
-    
-Используя этот идентификатор можно совершать рекуррентные платежи
-    
-    [self.client repeatPayment:payment completion:^(PLRPayment *fetchedPayment, NSError *error) {
-        
-    }];
-    
-Так же используя этот идентификатор можно получить сам шаблон рекуррентных платежей
-
-    __block PLRPaymentTemplate *template;
-    [self.client fetchTemplateWithId:payment.recurrentTemplate.recurrentTemplateId completion:^(PLRPaymentTemplate *fetchedTemplate, NSError *error) {
-        template = fetchedTemplate;
-    }];
-
-Возврат средств на карту покупателя
-
     [client refundPayment:payment completion:^(PLRPayment *payment, NSDictionary *info, NSError *error) {
         if (!error) {
             NSLog(@"Refund completed");
@@ -44,7 +14,6 @@
             NSLog(@"Error: %@", error);
         }
     }];
-
 
 Скачайте тестовый проект, чтобы посмотреть больше примеров.
 
