@@ -78,7 +78,7 @@
 }
 
 - (void)testDictionaryRepresentationForSessionInfoWithAllParameters {
-    NSDictionary *parameters = @{@"type": @"TwoStep", @"order_id": @"id", @"amount": @(100), @"template": @"myTemplate", @"language": @"en", @"recurrent": @"true"};
+    NSDictionary *parameters = @{@"type": @"TwoStep", @"order_id": @"id", @"amount": @(100), @"template": @"myTemplate", @"lang": @"en", @"recurrent": @"true"};
     PLRSessionInfo *sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:self.payment callbackURL:self.callbackURL sessionType:PLRSessionTypeTwoStep template:@"myTemplate" language:@"en"];
     sessionInfo.recurrent = YES;
     expect([sessionInfo dictionaryRepresentation]).to.equal(parameters);
