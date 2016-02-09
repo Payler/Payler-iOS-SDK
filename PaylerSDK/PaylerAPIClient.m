@@ -37,41 +37,23 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     if (self) {
         _merchantKey = [merchantKey copy];
         _merchantPassword = [merchantPassword copy];
-        self.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
-        [self.securityPolicy setPinnedCertificates:[self pinnedCertificates]];
+
+        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"PaylerSDK" ofType:@"bundle"];
+        NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+        self.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate withPinnedCertificates:[AFSecurityPolicy certificatesInBundle:bundle]];
     }
     return self;
 }
 
-- (NSArray *)pinnedCertificates {
-    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"PaylerSDK" ofType:@"bundle"];
-    NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
-    NSArray *paths = [bundle pathsForResourcesOfType:@"cer" inDirectory:@"."];
-    
-    NSMutableArray *certificates = [NSMutableArray arrayWithCapacity:[paths count]];
-    for (NSString *path in paths) {
-        NSData *certificateData = [NSData dataWithContentsOfFile:path];
-        [certificates addObject:certificateData];
-    }
-    return [certificates copy];
-}
-
-- (NSMutableURLRequest *)requestWithPath:(NSString *)path parameters:(NSDictionary *)parameters {
-    return [self.requestSerializer requestWithMethod:@"POST"
-                                           URLString:[[NSURL URLWithString:path relativeToURL:self.baseURL] absoluteString]
-                                          parameters:parameters
-                                               error:nil];
-}
-
 #pragma mark - Error handling
 
-+ (NSError *)errorFromRequestOperation:(AFHTTPRequestOperation *)operation {
-	NSParameterAssert(operation);
-
++ (NSError *)domainErrorFromError:(NSError *)error {
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    PaylerErrorCode errorCode = [[operation.responseObject valueForKeyPath:@"error.code"] integerValue];
+    NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+    NSDictionary *serializedData = [NSJSONSerialization JSONObjectWithData:errorData options:kNilOptions error:nil];
+    PaylerErrorCode errorCode = [[serializedData valueForKeyPath:@"error.code"] integerValue];
     userInfo[NSLocalizedDescriptionKey] = PaylerErrorDescriptionFromCode(errorCode);
-	if (operation.error) userInfo[NSUnderlyingErrorKey] = operation.error;
+	if (error) userInfo[NSUnderlyingErrorKey] = error;
 	return [NSError errorWithDomain:PaylerErrorDomain code:errorCode userInfo:userInfo];
 }
 
@@ -91,7 +73,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"key": self.merchantKey}];
     [parameters addEntriesFromDictionary:[sessionInfo dictionaryRepresentation]];
 
-    [self POST:@"StartSession" parameters:[parameters copy] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self POST:@"StartSession" parameters:[parameters copy] progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (completion) {
             if ([self isStartSessionInfoValid:responseObject]) {
                 completion([self.class paymentFromJSON:responseObject], responseObject[@"session_id"], nil);
@@ -99,37 +81,38 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
                 completion(nil, nil, [self.class invalidParametersError]);
             }
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         if (completion) {
-            completion(nil, nil, [self.class errorFromRequestOperation:operation]);
+            completion(nil, nil, [self.class domainErrorFromError:error]);
         }
     }];
 }
 
 - (void)chargePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
-    [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Charge" payment:payment] completion:completion];
+    [self enqueuePaymentRequestWithPath:@"Charge" parameters:[self paymentParametersWithPayment:payment] completion:completion];
 }
 
 - (void)retrievePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
-    [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Retrieve" payment:payment] completion:completion];
+    [self enqueuePaymentRequestWithPath:@"Retrieve" parameters:[self paymentParametersWithPayment:payment] completion:completion];
 }
 
 - (void)refundPayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
-    [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Refund" payment:payment] completion:completion];
+    [self enqueuePaymentRequestWithPath:@"Refund" parameters:[self paymentParametersWithPayment:payment] completion:completion];
 }
 
 - (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRCompletionBlock)completion {
     NSParameterAssert(paymentId);
 
     PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:0];
-    [self enqueuePaymentRequest:[self requestWithPath:@"GetStatus" parameters:[self parametersWithPayment:payment includePassword:NO includeAmount:NO]] completion:completion];
+    [self enqueuePaymentRequestWithPath:@"GetStatus" parameters:[self parametersWithPayment:payment includePassword:NO includeAmount:NO] completion:completion];
 }
 
 #pragma mark - Private methods
 
-- (void)enqueuePaymentRequest:(NSURLRequest *)request
-                   completion:(PLRCompletionBlock)completion {
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+- (void)enqueuePaymentRequestWithPath:(NSString *)path
+                           parameters:(NSDictionary *)parameters
+                           completion:(PLRCompletionBlock)completion {
+    [self POST:path parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion) {
             if ([self isPaymentInfoValid:responseObject]) {
                 completion([self.class paymentFromJSON:responseObject], nil);
@@ -137,19 +120,17 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
                 completion(nil, [self.class invalidParametersError]);
             }
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (completion) {
-            completion(nil, [self.class errorFromRequestOperation:operation]);
+            completion(nil, [self.class domainErrorFromError:error]);
         }
     }];
-
-    [self.operationQueue addOperation:operation];
 }
 
-- (NSMutableURLRequest *)paymentRequestWithPath:(NSString *)path payment:(PLRPayment *)payment {
+- (NSDictionary *)paymentParametersWithPayment:(PLRPayment *)payment {
     NSParameterAssert(payment);
     
-    return [self requestWithPath:path parameters:[self parametersWithPayment:payment includePassword:YES includeAmount:YES]];
+    return [self parametersWithPayment:payment includePassword:YES includeAmount:YES];
 }
 
 - (NSDictionary *)parametersWithPayment:(PLRPayment *)payment includePassword:(BOOL)includePassword includeAmount:(BOOL)includeAmount {
@@ -196,7 +177,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:[self parametersWithPayment:payment includePassword:NO includeAmount:YES]];
     parameters[kRecurrentTemplateKey] = payment.recurrentTemplateId;
-    [self enqueuePaymentRequest:[self requestWithPath:@"RepeatPay" parameters:[parameters copy]] completion:completion];
+    [self enqueuePaymentRequestWithPath:@"RepeatPay" parameters:[parameters copy] completion:completion];
 }
 
 - (void)fetchTemplateWithId:(NSString *)recurrentTemplateId completion:(PLRPaymentTemplateBlock)completion {
@@ -205,19 +186,20 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
         parameters[kRecurrentTemplateKey] = recurrentTemplateId;
     }
     
-    [self enqueuePaymentTemplateRequest:[self requestWithPath:@"GetTemplate" parameters:[parameters copy]] completion:completion];
+    [self enqueuePaymentTemplateRequestWithPath:@"GetTemplate" parameters:[parameters copy] completion:completion];
 }
 
 - (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRPaymentTemplateBlock)completion {
     NSParameterAssert(recurrentTemplateId);
     
     NSDictionary *parameters = @{@"key": self.merchantKey, kRecurrentTemplateKey: recurrentTemplateId, @"active": active ? @"true": @"false"};
-    [self enqueuePaymentTemplateRequest:[self requestWithPath:@"ActivateTemplate" parameters:parameters] completion:completion];
+    [self enqueuePaymentTemplateRequestWithPath:@"ActivateTemplate" parameters:parameters completion:completion];
 }
 
-- (void)enqueuePaymentTemplateRequest:(NSURLRequest *)request
-                           completion:(PLRPaymentTemplateBlock)completion {
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+- (void)enqueuePaymentTemplateRequestWithPath:(NSString *)path
+                                   parameters:(NSDictionary *)parameters
+                                   completion:(PLRPaymentTemplateBlock)completion {
+    [self POST:path parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion) {
             NSArray *responseArray = responseObject[@"templates"];
             if (responseArray) {
@@ -240,13 +222,11 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
             
             completion(nil, [self.class invalidParametersError]);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (completion) {
-            completion(nil, [self.class errorFromRequestOperation:operation]);
+            completion(nil, [self.class domainErrorFromError:error]);
         }
     }];
-    
-    [self.operationQueue addOperation:operation];
 }
 
 + (PLRPaymentTemplate *)paymentTemplateFromJSON:(NSDictionary *)JSONTemplate {

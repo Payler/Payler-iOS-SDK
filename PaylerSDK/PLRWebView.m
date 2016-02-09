@@ -9,7 +9,7 @@
 #import "PLRWebView.h"
 #import "PLRSessionInfo.h"
 #import "PLRPayment.h"
-#import <AFNetworking/AFHTTPRequestOperationManager.h>
+#import <AFNetworking/AFHTTPSessionManager.h>
 #import "PaylerAPIClient.h"
 
 @interface PLRWebView ()<UIWebViewDelegate>

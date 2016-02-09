@@ -16,6 +16,9 @@
 #define EXP_SHORTHAND YES
 #import <Expecta.h>
 #import <OHHTTPStubs.h>
+#import <OHPathHelpers.h>
+
+#pragma clang diagnostic ignored "-Wnonnull"
 
 @interface PaylerAPIClientTests : XCTestCase
 
@@ -183,7 +186,7 @@
         return [request.HTTPMethod isEqualToString:@"POST"] &&
         [request.URL.absoluteString isEqualToString:[self URLWithPath:@"GetStatus"]];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithFileAtPath:OHPathForFileInBundle(@"Error.txt", nil) statusCode:400 headers:@{@"Content-Type": @"text/json"}];
+        return [OHHTTPStubsResponse responseWithFileAtPath:OHPathForFile(@"Error.txt", self.class) statusCode:400 headers:@{@"Content-Type": @"text/json"}];
     }];
 
     __block NSError *error;
@@ -206,7 +209,7 @@
         return [request.HTTPMethod isEqualToString:@"POST"] &&
         [request.URL.absoluteString isEqualToString:[self URLWithPath:URL]];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithFileAtPath:OHPathForFileInBundle(filePath, nil) statusCode:200 headers:@{@"Content-Type": @"text/json"}];
+        return [OHHTTPStubsResponse responseWithFileAtPath:OHPathForFile(filePath, self.class) statusCode:200 headers:@{@"Content-Type": @"text/json"}];
     }];
 }
 

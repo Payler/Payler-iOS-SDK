@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AFNetworking/AFHTTPRequestOperationManager.h>
+#import <AFNetworking/AFHTTPSessionManager.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,7 +20,7 @@ typedef void (^PLRPaymentTemplateBlock)(id _Nullable object, NSError * _Nullable
 /**
  *  В классе инкапсулированы запросы и логика работы с Payler Gate API.
  */
-@interface PaylerAPIClient : AFHTTPRequestOperationManager
+@interface PaylerAPIClient : AFHTTPSessionManager
 
 /**
  *  Инициализирует и возвращает объект класса PaylerAPIClient с соответствующими параметрами боевого доступа.
