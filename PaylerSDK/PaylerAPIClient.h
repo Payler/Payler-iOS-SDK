@@ -9,11 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class PLRPayment, PLRSessionInfo, PLRPaymentTemplate;
 
-typedef void (^PLRStartSessionCompletionBlock)(PLRPayment *payment, NSString *sessionId, NSError *error);
-typedef void (^PLRCompletionBlock)(PLRPayment *payment, NSError *error);
-typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
+typedef void (^PLRStartSessionCompletionBlock)(PLRPayment * _Nullable payment, NSString * _Nullable sessionId, NSError * _Nullable error);
+typedef void (^PLRCompletionBlock)(PLRPayment * _Nullable payment, NSError * _Nullable error);
+typedef void (^PLRPaymentTemplateBlock)(id _Nullable object, NSError * _Nullable error);
 
 /**
  *  В классе инкапсулированы запросы и логика работы с Payler Gate API.
@@ -116,3 +118,5 @@ typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
 - (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRPaymentTemplateBlock)completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class PLRPayment;
 
 typedef NS_ENUM(NSUInteger, PLRSessionType) {
@@ -38,12 +40,12 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
 /**
  *  Название шаблона страницы оплаты, используемого продавцом. При отсутствии используется шаблон mobile.
  */
-@property (nonatomic, readonly, copy) NSString *templateName;
+@property (nonatomic, nullable, readonly, copy) NSString *templateName;
 
 /**
  *  Необязательный параметр, определяющий язык страницы оплаты("en" - английский язык, "ru" - русский язык).
  */
-@property (nonatomic, readonly, copy) NSString *language;
+@property (nonatomic, nullable, readonly, copy) NSString *language;
 
 /**
  *  Показывает, требуется ли создать шаблон рекуррентных платежей на основе текущего.
@@ -58,9 +60,11 @@ typedef NS_ENUM(NSUInteger, PLRSessionType) {
 //  Следующие методы инициализируют и возвращают объект класса PLRSessionInfo. Параметры paymentInfo и URL не должен быть nil.
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL;
 - (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType;
-- (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType template:(NSString *)templateName language:(NSString *)language NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithPaymentInfo:(PLRPayment *)paymentInfo callbackURL:(NSURL *)URL sessionType:(PLRSessionType)sessionType template:(nullable NSString *)templateName language:(nullable NSString *)language NS_DESIGNATED_INITIALIZER;
 
 - (id)init __attribute__((unavailable("Must use initWithPaymentInfo: instead.")));
 + (id)new __attribute__((unavailable("Must use initWithPaymentInfo: instead.")));
 
 @end
+
+NS_ASSUME_NONNULL_END

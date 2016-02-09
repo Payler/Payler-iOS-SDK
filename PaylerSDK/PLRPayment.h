@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class PLRPaymentTemplate;
 
 typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
@@ -48,7 +50,7 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 /**
  *  Наименование оплачиваемого продукта. Максимальное количество символов - 100.
  */
-@property (nonatomic, readonly, copy) NSString *product;
+@property (nonatomic, nullable, readonly, copy) NSString *product;
 
 /**
  *  Количество оплачиваемых в заказе продуктов.
@@ -58,7 +60,7 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 /**
  *  Если не nil, то это шаблон рекуррентных платежей, по которому был выполнен данный платеж.
  */
-@property (nonatomic, strong) NSString *recurrentTemplateId;
+@property (nonatomic, nullable, strong) NSString *recurrentTemplateId;
 
 /**
  *  Словарь, содержащий параметры, использумые в запросах к API.
@@ -67,8 +69,8 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 
 //  Следующие методы инициализируют и возвращают объект класса PLRPayment. Параметр paymentId не должен быть nil.
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount;
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status;
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(nullable NSString *)status;
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(nullable NSString *)status product:(nullable NSString *)product total:(CGFloat)total NS_DESIGNATED_INITIALIZER;
 
 - (id)init __attribute__((unavailable("Must use initWithId:amount: instead.")));
 + (id)new __attribute__((unavailable("Must use initWithId:amount: instead.")));
@@ -88,22 +90,22 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 /**
  *  Дата и время регистрации шаблона рекуррентных платежей в системе Payler.
  */
-@property (nonatomic, copy) NSDate *creationDate;
+@property (nonatomic, nullable, copy) NSDate *creationDate;
 
 /**
  *  Имя держателя карты, к которой привязан шаблон.
  */
-@property (nonatomic, copy) NSString *cardHolder;
+@property (nonatomic, nullable, copy) NSString *cardHolder;
 
 /**
  *  Маскированный номер карты, к которой привязан шаблон.
  */
-@property (nonatomic, copy) NSString *cardNumber;
+@property (nonatomic, nullable, copy) NSString *cardNumber;
 
 /**
  *  Срок действия шаблона рекуррентных платежей формата "MM/yy".
  */
-@property (nonatomic, copy) NSString *expiry;
+@property (nonatomic, nullable, copy) NSString *expiry;
 
 /**
  *  Показывает, активен ли шаблон.
@@ -117,3 +119,5 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 + (id)new __attribute__((unavailable("Must use initWithTemplateId: instead.")));
 
 @end
+
+NS_ASSUME_NONNULL_END
