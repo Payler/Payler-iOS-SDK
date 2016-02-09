@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -15,6 +15,8 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "OCMFunctions.h"
+
 
 @interface OCMLocation : NSObject
 {
@@ -23,9 +25,9 @@
     NSUInteger  line;
 }
 
-+ (id)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
++ (instancetype)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
 
-- (id)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
+- (instancetype)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
 
 - (id)testCase;
 - (NSString *)file;
@@ -33,4 +35,4 @@
 
 @end
 
-extern OCMLocation *OCMMakeLocation(id testCase, const char *file, int line);
+OCMOCK_EXTERN OCMLocation *OCMMakeLocation(id testCase, const char *file, int line);

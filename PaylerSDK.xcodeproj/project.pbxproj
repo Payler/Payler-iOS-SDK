@@ -97,11 +97,13 @@
 		0249DC3E1A65440100AC547A /* GetTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GetTemplate.txt; sourceTree = "<group>"; };
 		0249DC401A655A3900AC547A /* PLRError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PLRError.h; sourceTree = "<group>"; };
 		0249DC411A655A5E00AC547A /* PLRError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRError.m; sourceTree = "<group>"; };
+		02711AAF3D56241F717CFD1F /* Pods-PaylerSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaylerSDKTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaylerSDKTests/Pods-PaylerSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 		02E7D5FD1A8125B20068309B /* PaylerSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PaylerSDK.bundle; sourceTree = "<group>"; };
-		87CACA086616486AB318DB73 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		A914EBD8B62E49CA83ED292E /* Pods-PaylerSDKTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaylerSDKTests.xcconfig"; path = "Pods/Pods-PaylerSDKTests.xcconfig"; sourceTree = "<group>"; };
+		193253B790DD4346B5BFAB95 /* Pods-PaylerSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaylerSDKTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PaylerSDKTests/Pods-PaylerSDKTests.release.xcconfig"; sourceTree = "<group>"; };
+		75F331E97143EA73C9641F5D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		BE962A8EFC9A43B98C44B368 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0A5DAF8C563492F868C6DB4 /* libPods-PaylerSDKTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PaylerSDKTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED8A0BE94B4EFB637F9981BA /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,8 +178,7 @@
 				0220D420196ACABA00FC5AF3 /* Example */,
 				0220D3E3196A96E300FC5AF3 /* Frameworks */,
 				0220D3E2196A96E300FC5AF3 /* Products */,
-				87CACA086616486AB318DB73 /* Pods.xcconfig */,
-				A914EBD8B62E49CA83ED292E /* Pods-PaylerSDKTests.xcconfig */,
+				4DB0063694D607644DF87DDC /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -248,6 +249,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		4DB0063694D607644DF87DDC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ED8A0BE94B4EFB637F9981BA /* Pods.debug.xcconfig */,
+				75F331E97143EA73C9641F5D /* Pods.release.xcconfig */,
+				02711AAF3D56241F717CFD1F /* Pods-PaylerSDKTests.debug.xcconfig */,
+				193253B790DD4346B5BFAB95 /* Pods-PaylerSDKTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -260,6 +272,7 @@
 				021DA1B2196E7B6D00B6EC2F /* Frameworks */,
 				021DA1B3196E7B6D00B6EC2F /* Resources */,
 				DB1861F3B77D4B3EBBC9DCAB /* Copy Pods Resources */,
+				1B4111ABEB404C77B60290C7 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -280,6 +293,7 @@
 				0220D418196ACABA00FC5AF3 /* Frameworks */,
 				0220D419196ACABA00FC5AF3 /* Resources */,
 				A5E3EB9DAEA0422ABE2714BE /* Copy Pods Resources */,
+				97FC5DC7968C6AF3E3C7B900 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -357,6 +371,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1B4111ABEB404C77B60290C7 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaylerSDKTests/Pods-PaylerSDKTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97FC5DC7968C6AF3E3C7B900 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A5E3EB9DAEA0422ABE2714BE /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -369,7 +413,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A6042AA3DDDB42DB91361CED /* Check Pods Manifest.lock */ = {
@@ -399,7 +443,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-PaylerSDKTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PaylerSDKTests/Pods-PaylerSDKTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E03E5DD6A67E4550848E4E66 /* Check Pods Manifest.lock */ = {
@@ -479,7 +523,7 @@
 /* Begin XCBuildConfiguration section */
 		021DA1C4196E7B6D00B6EC2F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A914EBD8B62E49CA83ED292E /* Pods-PaylerSDKTests.xcconfig */;
+			baseConfigurationReference = 02711AAF3D56241F717CFD1F /* Pods-PaylerSDKTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -503,7 +547,7 @@
 		};
 		021DA1C5196E7B6D00B6EC2F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A914EBD8B62E49CA83ED292E /* Pods-PaylerSDKTests.xcconfig */;
+			baseConfigurationReference = 193253B790DD4346B5BFAB95 /* Pods-PaylerSDKTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -553,7 +597,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -584,7 +628,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -592,7 +636,7 @@
 		};
 		0220D441196ACABB00FC5AF3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 87CACA086616486AB318DB73 /* Pods.xcconfig */;
+			baseConfigurationReference = ED8A0BE94B4EFB637F9981BA /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -609,7 +653,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Example/Example-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.poloniumarts.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -618,7 +662,7 @@
 		};
 		0220D442196ACABB00FC5AF3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 87CACA086616486AB318DB73 /* Pods.xcconfig */;
+			baseConfigurationReference = 75F331E97143EA73C9641F5D /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -631,7 +675,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Example/Example-Prefix.pch";
 				INFOPLIST_FILE = "Example/Example-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.poloniumarts.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

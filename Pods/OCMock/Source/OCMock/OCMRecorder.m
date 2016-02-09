@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2014-2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -22,13 +22,13 @@
 
 @implementation OCMRecorder
 
-- (id)init
+- (instancetype)init
 {
     // no super, we're inheriting from NSProxy
     return self;
 }
 
-- (id)initWithMockObject:(OCMockObject *)aMockObject
+- (instancetype)initWithMockObject:(OCMockObject *)aMockObject
 {
     [self init];
     [self setMockObject:aMockObject];
