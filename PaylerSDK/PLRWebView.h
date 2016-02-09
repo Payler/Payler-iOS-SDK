@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class PLRSessionInfo, PaylerAPIClient, PLRPayment, PLRWebView;
 
 @protocol PLRWebViewDataSource <NSObject>
@@ -18,7 +20,7 @@
 
 @end
 
-typedef void (^PLRPayBlock)(PLRPayment *payment, NSError *error);
+typedef void (^PLRPayBlock)( PLRPayment * _Nullable payment,  NSError * _Nullable error);
 
 /**
  *  Наследник класса UIWebView, в котором инкапсулирована логика оплаты через страницу шлюза Payler.
@@ -43,3 +45,5 @@ typedef void (^PLRPayBlock)(PLRPayment *payment, NSError *error);
 - (instancetype)initWithFrame:(CGRect)frame dataSource:(id<PLRWebViewDataSource>)dataSource;
 
 @end
+
+NS_ASSUME_NONNULL_END

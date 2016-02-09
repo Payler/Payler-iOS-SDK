@@ -15,6 +15,8 @@
 #define EXP_SHORTHAND YES
 #import <Expecta.h>
 
+#pragma clang diagnostic ignored "-Wnonnull"
+
 @interface PLRWebViewTests : XCTestCase
 
 @property (nonatomic, strong) PLRWebView *webView;

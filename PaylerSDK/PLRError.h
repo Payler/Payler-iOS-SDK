@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Polonium Arts. All rights reserved.
 //
 
+NS_ASSUME_NONNULL_BEGIN
 extern NSString *const PaylerErrorDomain;
 
 typedef NS_ENUM (NSUInteger, PaylerErrorCode) {
@@ -37,3 +38,4 @@ typedef NS_ENUM (NSUInteger, PaylerErrorCode) {
 
 extern NSString* PaylerErrorDescriptionFromCode(PaylerErrorCode errorCode);
 
+NS_ASSUME_NONNULL_END

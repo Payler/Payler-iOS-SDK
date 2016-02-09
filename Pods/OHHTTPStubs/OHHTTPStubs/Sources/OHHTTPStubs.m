@@ -44,7 +44,7 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
 @interface OHHTTPStubs()
 + (instancetype)sharedInstance;
 @property(atomic, copy) NSMutableArray* stubDescriptors;
-@property(atomic, copy) void (^onStubActivationBlock)(NSURLRequest*, id<OHHTTPStubsDescriptor>);
+@property(atomic, copy, nullable) void (^onStubActivationBlock)(NSURLRequest*, id<OHHTTPStubsDescriptor>);
 @end
 
 @interface OHHTTPStubsDescriptor : NSObject <OHHTTPStubsDescriptor>
@@ -108,7 +108,7 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
         [self setEnabled:YES];
     }
 }
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self)
@@ -141,10 +141,7 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
 {
     return [OHHTTPStubs.sharedInstance removeStub:stubDesc];
 }
-+(void)removeLastStub
-{
-    [OHHTTPStubs.sharedInstance removeLastStub];
-}
+
 +(void)removeAllStubs
 {
     [OHHTTPStubs.sharedInstance removeAllStubs];
@@ -177,7 +174,7 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
         Class protoCls = OHHTTPStubsProtocol.class;
         if (enable && ![urlProtocolClasses containsObject:protoCls])
         {
-            [urlProtocolClasses addObject:protoCls];
+            [urlProtocolClasses insertObject:protoCls atIndex:0];
         }
         else if (!enable && [urlProtocolClasses containsObject:protoCls])
         {
@@ -201,7 +198,7 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
     return [OHHTTPStubs.sharedInstance stubDescriptors];
 }
 
-+(void)onStubActivation:( void(^)(NSURLRequest* request, id<OHHTTPStubsDescriptor> stub) )block
++(void)onStubActivation:( nullable void(^)(NSURLRequest* request, id<OHHTTPStubsDescriptor> stub) )block
 {
     [OHHTTPStubs.sharedInstance setOnStubActivationBlock:block];
 }
@@ -228,14 +225,6 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
         [_stubDescriptors removeObject:stubDesc];
     }
     return handlerFound;
-}
-
--(void)removeLastStub
-{
-    @synchronized(_stubDescriptors)
-    {
-        [_stubDescriptors removeLastObject];
-    }
 }
 
 -(void)removeAllStubs
@@ -280,6 +269,8 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
 @interface OHHTTPStubsProtocol()
 @property(assign) BOOL stopped;
 @property(strong) OHHTTPStubsDescriptor* stub;
+@property(assign) CFRunLoopRef clientRunLoop;
+- (void)executeOnClientRunLoopAfterDelay:(NSTimeInterval)delayInSeconds block:(dispatch_block_t)block;
 @end
 
 @implementation OHHTTPStubsProtocol
@@ -309,6 +300,7 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
 
 - (void)startLoading
 {
+    self.clientRunLoop = CFRunLoopGetCurrent();
     NSURLRequest* request = self.request;
     id<NSURLProtocolClient> client = self.client;
     
@@ -328,6 +320,7 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
     }
     
     OHHTTPStubsResponse* responseStub = self.stub.responseBlock(request);
+    
     if (OHHTTPStubs.sharedInstance.onStubActivationBlock)
     {
         OHHTTPStubs.sharedInstance.onStubActivationBlock(request, self.stub);
@@ -361,19 +354,19 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
         {
             redirectLocationURL = nil;
         }
-        if (((responseStub.statusCode >= 300) && (responseStub.statusCode < 400)) && redirectLocationURL)
+        if (((responseStub.statusCode > 300) && (responseStub.statusCode < 400)) && redirectLocationURL)
         {
             NSURLRequest* redirectRequest = [NSURLRequest requestWithURL:redirectLocationURL];
-            execute_after(responseStub.requestTime, ^{
+            [self executeOnClientRunLoopAfterDelay:responseStub.requestTime block:^{
                 if (!self.stopped)
                 {
                     [client URLProtocol:self wasRedirectedToRequest:redirectRequest redirectResponse:urlResponse];
                 }
-            });
+            }];
         }
         else
         {
-            execute_after(responseStub.requestTime,^{
+            [self executeOnClientRunLoopAfterDelay:responseStub.requestTime block:^{
                 if (!self.stopped)
                 {
                     [client URLProtocol:self didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageNotAllowed];
@@ -396,16 +389,16 @@ static NSTimeInterval const kSlotTime = 0.25; // Must be >0. We will send a chun
                          }
                      }];
                 }
-            });
+            }];
         }
     } else {
         // Send the canned error
-        execute_after(responseStub.responseTime, ^{
+        [self executeOnClientRunLoopAfterDelay:responseStub.responseTime block:^{
             if (!self.stopped)
             {
                 [client URLProtocol:self didFailWithError:responseStub.error];
             }
-        });
+        }];
     }
 }
 
@@ -424,7 +417,7 @@ typedef struct {
            withStubResponse:(OHHTTPStubsResponse*)stubResponse
                  completion:(void(^)(NSError * error))completion
 {
-    if (stubResponse.inputStream.hasBytesAvailable && !self.stopped)
+    if ((stubResponse.dataSize>0) && stubResponse.inputStream.hasBytesAvailable && (!self.stopped))
     {
         // Compute timing data once and for all for this stub
         
@@ -471,7 +464,7 @@ typedef struct {
 {
     NSParameterAssert(timingInfo.chunkSizePerSlot > 0);
     
-    if (inputStream.hasBytesAvailable && !self.stopped)
+    if (inputStream.hasBytesAvailable && (!self.stopped))
     {
         // This is needed in case we computed a non-integer chunkSizePerSlot, to avoid cumulative errors
         double cumulativeChunkSizeAfterRead = timingInfo.cumulativeChunkSize + timingInfo.chunkSizePerSlot;
@@ -481,23 +474,23 @@ typedef struct {
         if (chunkSizeToRead == 0)
         {
             // Nothing to read at this pass, but probably later
-            execute_after(timingInfo.slotTime, ^{
+            [self executeOnClientRunLoopAfterDelay:timingInfo.slotTime block:^{
                 [self streamDataForClient:client fromStream:inputStream
                                timingInfo:timingInfo completion:completion];
-            });
+            }];
         } else {
-            uint8_t* buffer = (uint8_t*)malloc(sizeof(uint8_t*)*chunkSizeToRead);
+            uint8_t* buffer = (uint8_t*)malloc(sizeof(uint8_t)*chunkSizeToRead);
             NSInteger bytesRead = [inputStream read:buffer maxLength:chunkSizeToRead];
             if (bytesRead > 0)
             {
                 NSData * data = [NSData dataWithBytes:buffer length:bytesRead];
                 // Wait for 'slotTime' seconds before sending the chunk.
                 // If bytesRead < chunkSizePerSlot (because we are near the EOF), adjust slotTime proportionally to the bytes remaining
-                execute_after(((double)bytesRead / (double)chunkSizeToRead) * timingInfo.slotTime, ^{
+                [self executeOnClientRunLoopAfterDelay:((double)bytesRead / (double)chunkSizeToRead) * timingInfo.slotTime block:^{
                     [client URLProtocol:self didLoadData:data];
                     [self streamDataForClient:client fromStream:inputStream
                                    timingInfo:timingInfo completion:completion];
-                });
+                }];
             }
             else
             {
@@ -525,10 +518,13 @@ typedef struct {
 // Delayed execution utility methods
 /////////////////////////////////////////////
 
-static void execute_after(NSTimeInterval delayInSeconds, dispatch_block_t block)
+- (void)executeOnClientRunLoopAfterDelay:(NSTimeInterval)delayInSeconds block:(dispatch_block_t)block
 {
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block);
+    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CFRunLoopPerformBlock(self.clientRunLoop, kCFRunLoopDefaultMode, block);
+        CFRunLoopWakeUp(self.clientRunLoop);
+    });
 }
 
 @end

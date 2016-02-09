@@ -12,6 +12,8 @@
 #define EXP_SHORTHAND YES
 #import <Expecta.h>
 
+#pragma clang diagnostic ignored "-Wnonnull"
+
 @interface PLRPaymentTests : XCTestCase
 
 @property (nonatomic, strong) PLRPayment *payment;

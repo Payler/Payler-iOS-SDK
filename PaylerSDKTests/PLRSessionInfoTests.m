@@ -14,6 +14,8 @@
 #define EXP_SHORTHAND YES
 #import <Expecta.h>
 
+#pragma clang diagnostic ignored "-Wnonnull"
+
 @interface PLRSessionInfoTests : XCTestCase
 
 @property (nonatomic, strong) PLRSessionInfo *sessionInfo;

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2014 Erik Doernenburg and contributors
+ *  Copyright (c) 2004-2016 Erik Doernenburg and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may
  *  not use these files except in compliance with the License. You may obtain
@@ -22,6 +22,7 @@
 #import <OCMock/OCMLocation.h>
 #import <OCMock/OCMMacroState.h>
 #import <OCMock/NSNotificationCenter+OCMAdditions.h>
+#import <OCMock/OCMFunctions.h>
 
 
 #define OCMClassMock(cls) [OCMockObject niceMockForClass:cls]
@@ -39,21 +40,27 @@
 
 #define OCMStub(invocation) \
 ({ \
-    [OCMMacroState beginStubMacro]; \
-    invocation; \
-    [OCMMacroState endStubMacro]; \
+    _OCMSilenceWarnings( \
+        [OCMMacroState beginStubMacro]; \
+        invocation; \
+        [OCMMacroState endStubMacro]; \
+    ); \
 })
 
 #define OCMExpect(invocation) \
 ({ \
-    [OCMMacroState beginExpectMacro]; \
-    invocation; \
-    [OCMMacroState endExpectMacro]; \
+    _OCMSilenceWarnings( \
+        [OCMMacroState beginExpectMacro]; \
+        invocation; \
+        [OCMMacroState endExpectMacro]; \
+    ); \
 })
 
 #define ClassMethod(invocation) \
-    [[OCMMacroState globalState] switchToClassMethod]; \
-    invocation;
+    _OCMSilenceWarnings( \
+        [[OCMMacroState globalState] switchToClassMethod]; \
+        invocation; \
+    );
 
 
 #define OCMVerifyAll(mock) [mock verifyAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]
@@ -62,7 +69,18 @@
 
 #define OCMVerify(invocation) \
 ({ \
-    [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
-    invocation; \
-    [OCMMacroState endVerifyMacro]; \
+    _OCMSilenceWarnings( \
+        [OCMMacroState beginVerifyMacroAtLocation:OCMMakeLocation(self, __FILE__, __LINE__)]; \
+        invocation; \
+        [OCMMacroState endVerifyMacro]; \
+    ); \
+})
+
+#define _OCMSilenceWarnings(macro) \
+({ \
+    _Pragma("clang diagnostic push") \
+    _Pragma("clang diagnostic ignored \"-Wunused-value\"") \
+    _Pragma("clang diagnostic ignored \"-Wunused-getter-return-value\"") \
+    macro \
+    _Pragma("clang diagnostic pop") \
 })
