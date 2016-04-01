@@ -51,16 +51,24 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
     NSDictionary *serializedData = [NSJSONSerialization JSONObjectWithData:errorData options:kNilOptions error:nil];
-    PaylerErrorCode errorCode = [[serializedData valueForKeyPath:@"error.code"] integerValue];
-    userInfo[NSLocalizedDescriptionKey] = PaylerErrorDescriptionFromCode(errorCode);
+    NSDictionary *errorDictionary = [serializedData valueForKey:@"error"];
+    if (![errorDictionary isKindOfClass:[NSDictionary class]]) {
+        return [self invalidServerResponseError];
+    }
+    
+    NSInteger errorCode = [errorDictionary[@"code"] integerValue];
+    NSString *errorMessage = errorDictionary[@"message"];
+    if ([errorMessage isKindOfClass:[NSString class]]) {
+        userInfo[NSLocalizedDescriptionKey] = errorMessage;
+    }
 	if (error) userInfo[NSUnderlyingErrorKey] = error;
 	return [NSError errorWithDomain:PaylerErrorDomain code:errorCode userInfo:userInfo];
 }
 
-+ (NSError *)invalidParametersError {
++ (NSError *)invalidServerResponseError {
     return [NSError errorWithDomain:PaylerErrorDomain
-                               code:PaylerErrorInvalidParams
-                           userInfo:@{NSLocalizedDescriptionKey: PaylerErrorDescriptionFromCode(PaylerErrorInvalidParams)}];
+                               code:PaylerErrorInvalidServerResponse
+                           userInfo:@{NSLocalizedDescriptionKey: @"Непредвиденная ошибка"}];
 }
 
 @end
@@ -78,7 +86,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
             if ([self isStartSessionInfoValid:responseObject]) {
                 completion([self.class paymentFromJSON:responseObject], responseObject[@"session_id"], nil);
             } else {
-                completion(nil, nil, [self.class invalidParametersError]);
+                completion(nil, nil, [self.class invalidServerResponseError]);
             }
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -117,7 +125,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
             if ([self isPaymentInfoValid:responseObject]) {
                 completion([self.class paymentFromJSON:responseObject], nil);
             } else {
-                completion(nil, [self.class invalidParametersError]);
+                completion(nil, [self.class invalidServerResponseError]);
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -220,7 +228,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
                 return;
             }
             
-            completion(nil, [self.class invalidParametersError]);
+            completion(nil, [self.class invalidServerResponseError]);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (completion) {

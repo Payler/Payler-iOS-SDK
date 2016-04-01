@@ -7,35 +7,11 @@
 //
 
 NS_ASSUME_NONNULL_BEGIN
+/**
+ *  Актуальные коды ошибок можно посмотреть здесь: http://payler.com/docs/acquiring.html
+ */
 extern NSString *const PaylerErrorDomain;
-
-typedef NS_ENUM (NSUInteger, PaylerErrorCode) {
-    PaylerErrorNone,
-    PaylerErrorInvalidAmount,
-    PaylerErrorBalanceExceeded,
-    PaylerErrorDuplicateOrderId,
-    PaylerErrorIssuerDeclinedOperation,
-    PaylerErrorLimitExceded,
-    PaylerErrorAFDeclined,
-    PaylerErrorInvalidOrderState,
-    PaylerErrorMerchantDeclined,
-    PaylerErrorOrderNotFound,
-    PaylerErrorProcessingError,
-    PaylerErrorPartialRetrieveNotAllowed,
-    PaylerErrorRefundNotAllowed,
-    PaylerErrorGateDeclined,
-    PaylerErrorInvalidCardInfo,
-    PaylerErrorInvalidCardPan,
-    PaylerErrorInvalidCardholder,
-    PaylerErrorInvalidPayInfo,
-    PaylerErrorAPINotAllowed,
-    PaylerErrorAccessDenied,
-    PaylerErrorInvalidParams,
-    PaylerErrorSessionTimeout,
-    PaylerErrorMerchantNotFound,
-    PaylerErrorUnexpectedError
-};
-
-extern NSString* PaylerErrorDescriptionFromCode(PaylerErrorCode errorCode);
+extern NSInteger const PaylerErrorInvalidServerResponse;
 
 NS_ASSUME_NONNULL_END
+

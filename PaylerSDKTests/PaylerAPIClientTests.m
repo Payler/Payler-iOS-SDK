@@ -181,7 +181,7 @@
     expect(template2).willNot.beNil();
 }
 
-- (void)testReceivingError {
+- (void)testReceivingStandardError {
     [OHHTTPStubs stubRequestsPassingTest:^BOOL (NSURLRequest *request) {
         return [request.HTTPMethod isEqualToString:@"POST"] &&
         [request.URL.absoluteString isEqualToString:[self URLWithPath:@"GetStatus"]];
@@ -196,7 +196,7 @@
         expect(payment).to.beNil();
         expect(error.domain).to.equal(PaylerErrorDomain);
         expect(error.code).to.equal(7);
-        expect(error.localizedDescription).to.equal(@"Попытка выполнения транзакции для недопустимого состояния платежа");
+        expect(error.localizedDescription).to.equal(@"Failed to get result.");
     }];
 
     expect(error).willNot.beNil();
