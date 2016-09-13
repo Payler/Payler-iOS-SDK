@@ -38,6 +38,7 @@
 		0249DC3D1A653EF000AC547A /* RepeatPay.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0249DC3C1A653EF000AC547A /* RepeatPay.txt */; };
 		0249DC3F1A65440100AC547A /* GetTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0249DC3E1A65440100AC547A /* GetTemplate.txt */; };
 		0249DC421A655A5E00AC547A /* PLRError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0249DC411A655A5E00AC547A /* PLRError.m */; };
+		024DAAC01D88141F00282536 /* FindSession.txt in Resources */ = {isa = PBXBuildFile; fileRef = 024DAABF1D88141F00282536 /* FindSession.txt */; };
 		02E7D5FE1A8125B20068309B /* PaylerSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 02E7D5FD1A8125B20068309B /* PaylerSDK.bundle */; };
 		99437952F2F54D4593DB41B2 /* libPods-PaylerSDKTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5DAF8C563492F868C6DB4 /* libPods-PaylerSDKTests.a */; };
 		B1252296972647008FD2E67B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE962A8EFC9A43B98C44B368 /* libPods.a */; };
@@ -97,6 +98,7 @@
 		0249DC3E1A65440100AC547A /* GetTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GetTemplate.txt; sourceTree = "<group>"; };
 		0249DC401A655A3900AC547A /* PLRError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PLRError.h; sourceTree = "<group>"; };
 		0249DC411A655A5E00AC547A /* PLRError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRError.m; sourceTree = "<group>"; };
+		024DAABF1D88141F00282536 /* FindSession.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FindSession.txt; sourceTree = "<group>"; };
 		02E7D5FD1A8125B20068309B /* PaylerSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PaylerSDK.bundle; sourceTree = "<group>"; };
 		87CACA086616486AB318DB73 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		A914EBD8B62E49CA83ED292E /* Pods-PaylerSDKTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaylerSDKTests.xcconfig"; path = "Pods/Pods-PaylerSDKTests.xcconfig"; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 		021DA1DE196EB48C00B6EC2F /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				024DAABF1D88141F00282536 /* FindSession.txt */,
 				0249DC3E1A65440100AC547A /* GetTemplate.txt */,
 				0249DC3C1A653EF000AC547A /* RepeatPay.txt */,
 				021DA1DF196EB48C00B6EC2F /* Charge.txt */,
@@ -331,6 +334,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				024DAAC01D88141F00282536 /* FindSession.txt in Resources */,
 				021DA1E6196EB48C00B6EC2F /* Retrieve.txt in Resources */,
 				021DA1EA196EB4A400B6EC2F /* Error.txt in Resources */,
 				021DA1E4196EB48C00B6EC2F /* Charge.txt in Resources */,

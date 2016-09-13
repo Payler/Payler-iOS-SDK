@@ -114,19 +114,25 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     }];
 }
 
-- (void)chargePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
+- (void)fetchSessionInfoWithPaymentId:(NSString *)paymentId completion:(PLRCompletionBlock)completion {
+    NSParameterAssert(paymentId.length);
+    
+    [self enqueueRequestWithPath:@"FindSession" paymentId:paymentId completion:completion];
+}
+
+- (void)chargePayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
     [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Charge" payment:payment] completion:completion];
 }
 
-- (void)retrievePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
+- (void)retrievePayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
     [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Retrieve" payment:payment] completion:completion];
 }
 
-- (void)refundPayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
+- (void)refundPayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
     [self enqueuePaymentRequest:[self paymentRequestWithPath:@"Refund" payment:payment] completion:completion];
 }
 
-- (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRCompletionBlock)completion {
+- (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRPaymentCompletionBlock)completion {
     NSParameterAssert(paymentId);
 
     PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:0];
@@ -150,7 +156,21 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
             completion(nil, [self.class errorFromRequestOperation:operation]);
         }
     }];
+    [self.operationQueue addOperation:operation];
+}
 
+- (void)enqueueRequestWithPath:(NSString *)path paymentId:(NSString *)paymentId completion:(PLRCompletionBlock)completion {
+    PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:0];
+    NSMutableURLRequest *request = [self requestWithPath:path parameters:[self parametersWithPayment:payment includePassword:NO includeAmount:NO]];
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (completion) {
+            completion(responseObject, nil);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (completion) {
+            completion(nil, [self.class errorFromRequestOperation:operation]);
+        }
+    }];
     [self.operationQueue addOperation:operation];
 }
 
@@ -207,7 +227,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     [self enqueuePaymentRequest:[self requestWithPath:@"RepeatPay" parameters:[parameters copy]] completion:completion];
 }
 
-- (void)fetchTemplateWithId:(NSString *)recurrentTemplateId completion:(PLRPaymentTemplateBlock)completion {
+- (void)fetchTemplateWithId:(NSString *)recurrentTemplateId completion:(PLRCompletionBlock)completion {
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"key": self.merchantKey}];
     if (recurrentTemplateId) {
         parameters[kRecurrentTemplateKey] = recurrentTemplateId;
@@ -216,7 +236,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     [self enqueuePaymentTemplateRequest:[self requestWithPath:@"GetTemplate" parameters:[parameters copy]] completion:completion];
 }
 
-- (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRPaymentTemplateBlock)completion {
+- (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRCompletionBlock)completion {
     NSParameterAssert(recurrentTemplateId);
     
     NSDictionary *parameters = @{@"key": self.merchantKey, kRecurrentTemplateKey: recurrentTemplateId, @"active": active ? @"true": @"false"};
@@ -224,7 +244,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
 }
 
 - (void)enqueuePaymentTemplateRequest:(NSURLRequest *)request
-                           completion:(PLRPaymentTemplateBlock)completion {
+                           completion:(PLRCompletionBlock)completion {
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (completion) {
             NSArray *responseArray = responseObject[@"templates"];

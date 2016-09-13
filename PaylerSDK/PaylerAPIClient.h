@@ -12,8 +12,8 @@
 @class PLRPayment, PLRSessionInfo, PLRPaymentTemplate;
 
 typedef void (^PLRStartSessionCompletionBlock)(PLRPayment *payment, NSString *sessionId, NSError *error);
-typedef void (^PLRCompletionBlock)(PLRPayment *payment, NSError *error);
-typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
+typedef void (^PLRCompletionBlock)(id object, NSError *error);
+typedef void (^PLRPaymentCompletionBlock)(PLRPayment *payment, NSError *error);
 
 /**
  *  В классе инкапсулированы запросы и логика работы с Payler Gate API.
@@ -55,12 +55,20 @@ typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
 - (void)startSessionWithInfo:(PLRSessionInfo *)sessionInfo completion:(PLRStartSessionCompletionBlock)completion;
 
 /**
+ *  Запрос поиска платёжной сессии по идентификатору платежа.
+ *
+ *  @param paymentId  Идентификатор оплачиваемого заказа в системе Продавца.
+ *  @param completion Блок выполняется после завершения запроса. В параметре object - объект класса NSDictionary.
+ */
+- (void)fetchSessionInfoWithPaymentId:(NSString *)paymentId completion:(PLRCompletionBlock)completion;
+
+/**
  *  Запрос списания средств, заблокированных на карте Пользователя в рамках двухстадийного платежа. Статус платежа должен быть Authorized.
  *
  *  @param payment    Объект класса PLRPayment. Не должен быть nil.
  *  @param completion Блок выполняется после завершения запроса. В поле amount параметра payment приходит списанная сумма в копейках. 
  */
-- (void)chargePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion;
+- (void)chargePayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion;
 
 /**
  *  Запрос полной или частичной отмены блокировки средств, заблокированных на карте Пользователя в рамках двухстадийного платежа. Статус платежа должен быть Authorized.
@@ -68,7 +76,7 @@ typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
  *  @param payment    Объект класса PLRPayment. Не должен быть nil.
  *  @param completion Блок выполняется после завершения запроса. В поле amount параметра payment приходит новая величина суммы платежа в копейках.
  */
-- (void)retrievePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion;
+- (void)retrievePayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion;
 
 /**
  *  Запрос полного или частичного возврата средств на карту Пользователя, списанных в ходе одностадийного или двухстадийного платежей. Статус платежа должен быть Charged.
@@ -76,7 +84,7 @@ typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
  *  @param payment    Объект класса PLRPayment. Не должен быть nil.
  *  @param completion Блок выполняется после завершения запроса. В поле amount параметра payment приходит остаток списанной суммы в копейках.
  */
-- (void)refundPayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion;
+- (void)refundPayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion;
 
 /**
  *  Запрос получения статуса платежа.
@@ -84,7 +92,7 @@ typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
  *  @param paymentId  Идентификатор заказа в системе Продавца.
  *  @param completion Блок выполняется после завершения запроса. В поле status параметра payment приходит текущий статус платежа.
  */
-- (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRCompletionBlock)completion;
+- (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRPaymentCompletionBlock)completion;
 
 @end
 
@@ -104,7 +112,7 @@ typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
  *  @param recurrentTemplateId Идентификатор шаблона рекуррентных платежей.
  *  @param completion          Блок выполняется после завершения запроса. Если recurrentTemplateId == nil, то в параметре object блока придет массив всех зарегистрированных на Продавца шаблонов, иначе объект PLRPaymentTemplate.
  */
-- (void)fetchTemplateWithId:(NSString *)recurrentTemplateId completion:(PLRPaymentTemplateBlock)completion;
+- (void)fetchTemplateWithId:(NSString *)recurrentTemplateId completion:(PLRCompletionBlock)completion;
 
 /**
  *  Запрос активации/деактивации шаблона рекуррентных платежей.
@@ -113,6 +121,6 @@ typedef void (^PLRPaymentTemplateBlock)(id object, NSError *error);
  *  @param active              Показывает, требуется ли активировать или деактивировать шаблон рекуррентных платежей.
  *  @param completion          Блок выполняется после завершения запроса. В параметре object - объект класса PLRPaymentTemplate.
  */
-- (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRPaymentTemplateBlock)completion;
+- (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRCompletionBlock)completion;
 
 @end
