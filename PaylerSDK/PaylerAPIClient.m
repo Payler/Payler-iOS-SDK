@@ -96,19 +96,25 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     }];
 }
 
-- (void)chargePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
+- (void)fetchSessionInfoWithPaymentId:(NSString *)paymentId completion:(PLRCompletionBlock)completion {
+    NSParameterAssert(paymentId.length);
+    
+    [self enqueueRequestWithPath:@"FindSession" paymentId:paymentId completion:completion];
+}
+
+- (void)chargePayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
     [self enqueuePaymentRequestWithPath:@"Charge" parameters:[self paymentParametersWithPayment:payment] completion:completion];
 }
 
-- (void)retrievePayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
+- (void)retrievePayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
     [self enqueuePaymentRequestWithPath:@"Retrieve" parameters:[self paymentParametersWithPayment:payment] completion:completion];
 }
 
-- (void)refundPayment:(PLRPayment *)payment completion:(PLRCompletionBlock)completion {
+- (void)refundPayment:(PLRPayment *)payment completion:(PLRPaymentCompletionBlock)completion {
     [self enqueuePaymentRequestWithPath:@"Refund" parameters:[self paymentParametersWithPayment:payment] completion:completion];
 }
 
-- (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRCompletionBlock)completion {
+- (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRPaymentCompletionBlock)completion {
     NSParameterAssert(paymentId);
 
     PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:0];
@@ -134,6 +140,20 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
         }
     }];
 }
+
+- (void)enqueueRequestWithPath:(NSString *)path paymentId:(NSString *)paymentId completion:(PLRCompletionBlock)completion {
+    PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:0];
+    [self POST:path parameters:[self parametersWithPayment:payment includePassword:NO includeAmount:NO] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (completion) {
+            completion(responseObject, nil);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (completion) {
+            completion(nil, [self.class domainErrorFromError:error]);
+        }
+    }];
+}
+
 
 - (NSDictionary *)paymentParametersWithPayment:(PLRPayment *)payment {
     NSParameterAssert(payment);
@@ -188,7 +208,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     [self enqueuePaymentRequestWithPath:@"RepeatPay" parameters:[parameters copy] completion:completion];
 }
 
-- (void)fetchTemplateWithId:(NSString *)recurrentTemplateId completion:(PLRPaymentTemplateBlock)completion {
+- (void)fetchTemplateWithId:(NSString *)recurrentTemplateId completion:(PLRCompletionBlock)completion {
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"key": self.merchantKey}];
     if (recurrentTemplateId) {
         parameters[kRecurrentTemplateKey] = recurrentTemplateId;
@@ -197,7 +217,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     [self enqueuePaymentTemplateRequestWithPath:@"GetTemplate" parameters:[parameters copy] completion:completion];
 }
 
-- (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRPaymentTemplateBlock)completion {
+- (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRCompletionBlock)completion {
     NSParameterAssert(recurrentTemplateId);
     
     NSDictionary *parameters = @{@"key": self.merchantKey, kRecurrentTemplateKey: recurrentTemplateId, @"active": active ? @"true": @"false"};
@@ -206,7 +226,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
 
 - (void)enqueuePaymentTemplateRequestWithPath:(NSString *)path
                                    parameters:(NSDictionary *)parameters
-                                   completion:(PLRPaymentTemplateBlock)completion {
+                                   completion:(PLRCompletionBlock)completion {
     [self POST:path parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (completion) {
             NSArray *responseArray = responseObject[@"templates"];

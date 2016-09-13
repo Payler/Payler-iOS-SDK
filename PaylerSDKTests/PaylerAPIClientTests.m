@@ -75,6 +75,21 @@
     OCMVerify([sessionInfo dictionaryRepresentation]);
 }
 
+- (void)testFetchSessionInfo {
+    [self setupStubWithURL:@"FindSession" filePath:@"FindSession.txt"];
+    
+    NSString *paymentId = @"SDK_iOS_2014-07-10 10:48:09  0000";
+    __block NSDictionary *_object;
+    [self.client fetchSessionInfoWithPaymentId:paymentId completion:^(NSDictionary *object, NSError * _Nullable error) {
+        _object = object;
+        
+        expect(object[@"id"]).to.equal(@"ce609441-784d-4a13-80a8-47da576e6100");
+        expect(object[@"order_id"]).to.equal(paymentId);
+    }];
+    
+    expect(_object).willNot.beNil();
+}
+
 - (void)testChargePayment {
     [self setupStubWithURL:@"Charge" filePath:@"Charge.txt"];
 
