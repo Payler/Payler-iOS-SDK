@@ -87,7 +87,7 @@
 
 #warning Здесь нужно указать ваши параметры.
     NSString *paymentId = [NSString stringWithFormat:@"SDK_iOS_%@", [[NSUUID UUID] UUIDString]];
-    PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:100];
+    PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:6000000 status:nil product:@"iPhone 6+" total:1 parameters:@{@"userData": @"test@test.com"}];
     NSURL *callbackURL = [NSURL URLWithString:[@"http://localhost:7820/Complete-order_id=" stringByAppendingString:paymentId]];
     self.sessionInfo = [[PLRSessionInfo alloc] initWithPaymentInfo:payment callbackURL:callbackURL sessionType:self.sessionType];
     self.client = [PaylerAPIClient testClientWithMerchantKey:@"" password:@""];

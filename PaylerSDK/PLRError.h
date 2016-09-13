@@ -8,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 /**
- *  Актуальные коды ошибок можно посмотреть здесь: http://payler.com/docs/acquiring.html
+ *  Актуальные коды ошибок можно посмотреть здесь: http://payler.com/docs/acquiring.html#acquiring_docs
  */
 extern NSString *const PaylerErrorDomain;
 extern NSInteger const PaylerErrorInvalidServerResponse;
