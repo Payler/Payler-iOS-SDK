@@ -38,6 +38,7 @@ NSDictionary *PLRPaymentStatusMappingDictionary() {
 @property (nonatomic, readwrite, assign) PLRPaymentStatus status;
 @property (nonatomic, readwrite, copy) NSString *product;
 @property (nonatomic, readwrite, assign) CGFloat total;
+@property (nonatomic, readwrite, copy) NSDictionary *parameters;
 @end
 
 @implementation PLRPayment
@@ -47,10 +48,10 @@ NSDictionary *PLRPaymentStatusMappingDictionary() {
 }
 
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status {
-    return [self initWithId:paymentId amount:amount status:status product:nil total:CGFLOAT_MIN];
+    return [self initWithId:paymentId amount:amount status:status product:nil total:CGFLOAT_MIN parameters:nil];
 }
 
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total {
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total parameters:(NSDictionary *)parameters {
     self = [super init];
     if (self) {
         if (!paymentId) [NSException raise:NSInvalidArgumentException format:@"'paymentId' is required."];
@@ -61,6 +62,7 @@ NSDictionary *PLRPaymentStatusMappingDictionary() {
         _status = status ? [[PLRPaymentStatusMappingDictionary() objectForKey:status] integerValue] : PLRPaymentStatusUnknown;
         _product = [product copy];
         _total = total;
+        _parameters = [parameters copy];
     }
     return self;
 }
@@ -71,6 +73,7 @@ NSDictionary *PLRPaymentStatusMappingDictionary() {
     parameters[@"amount"] = @(self.amount);
     if (self.product.length) parameters[@"product"] = self.product;
     if (self.total > CGFLOAT_MIN) parameters[@"total"] = @(self.total);
+    [parameters addEntriesFromDictionary:self.parameters];
     return [parameters copy];
 }
 

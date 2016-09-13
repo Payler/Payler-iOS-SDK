@@ -56,6 +56,12 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 @property (nonatomic, readonly, assign) CGFloat total;
 
 /**
+ *  Содержит дополнительные параметры, которые могут передаваться вместе с информацией о платеже.
+ *  Названия всех возможных параметров перечислены в документации к методу StartSession Payler Gate API здесь: http://payler.com/docs/acquiring.html#acquiring_docs
+ */
+@property (nonatomic, readonly, copy) NSDictionary *parameters;
+
+/**
  *  Если не nil, то это шаблон рекуррентных платежей, по которому был выполнен данный платеж.
  */
 @property (nonatomic, strong) NSString *recurrentTemplateId;
@@ -68,7 +74,7 @@ typedef NS_ENUM(NSUInteger, PLRPaymentStatus) {
 //  Следующие методы инициализируют и возвращают объект класса PLRPayment. Параметр paymentId не должен быть nil.
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount;
 - (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status;
-- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithId:(NSString *)paymentId amount:(NSUInteger)amount status:(NSString *)status product:(NSString *)product total:(CGFloat)total parameters:(NSDictionary *)parameters NS_DESIGNATED_INITIALIZER;
 
 - (id)init __attribute__((unavailable("Must use initWithId:amount: instead.")));
 + (id)new __attribute__((unavailable("Must use initWithId:amount: instead.")));

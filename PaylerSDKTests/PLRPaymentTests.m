@@ -55,6 +55,7 @@
     expect(self.payment.status).to.equal(PLRPaymentStatusCharged);
     expect(self.payment.product).to.equal(@"Product");
     expect(self.payment.total).to.equal(25.5);
+    expect(self.payment.parameters).to.equal(@{@"userData": @"test@test.com"});
 }
 
 - (void)testDictionaryRepresentationForPaymentWithDefaultParameters {
@@ -67,7 +68,7 @@
 - (void)testDictionaryRepresentationForPaymentWithAllParameters {
     [self setupPaymentWithAllParameters];
 
-    NSDictionary *parameters = @{@"order_id": @"uniqueId", @"amount": @(100), @"product": @"Product", @"total": @(25.5)};
+    NSDictionary *parameters = @{@"order_id": @"uniqueId", @"amount": @(100), @"product": @"Product", @"total": @(25.5), @"userData": @"test@test.com"};
     expect([self.payment dictionaryRepresentation]).to.equal(parameters);
 }
 
@@ -84,7 +85,7 @@
 }
 
 - (void)setupPaymentWithAllParameters {
-    self.payment = [[PLRPayment alloc] initWithId:@"uniqueId" amount:100 status:@"Charged" product:@"Product" total:25.5];
+    self.payment = [[PLRPayment alloc] initWithId:@"uniqueId" amount:100 status:@"Charged" product:@"Product" total:25.5 parameters:@{@"userData": @"test@test.com"}];
 }
 
 @end
