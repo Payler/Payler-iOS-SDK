@@ -133,10 +133,16 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
 }
 
 - (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRPaymentCompletionBlock)completion {
-    NSParameterAssert(paymentId);
+    NSParameterAssert(paymentId.length);
 
     PLRPayment *payment = [[PLRPayment alloc] initWithId:paymentId amount:0];
     [self enqueuePaymentRequest:[self requestWithPath:@"GetStatus" parameters:[self parametersWithPayment:payment includePassword:NO includeAmount:NO]] completion:completion];
+}
+
+- (void)fetchAdvancedStatusForPaymentWithId:(NSString *)paymentId completion:(PLRCompletionBlock)completion {
+    NSParameterAssert(paymentId.length);
+    
+    [self enqueueRequestWithPath:@"GetAdvancedStatus" paymentId:paymentId completion:completion];
 }
 
 #pragma mark - Private methods

@@ -146,6 +146,21 @@
     expect(status).willNot.beNil();
 }
 
+- (void)testFetchingPaymentAdvancedStatus {
+    [self setupStubWithURL:@"GetAdvancedStatus" filePath:@"AdvancedStatus.txt"];
+    
+    NSString *paymentId = @"039b67c1-159e-4383-a4b1-49dc47033674";
+    __block NSDictionary *_object;
+    [self.client fetchAdvancedStatusForPaymentWithId:paymentId completion:^(id  _Nullable object, NSError * _Nullable error) {
+        _object = object;
+        
+        expect(object[@"order_id"]).to.equal(paymentId);
+        expect(object[@"card_number"]).to.equal(@"541715xxxxxx2399");
+    }];
+    
+    expect(_object).willNot.beNil();
+}
+
 - (void)testRepeatPayment {
     [self setupStubWithURL:@"RepeatPay" filePath:@"RepeatPay.txt"];
     
