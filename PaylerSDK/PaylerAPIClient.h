@@ -96,6 +96,14 @@ typedef void (^PLRPaymentCompletionBlock)(PLRPayment * _Nullable payment, NSErro
  */
 - (void)fetchStatusForPaymentWithId:(NSString *)paymentId completion:(PLRPaymentCompletionBlock)completion;
 
+/**
+ *  Запрос получения расширенного статуса платежа.
+ *
+ *  @param paymentId  Идентификатор заказа в системе Продавца.
+ *  @param completion Блок выполняется после завершения запроса. В параметре object - объект класса NSDictionary.
+ */
+- (void)fetchAdvancedStatusForPaymentWithId:(NSString *)paymentId completion:(PLRCompletionBlock)completion;
+
 @end
 
 @interface PaylerAPIClient (RecurrentPayments)
