@@ -17,6 +17,7 @@
 #import <Expecta.h>
 #import <OHHTTPStubs.h>
 #import <OHPathHelpers.h>
+#import <PassKit/PassKit.h>
 
 #pragma clang diagnostic ignored "-Wnonnull"
 
@@ -209,6 +210,30 @@
     }];
     
     expect(template2).willNot.beNil();
+}
+
+- (void)testRequestingApplePayPayment {
+    [self setupStubWithURL:@"ApplePay" filePath:@"ApplePay.txt"];
+    
+    id payment = OCMStrictClassMock([PKPayment class]);
+    id token = OCMStrictClassMock([PKPaymentToken class]);
+    OCMStub([token paymentData]).andReturn([@"PaymentData" dataUsingEncoding:NSUTF8StringEncoding]);
+    OCMStub([payment token]).andReturn(token);
+    
+    id shippingContact = OCMStrictClassMock([PKContact class]);
+    OCMStub([shippingContact emailAddress]).andReturn(@"test@test.com");
+    OCMStub([payment shippingContact]).andReturn(shippingContact);
+    
+    __block PLRPayment *resultPayment;
+    [self.client requestPayment:payment forSessionWithId:@"SomeSessionId" completion:^(PLRPayment *fetchedPayment, NSError *error) {
+        resultPayment = fetchedPayment;
+        expect(resultPayment.amount).to.equal(100);
+        expect(resultPayment.paymentId).to.equal(@"5181");
+    }];
+    
+    expect(resultPayment).willNot.beNil();
+    OCMVerify([token paymentData]);
+    OCMVerify([shippingContact emailAddress]);
 }
 
 - (void)testReceivingStandardError {

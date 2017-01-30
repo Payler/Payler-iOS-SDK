@@ -10,6 +10,7 @@
 #import "PLRPayment.h"
 #import "PLRSessionInfo.h"
 #import "PLRError.h"
+#import <PassKit/PassKit.h>
 
 static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
 
@@ -279,6 +280,22 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
     template.creationDate = [dateFormatter dateFromString:JSONTemplate[@"created"]];
     
     return template;
+}
+
+@end
+
+@implementation PaylerAPIClient (ApplePay)
+
+- (void)requestPayment:(PKPayment *)payment forSessionWithId:(NSString *)sessionId completion:(PLRPaymentCompletionBlock)completion {
+    NSParameterAssert(payment);
+    NSParameterAssert(sessionId.length);
+    
+    NSString *applePaymentData = [[NSString alloc] initWithData:payment.token.paymentData encoding:NSUTF8StringEncoding];
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"session_id": sessionId, @"apple_payment_data": applePaymentData}];
+    if ([payment respondsToSelector:@selector(shippingContact)] && payment.shippingContact.emailAddress.length) {
+        parameters[@"email"] = payment.shippingContact.emailAddress;
+    }
+    [self enqueuePaymentRequestWithPath:@"ApplePay" parameters:[parameters copy] completion:completion];
 }
 
 @end

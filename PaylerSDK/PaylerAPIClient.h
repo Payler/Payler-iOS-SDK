@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class PLRPayment, PLRSessionInfo, PLRPaymentTemplate;
+@class PLRPayment, PKPayment, PLRSessionInfo, PLRPaymentTemplate;
 
 typedef void (^PLRStartSessionCompletionBlock)(PLRPayment * _Nullable payment, NSString * _Nullable sessionId, NSError * _Nullable error);
 typedef void (^PLRCompletionBlock)(id _Nullable object, NSError * _Nullable error);
@@ -52,7 +52,7 @@ typedef void (^PLRPaymentCompletionBlock)(PLRPayment * _Nullable payment, NSErro
  *  Запрос инициализации сессии платежа. Обязательно выполняется перед операциями списания или блокировки средств на карте Пользователя.
  *
  *  @param sessionInfo Объект класса PLRSessionInfo. Не должен быть nil.
- *  @param completion  Блок выполняется после завершения запроса. sessionId - идентификатор платежа в системе Payler.
+ *  @param completion  Блок выполняется после завершения запроса. sessionId - идентификатор сессии платежа в системе Payler.
  */
 - (void)startSessionWithInfo:(PLRSessionInfo *)sessionInfo completion:(PLRStartSessionCompletionBlock)completion;
 
@@ -132,6 +132,19 @@ typedef void (^PLRPaymentCompletionBlock)(PLRPayment * _Nullable payment, NSErro
  *  @param completion          Блок выполняется после завершения запроса. В параметре object - объект класса PLRPaymentTemplate.
  */
 - (void)activateTemplateWithId:(NSString *)recurrentTemplateId active:(BOOL)active completion:(PLRCompletionBlock)completion;
+
+@end
+
+@interface PaylerAPIClient (ApplePay)
+
+/**
+ *  Запрос проведения платежа с помощью Apple Pay. Результатом обработки запроса является списание или блокировка денежных средств с карты Пользователя.
+ *
+ *  @param payment    Объект класса PKPayment. Не должен быть nil.
+ *  @param sessionId  Идентификатор сессии платежа в системе Payler.
+ *  @param completion Блок выполняется после завершения запроса.
+ */
+- (void)requestPayment:(PKPayment *)payment forSessionWithId:(NSString *)sessionId completion:(PLRPaymentCompletionBlock)completion NS_AVAILABLE_IOS(8.0);
 
 @end
 
