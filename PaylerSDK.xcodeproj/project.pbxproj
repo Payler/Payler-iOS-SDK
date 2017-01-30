@@ -39,6 +39,8 @@
 		0249DC3F1A65440100AC547A /* GetTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0249DC3E1A65440100AC547A /* GetTemplate.txt */; };
 		0249DC421A655A5E00AC547A /* PLRError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0249DC411A655A5E00AC547A /* PLRError.m */; };
 		024C1B6C1E3F29B600D9DCEC /* ApplePay.txt in Resources */ = {isa = PBXBuildFile; fileRef = 024C1B6B1E3F29B600D9DCEC /* ApplePay.txt */; };
+		024C1B6F1E3F3B1300D9DCEC /* PLRApplePayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 024C1B6E1E3F3B1300D9DCEC /* PLRApplePayViewController.m */; };
+		024C1B711E3F3FA300D9DCEC /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 024C1B701E3F3FA300D9DCEC /* Launch.storyboard */; };
 		024DAAC01D88141F00282536 /* FindSession.txt in Resources */ = {isa = PBXBuildFile; fileRef = 024DAABF1D88141F00282536 /* FindSession.txt */; };
 		024DAAC21D881ABF00282536 /* AdvancedStatus.txt in Resources */ = {isa = PBXBuildFile; fileRef = 024DAAC11D881ABF00282536 /* AdvancedStatus.txt */; };
 		02E7D5FE1A8125B20068309B /* PaylerSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 02E7D5FD1A8125B20068309B /* PaylerSDK.bundle */; };
@@ -101,6 +103,10 @@
 		0249DC401A655A3900AC547A /* PLRError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PLRError.h; sourceTree = "<group>"; };
 		0249DC411A655A5E00AC547A /* PLRError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRError.m; sourceTree = "<group>"; };
 		024C1B6B1E3F29B600D9DCEC /* ApplePay.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ApplePay.txt; sourceTree = "<group>"; };
+		024C1B6D1E3F3B1300D9DCEC /* PLRApplePayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLRApplePayViewController.h; sourceTree = "<group>"; };
+		024C1B6E1E3F3B1300D9DCEC /* PLRApplePayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLRApplePayViewController.m; sourceTree = "<group>"; };
+		024C1B701E3F3FA300D9DCEC /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		024C1B721E3F402900D9DCEC /* Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Example.entitlements; sourceTree = "<group>"; };
 		024DAABF1D88141F00282536 /* FindSession.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FindSession.txt; sourceTree = "<group>"; };
 		024DAAC11D881ABF00282536 /* AdvancedStatus.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AdvancedStatus.txt; sourceTree = "<group>"; };
 		02711AAF3D56241F717CFD1F /* Pods-PaylerSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaylerSDKTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PaylerSDKTests/Pods-PaylerSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -234,12 +240,15 @@
 		0220D420196ACABA00FC5AF3 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				024C1B721E3F402900D9DCEC /* Example.entitlements */,
 				0220D429196ACABA00FC5AF3 /* PLRAppDelegate.h */,
 				0220D42A196ACABA00FC5AF3 /* PLRAppDelegate.m */,
 				0210E0571976587A00A0D0A6 /* PLRTableViewController.h */,
 				0210E0581976587A00A0D0A6 /* PLRTableViewController.m */,
 				0220D448196ACC1600FC5AF3 /* PLRViewController.h */,
 				0220D449196ACC1600FC5AF3 /* PLRViewController.m */,
+				024C1B6D1E3F3B1300D9DCEC /* PLRApplePayViewController.h */,
+				024C1B6E1E3F3B1300D9DCEC /* PLRApplePayViewController.m */,
 				0220D42C196ACABA00FC5AF3 /* Images.xcassets */,
 				0220D421196ACABA00FC5AF3 /* Supporting Files */,
 			);
@@ -254,6 +263,7 @@
 				0220D423196ACABA00FC5AF3 /* InfoPlist.strings */,
 				0220D426196ACABA00FC5AF3 /* main.m */,
 				0220D428196ACABA00FC5AF3 /* Example-Prefix.pch */,
+				024C1B701E3F3FA300D9DCEC /* Launch.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -320,7 +330,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = PLR;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Polonium Arts";
 				TargetAttributes = {
 					021DA1B4196E7B6D00B6EC2F = {
@@ -328,6 +338,11 @@
 					};
 					0220D41A196ACABA00FC5AF3 = {
 						DevelopmentTeam = 69GYXKL3AK;
+						SystemCapabilities = {
+							com.apple.ApplePay = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -374,6 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0220D447196ACB2100FC5AF3 /* Main.storyboard in Resources */,
+				024C1B711E3F3FA300D9DCEC /* Launch.storyboard in Resources */,
 				02E7D5FE1A8125B20068309B /* PaylerSDK.bundle in Resources */,
 				0220D425196ACABA00FC5AF3 /* InfoPlist.strings in Resources */,
 				0220D42D196ACABA00FC5AF3 /* Images.xcassets in Resources */,
@@ -498,6 +514,7 @@
 				0220D44E196ACFA700FC5AF3 /* PLRWebView.m in Sources */,
 				0220D42B196ACABA00FC5AF3 /* PLRAppDelegate.m in Sources */,
 				0220D44A196ACC1600FC5AF3 /* PLRViewController.m in Sources */,
+				024C1B6F1E3F3B1300D9DCEC /* PLRApplePayViewController.m in Sources */,
 				0240D1D2196BD442005A8070 /* PaylerAPIClient.m in Sources */,
 				0220D44D196ACFA400FC5AF3 /* PLRPayment.m in Sources */,
 			);
@@ -590,13 +607,18 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -609,7 +631,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -628,19 +650,24 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -651,7 +678,7 @@
 			baseConfigurationReference = ED8A0BE94B4EFB637F9981BA /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Example/Example.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -665,7 +692,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Example/Example-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.poloniumarts.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -677,7 +704,7 @@
 			baseConfigurationReference = 75F331E97143EA73C9641F5D /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Example/Example.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -687,7 +714,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Example/Example-Prefix.pch";
 				INFOPLIST_FILE = "Example/Example-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.poloniumarts.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
