@@ -51,6 +51,10 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
 + (NSError *)domainErrorFromError:(NSError *)error {
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+    if (!errorData) {
+        return error;
+    }
+    
     NSDictionary *serializedData = [NSJSONSerialization JSONObjectWithData:errorData options:kNilOptions error:nil];
     NSDictionary *errorDictionary = [serializedData valueForKey:@"error"];
     if (![errorDictionary isKindOfClass:[NSDictionary class]]) {
