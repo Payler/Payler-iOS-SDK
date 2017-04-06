@@ -39,7 +39,7 @@ static NSString *const kRecurrentTemplateKey = @"recurrent_template_id";
         _merchantKey = [merchantKey copy];
         _merchantPassword = [merchantPassword copy];
 
-        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"PaylerSDK" ofType:@"bundle"];
+        NSString *bundlePath = [[NSBundle bundleForClass:self.class] pathForResource:@"PaylerSDK" ofType:@"bundle"];
         NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
         self.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate withPinnedCertificates:[AFSecurityPolicy certificatesInBundle:bundle]];
     }
